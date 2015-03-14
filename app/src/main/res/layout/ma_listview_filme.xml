@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="89dp"
+            android:layout_height="126dp"
+            android:id="@+id/imgMALVFilme"
+            android:nestedScrollingEnabled="true"
+            android:maxWidth="@dimen/img_thumb_lv_width"
+            android:maxHeight="@dimen/img_thumb_lv_height"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="0.31"
+            android:contentDescription="@string/sLayLVFilme"
+            android:layout_marginRight="16dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right">
+
+            <TextView
+                android:layout_width="239dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Title"
+                android:id="@+id/tvLayLVFilmTitle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="O-Title"
+                android:id="@+id/tvLayLVFilmOTitle" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Jahr"
+                    android:id="@+id/tvLayLVFilmYear" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Ranking"
+                    android:id="@+id/tvLayLVFilmRanking"
+                    android:layout_marginLeft="16dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

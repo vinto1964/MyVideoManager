@@ -3,4 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="sEdMASearch">Film suchen</string>
+    <string name="sImgContentDescriptionMASearch">Film suchen</string>
+    <string name="sLayLVFilme">Filmplakat</string>
 </resources>
