@@ -6,4 +6,17 @@
     <string name="sEdMASearch">Film suchen</string>
     <string name="sImgContentDescriptionMASearch">Film suchen</string>
     <string name="sLayLVFilme">Filmplakat</string>
+    <string name="title_activity_mact_film_details">Film</string>
+    <string name="sFilmPlakat">Plakat</string>
+    <string name="sFilmAdd">Film hinzufügen</string>
+    <string name="sFilmDelete">Film löschen</string>
+    <string name="sFilmEdit">Film editieren</string>
+    <string name="sTitle">Titel</string>
+    <string name="sOTitle">Original Titel</string>
+    <string name="sSubtitle">Untertitel</string>
+    <string name="sPubYear">Jahr</string>
+    <string name="sRanking">Ranking</string>
+    <string name="sFSK">FSK</string>
+    <string name="sEAN">EAN</string>
+    <string name="sDuration">Länge</string>
 </resources>

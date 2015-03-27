@@ -4,18 +4,46 @@ package de.anisma.www.myvideomanager;
  * Created by Marc on 14.03.2015.
  */
 public class DTFilmItem {
-    String sFilmTitle;
-    String sFilmOTitle;
-    int intFilmYear;
-    int intFilmRanking;
-    String sFilmImagePath;
 
-    public DTFilmItem(String sFilmTitle, String sFilmOTitle, int intFilmYear, int intFilmRanking, String sFilmImagePath) {
+    long lFilm_ID = -1;
+    String sFilmTitle;
+    String sFilmSubtitle;
+    String sFilmOTitle;
+    int intFilmPubYear;
+    String sFilmCountry;
+    String sFilmImage;
+    String sFilmPlot;
+    String sFilmComment;
+    int iFilmRanking;
+    int iFilmFSK;
+    int iFilmEAN;
+    int iFilmDuration;
+
+    public DTFilmItem(long lFilm_ID, String sFilmTitle, String sFilmSubtitle,
+                      String sFilmOTitle, int intFilmPubYear, String sFilmCountry,
+                      String sFilmImage, String sFilmPlot, String sFilmComment,
+                      int iFilmRanking, int iFilmFSK, int iFilmEAN, int iFilmDuration) {
+        this.lFilm_ID = lFilm_ID;
         this.sFilmTitle = sFilmTitle;
+        this.sFilmSubtitle = sFilmSubtitle;
         this.sFilmOTitle = sFilmOTitle;
-        this.intFilmYear = intFilmYear;
-        this.intFilmRanking = intFilmRanking;
-        this.sFilmImagePath = sFilmImagePath;
+        this.intFilmPubYear = intFilmPubYear;
+        this.sFilmCountry = sFilmCountry;
+        this.sFilmImage = sFilmImage;
+        this.sFilmPlot = sFilmPlot;
+        this.sFilmComment = sFilmComment;
+        this.iFilmRanking = iFilmRanking;
+        this.iFilmFSK = iFilmFSK;
+        this.iFilmEAN = iFilmEAN;
+        this.iFilmDuration = iFilmDuration;
+    }
+
+    public long getlFilm_ID() {
+        return lFilm_ID;
+    }
+
+    public void setlFilm_ID(long lFilm_ID) {
+        this.lFilm_ID = lFilm_ID;
     }
 
     public String getsFilmTitle() {
@@ -26,6 +54,14 @@ public class DTFilmItem {
         this.sFilmTitle = sFilmTitle;
     }
 
+    public String getsFilmSubtitle() {
+        return sFilmSubtitle;
+    }
+
+    public void setsFilmSubtitle(String sFilmSubtitle) {
+        this.sFilmSubtitle = sFilmSubtitle;
+    }
+
     public String getsFilmOTitle() {
         return sFilmOTitle;
     }
@@ -34,27 +70,75 @@ public class DTFilmItem {
         this.sFilmOTitle = sFilmOTitle;
     }
 
-    public int getIntFilmYear() {
-        return intFilmYear;
+    public int getIntFilmPubYear() {
+        return intFilmPubYear;
     }
 
-    public void setIntFilmYear(int intFilmYear) {
-        this.intFilmYear = intFilmYear;
+    public void setIntFilmPubYear(int intFilmPubYear) {
+        this.intFilmPubYear = intFilmPubYear;
     }
 
-    public int getIntFilmRanking() {
-        return intFilmRanking;
+    public String getsFilmCountry() {
+        return sFilmCountry;
     }
 
-    public void setIntFilmRanking(int intFilmRanking) {
-        this.intFilmRanking = intFilmRanking;
+    public void setsFilmCountry(String sFilmCountry) {
+        this.sFilmCountry = sFilmCountry;
     }
 
-    public String getsFilmImagePath() {
-        return sFilmImagePath;
+    public String getsFilmImage() {
+        return sFilmImage;
     }
 
-    public void setsFilmImagePath(String sFilmImagePath) {
-        this.sFilmImagePath = sFilmImagePath;
+    public void setsFilmImage(String sFilmImage) {
+        this.sFilmImage = sFilmImage;
+    }
+
+    public String getsFilmPlot() {
+        return sFilmPlot;
+    }
+
+    public void setsFilmPlot(String sFilmPlot) {
+        this.sFilmPlot = sFilmPlot;
+    }
+
+    public String getsFilmComment() {
+        return sFilmComment;
+    }
+
+    public void setsFilmComment(String sFilmComment) {
+        this.sFilmComment = sFilmComment;
+    }
+
+    public int getiFilmRanking() {
+        return iFilmRanking;
+    }
+
+    public void setiFilmRanking(int iFilmRanking) {
+        this.iFilmRanking = iFilmRanking;
+    }
+
+    public int getiFilmFSK() {
+        return iFilmFSK;
+    }
+
+    public void setiFilmFSK(int iFilmFSK) {
+        this.iFilmFSK = iFilmFSK;
+    }
+
+    public int getiFilmEAN() {
+        return iFilmEAN;
+    }
+
+    public void setiFilmEAN(int iFilmEAN) {
+        this.iFilmEAN = iFilmEAN;
+    }
+
+    public int getiFilmDuration() {
+        return iFilmDuration;
+    }
+
+    public void setiFilmDuration(int iFilmDuration) {
+        this.iFilmDuration = iFilmDuration;
     }
 }
