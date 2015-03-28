@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Alfa on 27.03.2015.
@@ -51,7 +52,7 @@ public class CHDatabase extends SQLiteOpenHelper {
     private static final String TBLROLES = "roles";
     private static final String ROLE = "role";
 
-    public CHDatabase(Context context){
+    public CHDatabase(Context context) {
         super(context, DATABASENAME, null, DATABEASE_VERSION);
     }
 
@@ -61,6 +62,8 @@ public class CHDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d("DB", "onCreate");
+
         String sCreate = "CREATE TABLE " + TBLVIDEOMANAGER + " ( " +
                 ID_FILM + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TITEL + " TEXT, " +
@@ -119,7 +122,9 @@ public class CHDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if(oldVersion == 1){
+            onCreate(db);
+        }
     }
 
 

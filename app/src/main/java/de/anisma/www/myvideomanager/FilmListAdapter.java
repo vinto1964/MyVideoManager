@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class FilmListAdapter extends ArrayAdapter<DTFilmItem> {
 
+    
     List<DTFilmItem> listFilmItems;
     Context ctx;
 
@@ -68,8 +69,8 @@ public class FilmListAdapter extends ArrayAdapter<DTFilmItem> {
 
         viewHolder.tvFilmTitle.setText(eintrag.getsFilmTitle());
         viewHolder.tvFilmOTitle.setText(eintrag.getsFilmOTitle());
-        viewHolder.tvFilmYear.setText(""+eintrag.getIntFilmYear());
-        viewHolder.tvFilmRanking.setText(""+eintrag.getIntFilmYear());
+        viewHolder.tvFilmYear.setText(""+eintrag.getIntFilmPubYear());
+        viewHolder.tvFilmRanking.setText(""+eintrag.getiFilmRanking());
 
         return convertView;
     }

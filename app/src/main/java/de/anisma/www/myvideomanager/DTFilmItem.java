@@ -1,5 +1,8 @@
 package de.anisma.www.myvideomanager;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Marc on 14.03.2015.
  */
@@ -38,9 +41,7 @@ public class DTFilmItem {
         this.iFilmDuration = iFilmDuration;
     }
 
-    public long getlFilm_ID() {
-        return lFilm_ID;
-    }
+    public long getlFilm_ID() { return lFilm_ID; }
 
     public void setlFilm_ID(long lFilm_ID) {
         this.lFilm_ID = lFilm_ID;
@@ -141,4 +142,6 @@ public class DTFilmItem {
     public void setiFilmDuration(int iFilmDuration) {
         this.iFilmDuration = iFilmDuration;
     }
+
+
 }

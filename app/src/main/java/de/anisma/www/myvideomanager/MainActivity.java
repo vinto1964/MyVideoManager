@@ -1,34 +1,39 @@
 package de.anisma.www.myvideomanager;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     ImageView imgMASearch;
     ImageButton ibFilmAdd;
     ListView lvMA;
-    CHDatabase chdb;
+    CHDatabase dbVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        chdb = new CHDatabase(this);
+        Log.d("DB", "vor onCreate");
+
+        dbVideo = new CHDatabase(this);
         imgMASearch = (ImageView) findViewById(R.id.imgMASearch);
 
         lvMA = (ListView)findViewById(R.id.lvMA);
 
         ibFilmAdd = (ImageButton) findViewById(R.id.ibFilmAdd);
-
+        ibFilmAdd.setOnClickListener(this);
 
     }
 
@@ -53,5 +58,23 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            // Hinzufügen
+            case R.id.ibFilmAdd:
+                //Intent intent = new Intent(this, MActFilmDetails.class);
+                Intent intent = new Intent(this, TActFilmDetails.class);
+                intent.putExtra("Edit", "yes");
+                startActivity(intent);
+                break;
+        }
     }
 }

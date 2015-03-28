@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.anisma.www.myvideomanager" >
 
+    <uses-sdk android:minSdkVersion="15" />
+
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,6 +29,14 @@
         <activity
             android:name=".MActFilmDetails"
             android:label="@string/title_activity_mact_film_details" >
+        </activity>
+        <activity
+            android:name=".SecondActFilmDetails"
+            android:label="@string/title_activity_second_act_film_details" >
+        </activity>
+        <activity
+            android:name=".TActFilmDetails"
+            android:label="@string/title_activity_tact_film_details" >
         </activity>
     </application>
 

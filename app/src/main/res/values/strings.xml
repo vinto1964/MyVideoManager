@@ -19,4 +19,15 @@
     <string name="sFSK">FSK</string>
     <string name="sEAN">EAN</string>
     <string name="sDuration">Länge</string>
+    <string name="sSave">Speichern</string>
+    <string name="sPlot">Plot</string>
+    <string name="sComment">Kommentar</string>
+    <string name="sNext">Nächste Seite</string>
+    <string name="sBack">Vorherige Seite</string>
+    <string name="title_activity_second_act_film_details">Filmdetails</string>
+    <string name="sCountry">Land</string>
+    <string name="title_activity_tact_film_details">Filmdetails</string>
+    <string name="title_section1">Allgemein</string>
+    <string name="title_section2">Plot</string>
+    <string name="title_section3">Kommentar</string>
 </resources>
