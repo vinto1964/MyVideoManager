@@ -1,10 +1,15 @@
 package de.anisma.www.myvideomanager;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alfa on 27.03.2015.
@@ -38,6 +43,7 @@ public class CHDatabase extends SQLiteOpenHelper {
     private static final String ID_PERSON = "id_person";
     private static final String ID_FUNCTION = "id_function";
     private static final String ID_ROLE = "id_role";
+    private static final String ROLEORDER = "role_order";
 
     private static final String TBLPEOPLE = "people";
     private static final String FIRSTNAME = "firstname";
@@ -74,7 +80,7 @@ public class CHDatabase extends SQLiteOpenHelper {
                 IMAGE + " TEXT, " +
                 PLOT + " TEXT, " +
                 COMMENT + " TEXT, " +
-                RANKING + " INTEGER, " +
+                RANKING + " REAL, " +
                 DURATION + " INTEGER, " +
                 FSK + " INTEGER, " +
                 EAN + " INTEGER);";
@@ -96,6 +102,7 @@ public class CHDatabase extends SQLiteOpenHelper {
                 ID_PERSON + " INTEGER, " +
                 ID_FUNCTION + " INTEGER, " +
                 ID_ROLE + " INTEGER, " +
+                ROLEORDER + " INTEGER, " +
                 " PRIMARY KEY ( " + ID_FILM + ", " + ID_PERSON + ", " + ID_FUNCTION + ") );";
         db.execSQL(sCreate);
 
@@ -123,13 +130,126 @@ public class CHDatabase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion == 1){
+            db.execSQL("DROP TABLE IF EXISTS " + TBLVIDEOMANAGER);
             onCreate(db);
         }
     }
 
+    public void loadAllFilms(List<DTFilmItem> filmlist){
+        if(filmlist == null) {
+            filmlist = new ArrayList<DTFilmItem>();
+        }
+        else {
+            filmlist.clear();
+        }
+
+        SQLiteDatabase db = null;
+
+        String sQuery = "SELECT * FROM " + TBLVIDEOMANAGER + ";";
+
+        try{
+            db = this.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(sQuery, null);
+            if(cursor.moveToFirst()) {
+                do {
+                    long lFilmID = cursor.getLong(0);
+                    String sFilmTitle = cursor.getString(1);
+                    String sFilmSubtitle = cursor.getString(2);
+                    String sFilmOTitle = cursor.getString(3);
+                    int intFilmPubYear = cursor.getInt(4);
+                    String sFilmCountry = cursor.getString(5);
+                    String sFilmImage = cursor.getString(6);
+                    String sFilmPlot = cursor.getString(7);
+                    String sFilmComment = cursor.getString(8);
+                    float iFilmRanking = cursor.getInt(9);
+                    int iFilmDuration = cursor.getInt(10);
+                    int iFilmFSK = cursor.getInt(11);
+                    int iFilmEAN = cursor.getInt(12);
+
+                    filmlist.add(new DTFilmItem(lFilmID,
+                                                sFilmTitle,
+                                                sFilmSubtitle,
+                                                sFilmOTitle,
+                                                intFilmPubYear,
+                                                sFilmCountry,
+                                                sFilmImage,
+                                                sFilmPlot,
+                                                sFilmComment,
+                                                iFilmRanking,
+                                                iFilmDuration,
+                                                iFilmFSK,
+                                                iFilmEAN));
+                }
+                while (cursor.moveToNext());
+            }
+
+        }
+        catch (Exception ex) {
+            ;
+        }
+        finally {
+            if(db != null) {
+                db.close();
+            }
+        }
 
 
+    }
 
+    public long insertFilm(DTFilmItem film){
+        film.setlFilm_ID(insertFilm(film.getsFilmTitle(),
+                                    film.getsFilmSubtitle(),
+                                    film.getsFilmOTitle(),
+                                    film.getIntFilmPubYear(),
+                                    film.getsFilmCountry(),
+                                    film.getsFilmImage(),
+                                    film.getsFilmPlot(),
+                                    film.getsFilmComment(),
+                                    film.getfFilmRanking(),
+                                    film.getiFilmDuration(),
+                                    film.getiFilmFSK(),
+                                    film.getiFilmEAN()));
+        return film.getlFilm_ID();
+
+    }
+
+    public long insertFilm(String sFilmTitle, String sFilmSubtitle,
+                           String sFilmOTitle, int intFilmPubYear, String sFilmCountry,
+                           String sFilmImage, String sFilmPlot, String sFilmComment,
+                           float iFilmRanking, int iFilmDuration, int iFilmFSK, int iFilmEAN) {
+
+        long lResult = -1;
+        SQLiteDatabase db = null;
+
+        try {
+            db = this.getWritableDatabase();
+
+            ContentValues cv = new ContentValues();
+            cv.put(TITEL, sFilmTitle);
+            cv.put(SUBTITLE, sFilmSubtitle);
+            cv.put(ORI_TITEL, sFilmOTitle);
+            cv.put(PUBYEAR, intFilmPubYear);
+            cv.put(COUNTRY, sFilmCountry);
+            cv.put(IMAGE, sFilmImage);
+            cv.put(PLOT, sFilmPlot);
+            cv.put(COMMENT, sFilmComment);
+            cv.put(RANKING, iFilmRanking);
+            cv.put(DURATION, iFilmDuration);
+            cv.put(FSK, iFilmFSK);
+            cv.put(EAN, iFilmEAN);
+
+            lResult = db.insert(TBLVIDEOMANAGER, null, cv);
+
+        }
+        catch (Exception ex) { }
+        finally {
+            if(db != null){
+                db.close();
+            }
+        }
+        return lResult;
+    }
 
 
 }

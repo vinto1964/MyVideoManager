@@ -17,15 +17,15 @@ public class DTFilmItem {
     String sFilmImage;
     String sFilmPlot;
     String sFilmComment;
-    int iFilmRanking;
+    float iFilmRanking;
+    int iFilmDuration;
     int iFilmFSK;
     int iFilmEAN;
-    int iFilmDuration;
 
     public DTFilmItem(long lFilm_ID, String sFilmTitle, String sFilmSubtitle,
                       String sFilmOTitle, int intFilmPubYear, String sFilmCountry,
                       String sFilmImage, String sFilmPlot, String sFilmComment,
-                      int iFilmRanking, int iFilmFSK, int iFilmEAN, int iFilmDuration) {
+                      float iFilmRanking, int iFilmDuration, int iFilmFSK, int iFilmEAN) {
         this.lFilm_ID = lFilm_ID;
         this.sFilmTitle = sFilmTitle;
         this.sFilmSubtitle = sFilmSubtitle;
@@ -36,9 +36,9 @@ public class DTFilmItem {
         this.sFilmPlot = sFilmPlot;
         this.sFilmComment = sFilmComment;
         this.iFilmRanking = iFilmRanking;
+        this.iFilmDuration = iFilmDuration;
         this.iFilmFSK = iFilmFSK;
         this.iFilmEAN = iFilmEAN;
-        this.iFilmDuration = iFilmDuration;
     }
 
     public long getlFilm_ID() { return lFilm_ID; }
@@ -111,11 +111,11 @@ public class DTFilmItem {
         this.sFilmComment = sFilmComment;
     }
 
-    public int getiFilmRanking() {
+    public float getfFilmRanking() {
         return iFilmRanking;
     }
 
-    public void setiFilmRanking(int iFilmRanking) {
+    public void setfFilmRanking(float iFilmRanking) {
         this.iFilmRanking = iFilmRanking;
     }
 

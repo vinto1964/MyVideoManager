@@ -12,13 +12,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
+    List<DTFilmItem> filmlist = new ArrayList<DTFilmItem>();
     ImageView imgMASearch;
     ImageButton ibFilmAdd;
     ListView lvMA;
     CHDatabase dbVideo;
+
+
+    int iPos = -1;
+    long lFilmID = -1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +43,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         ibFilmAdd = (ImageButton) findViewById(R.id.ibFilmAdd);
         ibFilmAdd.setOnClickListener(this);
+
+        loadFilmList();
+
+    }
+
+    private void loadFilmList() {
+        dbVideo.loadAllFilms(filmlist);
+
 
     }
 
@@ -72,7 +89,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.ibFilmAdd:
                 //Intent intent = new Intent(this, MActFilmDetails.class);
                 Intent intent = new Intent(this, TActFilmDetails.class);
-                intent.putExtra("Edit", "yes");
+                intent.putExtra("Position", iPos);
                 startActivity(intent);
                 break;
         }

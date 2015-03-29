@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ivActorFoto"
+            android:src="@mipmap/ic_actor"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/sActorFoto" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/edActRoleOrder"
+            android:hint="@string/sRoleOrder"
+            android:layout_below="@+id/edActRole"
+            android:layout_toRightOf="@+id/ivActorFoto"
+            android:layout_toEndOf="@+id/ivActorFoto" />
+
+        <EditText
+            android:layout_width="182dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/edActFirstName"
+            android:hint="@string/sFirstname"
+            android:layout_below="@+id/edActRoleOrder"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/edActLastName"
+            android:hint="@string/sLastName"
+            android:layout_below="@+id/edActFirstName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/edActRole"
+            android:hint="@string/sRole"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/ivActorFoto"
+            android:layout_toEndOf="@+id/ivActorFoto" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spFunction"
+            android:layout_below="@+id/edActLastName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:spinnerMode="dropdown"
+            android:prompt="@string/spFunction_promt"
+            android:entries="@array/function_array" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout2"
+            android:layout_below="@+id/spFunction"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/ibAddActor"
+                android:src="@mipmap/ic_add_actor"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/sAddActor" />
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/ibDeleteActor"
+                android:src="@mipmap/ic_delete_actor"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/sDeleteActor" />
+
+        </LinearLayout>
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lvActors"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+</LinearLayout>

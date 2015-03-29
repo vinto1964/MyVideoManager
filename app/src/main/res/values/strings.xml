@@ -28,6 +28,20 @@
     <string name="sCountry">Land</string>
     <string name="title_activity_tact_film_details">Filmdetails</string>
     <string name="title_section1">Allgemein</string>
-    <string name="title_section2">Plot</string>
-    <string name="title_section3">Kommentar</string>
+    <string name="title_section2">Schausp.</string>
+    <string name="title_section3">Plot</string>
+    <string name="title_section4">Rating</string>
+    <string name="sFirstname">Vorname</string>
+    <string name="sLastName">Nachname</string>
+    <string name="sRole">Role</string>
+    <string name="sRoleOrder">Reihenfolge</string>
+    <string name="sAddActor">Schauspieler/in hinzufügen</string>
+    <string name="sDeleteActor">Schauspieler/in löschen</string>
+    <string name="sActorFoto">Portrait</string>
+    <string name="spFunction_promt">Wählen Sie eine Funktion</string>
+    <string-array name="function_array">
+        <item>Regisseur</item>
+        <item>Schauspieler</item>
+    </string-array>
+
 </resources>

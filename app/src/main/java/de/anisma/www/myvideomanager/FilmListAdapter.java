@@ -53,6 +53,7 @@ public class FilmListAdapter extends ArrayAdapter<DTFilmItem> {
 
             viewHolder.ivFilm           = (ImageView) convertView.findViewById(R.id.imgMALVFilme);
             viewHolder.tvFilmTitle      = (TextView) convertView.findViewById(R.id.tvLayLVFilmTitle);
+            viewHolder.tvFilmSubtitle   = (TextView) convertView.findViewById(R.id.tvLayLVFilmSubtitle);
             viewHolder.tvFilmOTitle     = (TextView) convertView.findViewById(R.id.tvLayLVFilmOTitle);
             viewHolder.tvFilmYear       = (TextView) convertView.findViewById(R.id.tvLayLVFilmYear);
             viewHolder.tvFilmRanking    = (TextView) convertView.findViewById(R.id.tvLayLVFilmRanking);
@@ -68,6 +69,7 @@ public class FilmListAdapter extends ArrayAdapter<DTFilmItem> {
         // TODO: Bild einfügen
 
         viewHolder.tvFilmTitle.setText(eintrag.getsFilmTitle());
+        viewHolder.tvFilmSubtitle.setText(eintrag.getsFilmSubtitle());
         viewHolder.tvFilmOTitle.setText(eintrag.getsFilmOTitle());
         viewHolder.tvFilmYear.setText(""+eintrag.getIntFilmPubYear());
         viewHolder.tvFilmRanking.setText(""+eintrag.getiFilmRanking());
@@ -79,6 +81,7 @@ public class FilmListAdapter extends ArrayAdapter<DTFilmItem> {
         String imgFilmPath;
         ImageView ivFilm;
         TextView tvFilmTitle;
+        TextView tvFilmSubtitle;
         TextView tvFilmOTitle;
         TextView tvFilmYear;
         TextView tvFilmRanking;

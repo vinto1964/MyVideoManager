@@ -1,5 +1,7 @@
 package de.anisma.www.myvideomanager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import android.content.Intent;
@@ -11,27 +13,40 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RatingBar;
+import android.widget.Spinner;
 
 
 public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabListener {
 
-    String sEditable;
+    int iPos = -1;
+    long lFilmID = -1;
+    List<DTFilmItem> filmlist = new ArrayList<DTFilmItem>();
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+    String sEditable;
+    ImageView ivCover, ivActorFoto;
+
+    EditText edTitle, edSubtitel, edOTitel, edPubYear, edCountry, edFSK, edDuration, edEAN;
+    EditText edActRole, edActRoleOrder, edActFirstName, edActLastName;
+    EditText edPlot, edComment;
+
+    RatingBar rbRating;
+
+    ImageButton ibSave1, ibAddActor, ibDeleteActor;
+
+    ListView lvActors;
+    Spinner spFunction;
     SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
@@ -42,10 +57,45 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_tact_film_details);
         setContentView(R.layout.activity_tact_film_details);
-
         Intent intent = getIntent();
         sEditable = intent.getStringExtra("Edit");
+
+        // Fragment "Allgemein"
+        edTitle     = (EditText) findViewById(R.id.edTitel);
+        edSubtitel  = (EditText) findViewById(R.id.edSubtitle);
+        edOTitel    = (EditText) findViewById(R.id.edOTitle);
+        edPubYear   = (EditText) findViewById(R.id.edPubYear);
+        edCountry   = (EditText) findViewById(R.id.edCountry);
+        edPlot      = (EditText) findViewById(R.id.edPlot);
+        edFSK       = (EditText) findViewById(R.id.edFSK);
+        edDuration  = (EditText) findViewById(R.id.edDuration);
+        edEAN       = (EditText) findViewById(R.id.edEAN);
+
+        ibSave1 = (ImageButton) findViewById(R.id.ibSave1);
+
+        ivCover = (ImageView) findViewById(R.id.ivCover);
+
+        // Fragment "Schauspieler/in"
+        ivActorFoto     = (ImageView) findViewById(R.id.ivActorFoto);
+        edActRole       = (EditText) findViewById(R.id.edActRole);
+        edActRoleOrder  = (EditText) findViewById(R.id.edActRoleOrder);
+        edActFirstName  = (EditText) findViewById(R.id.edActFirstName);
+        edActLastName   = (EditText) findViewById(R.id.edActLastName);
+        ibAddActor      = (ImageButton) findViewById(R.id.ibFilmAdd);
+        ibDeleteActor   = (ImageButton) findViewById(R.id.ibDeleteActor);
+        lvActors        = (ListView) findViewById(R.id.lvActors);
+        spFunction      = (Spinner) findViewById(R.id.spFunction);
+
+        // Fragment "Plot"
+        edPlot = (EditText) findViewById(R.id.edPlot);
+
+
+        // Fragment "Rating"
+        edComment   = (EditText) findViewById(R.id.edComment);
+        rbRating    = (RatingBar) findViewById(R.id.rbRating);
+
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -54,7 +104,7 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
+        //mSectionsPagerAdapter = new MyPageAdapter();
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -136,13 +186,35 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+
+            //**************************************************************************************
+            switch (position){
+                case 0:
+                    FirstFragment fragment = new FirstFragment();
+                    return fragment;
+
+                case 1:
+                    SecondFragment fragment1 = new SecondFragment();
+                    return fragment1;
+
+                case 2:
+                    ThirdFragment fragment2 = new ThirdFragment();
+                    return fragment2;
+
+                case 3:
+                    FourthFragment fragment3 = new FourthFragment();
+                    return fragment3;
+            }
+            FirstFragment defaultFragment = new FirstFragment();
+            return defaultFragment;
+            //**************************************************************************************
+            // return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -155,42 +227,105 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
+                case 3:
+                    return getString(R.string.title_section4).toUpperCase();
             }
             return null;
         }
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
+    public static class FirstFragment extends Fragment {
+        public FirstFragment() {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_tact_film_details, container, false);
-            return rootView;
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.activity_mact_film_details_infos, container, false);
+            return view;
         }
     }
+
+    public static class SecondFragment extends Fragment {
+        public SecondFragment() {
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.activity_mact_film_details_actors, container, false);
+            return view;
+        }
+    }
+
+    public static class ThirdFragment extends Fragment {
+        public ThirdFragment() {
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.activity_mact_film_details_plot, container, false);
+            return view;
+        }
+    }
+
+    public static class FourthFragment extends Fragment {
+        public FourthFragment() {
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.activity_mact_film_details_comment, container, false);
+            return view;
+        }
+    }
+
+    //**********************************************************************************************
+    private void saveEntry() {
+        if(iPos < 0) {
+            filmlist.add(new DTFilmItem(
+                                        -1,
+                                        edTitle.getText().toString(),
+                                        edSubtitel.getText().toString(),
+                                        edOTitel.getText().toString(),
+                                        Integer.parseInt(edPubYear.getText().toString()),
+                                        edCountry.getText().toString(),
+                                        "", // Bildpfad zuerst leer
+                                        edPlot.getText().toString(),
+                                        edComment.getText().toString(),
+                                        rbRating.getRating(),
+                                        Integer.parseInt(edDuration.getText().toString()),
+                                        Integer.parseInt(edFSK.getText().toString()),
+                                        Integer.parseInt(edEAN.getText().toString())
+            ));
+
+
+
+
+
+        }
+
+
+    }
+
+
 
 }
