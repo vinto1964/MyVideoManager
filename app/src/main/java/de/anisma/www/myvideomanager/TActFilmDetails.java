@@ -28,25 +28,27 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 
 
+
 public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabListener {
+
+    AppGlobal myApp;
 
     int iPos = -1;
     long lFilmID = -1;
     List<DTFilmItem> filmlist = new ArrayList<DTFilmItem>();
 
     String sEditable;
-    ImageView ivCover, ivActorFoto;
+    ImageView ivActorFoto;
 
-    EditText edTitle, edSubtitel, edOTitel, edPubYear, edCountry, edFSK, edDuration, edEAN;
-    EditText edActRole, edActRoleOrder, edActFirstName, edActLastName;
-    EditText edPlot, edComment;
+    EditText edActRole, edActRoleOrder, edActFirstName, edActLastName, edPlot;
+    EditText edComment;
 
     RatingBar rbRating;
 
-    ImageButton ibSave1, ibAddActor, ibDeleteActor;
+    ImageButton ibAddActor, ibDeleteActor;
 
     ListView lvActors;
-    Spinner spFunction;
+    Spinner spFunction, spGenre;
     SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
@@ -59,23 +61,14 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_tact_film_details);
         setContentView(R.layout.activity_tact_film_details);
+
+        myApp = (AppGlobal) getApplication();
+
         Intent intent = getIntent();
         sEditable = intent.getStringExtra("Edit");
 
         // Fragment "Allgemein"
-        edTitle     = (EditText) findViewById(R.id.edTitel);
-        edSubtitel  = (EditText) findViewById(R.id.edSubtitle);
-        edOTitel    = (EditText) findViewById(R.id.edOTitle);
-        edPubYear   = (EditText) findViewById(R.id.edPubYear);
-        edCountry   = (EditText) findViewById(R.id.edCountry);
-        edPlot      = (EditText) findViewById(R.id.edPlot);
-        edFSK       = (EditText) findViewById(R.id.edFSK);
-        edDuration  = (EditText) findViewById(R.id.edDuration);
-        edEAN       = (EditText) findViewById(R.id.edEAN);
 
-        ibSave1 = (ImageButton) findViewById(R.id.ibSave1);
-
-        ivCover = (ImageView) findViewById(R.id.ivCover);
 
         // Fragment "Schauspieler/in"
         ivActorFoto     = (ImageView) findViewById(R.id.ivActorFoto);
@@ -91,11 +84,10 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
         // Fragment "Plot"
         edPlot = (EditText) findViewById(R.id.edPlot);
 
-
         // Fragment "Rating"
-        edComment   = (EditText) findViewById(R.id.edComment);
         rbRating    = (RatingBar) findViewById(R.id.rbRating);
-
+        spGenre     = (Spinner) findViewById(R.id.spGenre);
+        edComment   = (EditText) findViewById(R.id.edComment);
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -190,22 +182,24 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
             //**************************************************************************************
             switch (position){
                 case 0:
-                    FirstFragment fragment = new FirstFragment();
-                    return fragment;
+                    return FgmInfos.newInstance(0);
 
                 case 1:
-                    SecondFragment fragment1 = new SecondFragment();
-                    return fragment1;
+/*                    SecondFragment fragment1 = new SecondFragment();
+                    return fragment1;*/
+                    return FgmActors.newInstance(1);
 
                 case 2:
-                    ThirdFragment fragment2 = new ThirdFragment();
-                    return fragment2;
+/*                    ThirdFragment fragment2 = new ThirdFragment();
+                    return fragment2;*/
+                    return FgmPlot.newInstance(2);
 
                 case 3:
-                    FourthFragment fragment3 = new FourthFragment();
-                    return fragment3;
+/*                    FourthFragment fragment3 = new FourthFragment();
+                    return fragment3;*/
+                    return FgmComment.newInstance(3);
             }
-            FirstFragment defaultFragment = new FirstFragment();
+            FgmInfos defaultFragment = new FgmInfos();
             return defaultFragment;
             //**************************************************************************************
             // return PlaceholderFragment.newInstance(position + 1);
@@ -234,23 +228,25 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
         }
     }
 
-    public static class FirstFragment extends Fragment {
+/*    public static class FirstFragment extends Fragment {
         public FirstFragment() {
         }
 
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-        }
+        public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.activity_mact_film_details_infos, container, false);
+
+
+
             return view;
         }
+
     }
 
-    public static class SecondFragment extends Fragment {
+      public static class SecondFragment extends Fragment {
         public SecondFragment() {
         }
 
@@ -264,9 +260,9 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
             View view = inflater.inflate(R.layout.activity_mact_film_details_actors, container, false);
             return view;
         }
-    }
 
-    public static class ThirdFragment extends Fragment {
+
+      public static class ThirdFragment extends Fragment {
         public ThirdFragment() {
         }
 
@@ -296,35 +292,10 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
             View view = inflater.inflate(R.layout.activity_mact_film_details_comment, container, false);
             return view;
         }
-    }
+    }*/
 
     //**********************************************************************************************
-    private void saveEntry() {
-        if(iPos < 0) {
-            filmlist.add(new DTFilmItem(
-                                        -1,
-                                        edTitle.getText().toString(),
-                                        edSubtitel.getText().toString(),
-                                        edOTitel.getText().toString(),
-                                        Integer.parseInt(edPubYear.getText().toString()),
-                                        edCountry.getText().toString(),
-                                        "", // Bildpfad zuerst leer
-                                        edPlot.getText().toString(),
-                                        edComment.getText().toString(),
-                                        rbRating.getRating(),
-                                        Integer.parseInt(edDuration.getText().toString()),
-                                        Integer.parseInt(edFSK.getText().toString()),
-                                        Integer.parseInt(edEAN.getText().toString())
-            ));
 
-
-
-
-
-        }
-
-
-    }
 
 
 

@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class CHDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABEASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
     private static final String DATABASENAME = "myVideoDB";
     private static final String TBLVIDEOMANAGER = "videomanager";
     private static final String ID_FILM = "id_film";
@@ -58,8 +58,9 @@ public class CHDatabase extends SQLiteOpenHelper {
     private static final String TBLROLES = "roles";
     private static final String ROLE = "role";
 
+
     public CHDatabase(Context context) {
-        super(context, DATABASENAME, null, DATABEASE_VERSION);
+        super(context, DATABASENAME, null, DATABASE_VERSION);
     }
 
     public CHDatabase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
@@ -93,7 +94,7 @@ public class CHDatabase extends SQLiteOpenHelper {
         db.execSQL(sCreate);
 
         sCreate = "CREATE TABLE " + TBLGENRE + " ( " +
-                ID_GENRE + " INTEGER PRIMARY KEY, " +
+                ID_GENRE + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 GENRE + " TEXT);";
         db.execSQL(sCreate);
 
@@ -117,7 +118,7 @@ public class CHDatabase extends SQLiteOpenHelper {
         db.execSQL(sCreate);
 
         sCreate = "CREATE TABLE " + TBLFUNCTIONS + " ( " +
-                ID_FUNCTION + " INTEGER PRIMARY KEY, " +
+                ID_FUNCTION + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 FUNCTION + " TEXT);";
         db.execSQL(sCreate);
 
@@ -125,12 +126,21 @@ public class CHDatabase extends SQLiteOpenHelper {
                 ID_ROLE + " INTEGER PRIMARY KEY, " +
                 ROLE + " TEXT);";
         db.execSQL(sCreate);
+
+        initGenre(db);
+        initFunktion(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion == 1){
             db.execSQL("DROP TABLE IF EXISTS " + TBLVIDEOMANAGER);
+            db.execSQL("DROP TABLE IF EXISTS " + TBLFUNCTIONS);
+            db.execSQL("DROP TABLE IF EXISTS " + TBLGENRE);
+            db.execSQL("DROP TABLE IF EXISTS " + TBLGENREIS);
+            db.execSQL("DROP TABLE IF EXISTS " + TBLPEOPLE);
+            db.execSQL("DROP TABLE IF EXISTS " + TBLPERSONSIS);
+            db.execSQL("DROP TABLE IF EXISTS " + TBLROLES);
             onCreate(db);
         }
     }
@@ -251,6 +261,84 @@ public class CHDatabase extends SQLiteOpenHelper {
         return lResult;
     }
 
+    public void insertGenreIs(int filmID, int genreID){
+        long lResult = -1;
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(ID_GENRE, genreID);
+            cv.put(ID_FILM, filmID);
+            lResult = db.insert(TBLGENREIS, null, cv);
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+    }
 
+    public void updateGenreIs(int filmID, int genreID){
+
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(ID_GENRE, genreID);
+            db.update(TBLGENREIS,
+                    cv,
+                    ID_FILM + " = ? ",
+                    new String[]{String.valueOf(filmID)});
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+    }
+
+    public static int getDatabeaseVersion() {
+        return DATABASE_VERSION;
+    }
+
+    // ********************************************************************************************************
+    // Datenbank Initialisierung
+    public void initGenre( SQLiteDatabase db ) {
+
+        String [] genresD = {"Abenteuer", "Kinder", "Komödie", "Drama", "Science Fiction", "Thriller", "Western",
+                "Mystery", "Horror", "EndOfWorld", "Action", "Romanze", "Fantasy","Krieg",
+                "Dokumentation", "Monumental", "Animation", "Katastrophe", "Erotik", "Biografie",
+                "Weltraum", "Liebe", "Geschichte", "Sport", "Familie", "Krimi"};
+        
+        
+        for(int i = 0; i < genresD.length; i++) {
+
+            long lResult = -1;
+           // SQLiteDatabase db = null;
+
+            try {
+                //db = this.getWritableDatabase();
+
+                ContentValues cv = new ContentValues();
+                cv.put(GENRE, genresD[i]);
+                lResult = db.insert(TBLGENRE, null, cv);
+
+            } catch (Exception ex) { }
+
+        }
+    }
+
+    public  void initFunktion(SQLiteDatabase db) {
+        String[] functionD	=	{"Regisseur", "Schauspieler"};
+        long lResult = -1;
+      //  SQLiteDatabase db = null;
+        try{
+         //   db = this.getWritableDatabase();
+
+            for(int i = 0; i < functionD.length; i++) {
+                ContentValues cv = new ContentValues();
+                cv.put(FUNCTION, functionD[i]);
+                lResult = db.insert(TBLFUNCTIONS, null, cv);
+            }
+        }
+        catch (Exception ex) {}
+      //  finally { if(db != null){ db.close();}}
+    }
+
+    // ********************************************************************************************************
 }
 

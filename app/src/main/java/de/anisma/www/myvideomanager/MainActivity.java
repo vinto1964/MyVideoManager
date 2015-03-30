@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,11 +19,14 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
-    List<DTFilmItem> filmlist = new ArrayList<DTFilmItem>();
+    AppGlobal myApp;
+
+    List<DTFilmItem> ldFilmItems;
+    FilmListAdapter flAdapter;
     ImageView imgMASearch;
     ImageButton ibFilmAdd;
     ListView lvMA;
-    CHDatabase dbVideo;
+
 
 
     int iPos = -1;
@@ -34,9 +38,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("DB", "vor onCreate");
+        myApp = (AppGlobal) getApplication();
 
-        dbVideo = new CHDatabase(this);
+        myApp.dbVideo = new CHDatabase(this);
+
         imgMASearch = (ImageView) findViewById(R.id.imgMASearch);
 
         lvMA = (ListView)findViewById(R.id.lvMA);
@@ -49,11 +54,28 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void loadFilmList() {
-        dbVideo.loadAllFilms(filmlist);
+        myApp.dbVideo.loadAllFilms(myApp.ldFilmItems);
 
+        flAdapter = new FilmListAdapter(this, R.layout.ma_listview_filme, myApp.ldFilmItems);
+        lvMA.setAdapter(flAdapter);
+
+        lvMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                myApp.iPosSelect = position;
+                Intent intent = new Intent(MainActivity.this, TActFilmDetails.class);
+                intent.putExtra("Position", position);
+                startActivity(intent);
+            }
+        });
 
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        flAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

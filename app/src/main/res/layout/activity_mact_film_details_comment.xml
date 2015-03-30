@@ -10,9 +10,16 @@
         android:id="@+id/rbRating"
         android:numStars="@integer/c_stars_number" />
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spGenre"
+        android:prompt="@string/spGenre_prompt"
+        android:entries="@array/genreD_array"/>
+
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/edComment"
         android:layout_weight="0.23"
         android:editable="true"

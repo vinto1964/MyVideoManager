@@ -24,6 +24,25 @@ public class DTFilmItem {
 
     public DTFilmItem(long lFilm_ID, String sFilmTitle, String sFilmSubtitle,
                       String sFilmOTitle, int intFilmPubYear, String sFilmCountry,
+                      String sFilmImage, int iFilmDuration, int iFilmFSK, int iFilmEAN) {
+        this.lFilm_ID = lFilm_ID;
+        this.sFilmTitle = sFilmTitle;
+        this.sFilmSubtitle = sFilmSubtitle;
+        this.sFilmOTitle = sFilmOTitle;
+        this.intFilmPubYear = intFilmPubYear;
+        this.sFilmCountry = sFilmCountry;
+        this.sFilmImage = sFilmImage;
+        this.sFilmPlot = "";
+        this.sFilmComment = "";
+        this.iFilmRanking = -1.0f;
+        this.iFilmDuration = iFilmDuration;
+        this.iFilmFSK = iFilmFSK;
+        this.iFilmEAN = iFilmEAN;
+    }
+
+
+    public DTFilmItem(long lFilm_ID, String sFilmTitle, String sFilmSubtitle,
+                      String sFilmOTitle, int intFilmPubYear, String sFilmCountry,
                       String sFilmImage, String sFilmPlot, String sFilmComment,
                       float iFilmRanking, int iFilmDuration, int iFilmFSK, int iFilmEAN) {
         this.lFilm_ID = lFilm_ID;

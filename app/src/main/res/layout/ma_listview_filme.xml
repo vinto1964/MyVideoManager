@@ -10,14 +10,13 @@
         android:weightSum="1">
 
         <ImageView
-            android:layout_width="89dp"
-            android:layout_height="126dp"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
             android:id="@+id/imgMALVFilme"
             android:nestedScrollingEnabled="true"
             android:maxWidth="@dimen/img_thumb_lv_width"
             android:maxHeight="@dimen/img_thumb_lv_height"
             android:layout_marginLeft="16dp"
-            android:layout_weight="0.31"
             android:contentDescription="@string/sLayLVFilme"
             android:layout_marginRight="16dp" />
 
@@ -30,21 +29,21 @@
             <TextView
                 android:layout_width="183dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/sTitle"
                 android:id="@+id/tvLayLVFilmTitle" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="@android:style/TextAppearance.Small"
                 android:text="@string/sSubtitle"
                 android:id="@+id/tvLayLVFilmSubtitle" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="@android:style/TextAppearance.Small"
                 android:text="@string/sOTitle"
                 android:id="@+id/tvLayLVFilmOTitle" />
 
@@ -61,14 +60,14 @@
                     <TextView
                         android:layout_width="72dp"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
                         android:id="@+id/tvLayLVFilmYear"
                         android:text="@string/sPubYear" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="@string/sFSK"
                         android:id="@+id/tvLayLVFilmFSK" />
                 </LinearLayout>
@@ -81,7 +80,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="@string/sRanking"
                         android:id="@+id/tvLayLVFilmRanking"
                         android:layout_marginLeft="16dp" />
@@ -89,7 +88,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="@string/sDuration"
                         android:id="@+id/tvLayLVFilmDuration"
                         android:layout_marginLeft="16dp" />
@@ -98,5 +97,6 @@
 
         </LinearLayout>
     </LinearLayout>
+
 
 </LinearLayout>

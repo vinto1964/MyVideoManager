@@ -38,10 +38,39 @@
     <string name="sAddActor">Schauspieler/in hinzufügen</string>
     <string name="sDeleteActor">Schauspieler/in löschen</string>
     <string name="sActorFoto">Portrait</string>
-    <string name="spFunction_promt">Wählen Sie eine Funktion</string>
+    <string name="spFunction_promt">Wählen Sie eine Funktion:</string>
     <string-array name="function_array">
         <item>Regisseur</item>
         <item>Schauspieler</item>
+    </string-array>
+    <string name="spGenre_prompt">Wählen Sie eine Kategorie:</string>
+    <string-array name="genreD_array">
+        <item>Abenteuer</item>
+        <item>Kinder</item>
+        <item>Komödie</item>
+        <item>Drama</item>
+        <item>Science Fiction</item>
+        <item>Thriller</item>
+        <item>Western</item>
+        <item>Mystery</item>
+        <item>Horror</item>
+        <item>EndOfWorld</item>
+        <item>Action</item>
+        <item>Romanze</item>
+        <item>Fantasy</item>
+        <item>Krieg</item>
+        <item>Dokumentation</item>
+        <item>Monumental</item>
+        <item>Animation</item>
+        <item>Katastrophe</item>
+        <item>Erotik</item>
+        <item>Biografie</item>
+        <item>Weltraum</item>
+        <item>Liebe</item>
+        <item>Geschichte</item>
+        <item>Sport</item>
+        <item>Familie</item>
+        <item>Krimi</item>
     </string-array>
 
 </resources>

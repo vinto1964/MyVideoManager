@@ -57,6 +57,8 @@ public class FilmListAdapter extends ArrayAdapter<DTFilmItem> {
             viewHolder.tvFilmOTitle     = (TextView) convertView.findViewById(R.id.tvLayLVFilmOTitle);
             viewHolder.tvFilmYear       = (TextView) convertView.findViewById(R.id.tvLayLVFilmYear);
             viewHolder.tvFilmRanking    = (TextView) convertView.findViewById(R.id.tvLayLVFilmRanking);
+            viewHolder.tvFilmFSK        = (TextView) convertView.findViewById(R.id.tvLayLVFilmFSK);
+            viewHolder.tvFilmDuration   = (TextView) convertView.findViewById(R.id.tvLayLVFilmDuration);
 
             convertView.setTag(viewHolder);
         }
@@ -71,8 +73,10 @@ public class FilmListAdapter extends ArrayAdapter<DTFilmItem> {
         viewHolder.tvFilmTitle.setText(eintrag.getsFilmTitle());
         viewHolder.tvFilmSubtitle.setText(eintrag.getsFilmSubtitle());
         viewHolder.tvFilmOTitle.setText(eintrag.getsFilmOTitle());
-        viewHolder.tvFilmYear.setText(""+eintrag.getIntFilmPubYear());
-        viewHolder.tvFilmRanking.setText(""+eintrag.getiFilmRanking());
+        viewHolder.tvFilmYear.setText(eintrag.getIntFilmPubYear() < 0 ? "" : "" + eintrag.getIntFilmPubYear());
+        viewHolder.tvFilmRanking.setText(eintrag.getfFilmRanking() < 0 ? "": "" + eintrag.getfFilmRanking());
+        viewHolder.tvFilmFSK.setText(eintrag.getiFilmFSK() < 0 ? "":"Ab " + eintrag.getiFilmFSK() + " J.");
+        viewHolder.tvFilmDuration.setText(eintrag.getiFilmDuration() < 0 ? "":"" + eintrag.getiFilmDuration() + " min");
 
         return convertView;
     }
@@ -85,6 +89,8 @@ public class FilmListAdapter extends ArrayAdapter<DTFilmItem> {
         TextView tvFilmOTitle;
         TextView tvFilmYear;
         TextView tvFilmRanking;
+        TextView tvFilmFSK;
+        TextView tvFilmDuration;
     }
 
 

@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class AppGlobal extends Application {
 
+    CHDatabase dbVideo;
+
     List<DTFilmItem> ldFilmItems = new ArrayList<DTFilmItem>();
     int iPosSelect = -1;
 
