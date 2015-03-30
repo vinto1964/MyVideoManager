@@ -65,6 +65,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 myApp.iPosSelect = position;
                 Intent intent = new Intent(MainActivity.this, TActFilmDetails.class);
                 intent.putExtra("Position", position);
+                intent.putExtra("Edit", "yes");
                 startActivity(intent);
             }
         });
@@ -112,6 +113,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 //Intent intent = new Intent(this, MActFilmDetails.class);
                 Intent intent = new Intent(this, TActFilmDetails.class);
                 intent.putExtra("Position", iPos);
+                intent.putExtra("Edit", "no");
                 startActivity(intent);
                 break;
         }

@@ -38,17 +38,14 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
     List<DTFilmItem> filmlist = new ArrayList<DTFilmItem>();
 
     String sEditable;
-    ImageView ivActorFoto;
 
-    EditText edActRole, edActRoleOrder, edActFirstName, edActLastName, edPlot;
+
+    EditText  edPlot;
     EditText edComment;
 
     RatingBar rbRating;
 
-    ImageButton ibAddActor, ibDeleteActor;
-
-    ListView lvActors;
-    Spinner spFunction, spGenre;
+    Spinner spGenre;
     SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
@@ -67,19 +64,9 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
         Intent intent = getIntent();
         sEditable = intent.getStringExtra("Edit");
 
-        // Fragment "Allgemein"
-
 
         // Fragment "Schauspieler/in"
-        ivActorFoto     = (ImageView) findViewById(R.id.ivActorFoto);
-        edActRole       = (EditText) findViewById(R.id.edActRole);
-        edActRoleOrder  = (EditText) findViewById(R.id.edActRoleOrder);
-        edActFirstName  = (EditText) findViewById(R.id.edActFirstName);
-        edActLastName   = (EditText) findViewById(R.id.edActLastName);
-        ibAddActor      = (ImageButton) findViewById(R.id.ibFilmAdd);
-        ibDeleteActor   = (ImageButton) findViewById(R.id.ibDeleteActor);
-        lvActors        = (ListView) findViewById(R.id.lvActors);
-        spFunction      = (Spinner) findViewById(R.id.spFunction);
+
 
         // Fragment "Plot"
         edPlot = (EditText) findViewById(R.id.edPlot);
@@ -185,18 +172,12 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
                     return FgmInfos.newInstance(0);
 
                 case 1:
-/*                    SecondFragment fragment1 = new SecondFragment();
-                    return fragment1;*/
                     return FgmActors.newInstance(1);
 
                 case 2:
-/*                    ThirdFragment fragment2 = new ThirdFragment();
-                    return fragment2;*/
                     return FgmPlot.newInstance(2);
 
                 case 3:
-/*                    FourthFragment fragment3 = new FourthFragment();
-                    return fragment3;*/
                     return FgmComment.newInstance(3);
             }
             FgmInfos defaultFragment = new FgmInfos();
@@ -226,73 +207,13 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
             }
             return null;
         }
-    }
-
-/*    public static class FirstFragment extends Fragment {
-        public FirstFragment() {
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_mact_film_details_infos, container, false);
 
 
 
-            return view;
-        }
 
     }
 
-      public static class SecondFragment extends Fragment {
-        public SecondFragment() {
-        }
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_mact_film_details_actors, container, false);
-            return view;
-        }
-
-
-      public static class ThirdFragment extends Fragment {
-        public ThirdFragment() {
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_mact_film_details_plot, container, false);
-            return view;
-        }
-    }
-
-    public static class FourthFragment extends Fragment {
-        public FourthFragment() {
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_mact_film_details_comment, container, false);
-            return view;
-        }
-    }*/
 
     //**********************************************************************************************
 

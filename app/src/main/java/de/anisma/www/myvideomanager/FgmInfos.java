@@ -1,8 +1,10 @@
 package de.anisma.www.myvideomanager;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +79,7 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
 
             case R.id.ibSave1:
                 saveEntry();
+
                 break;
         }
     }
@@ -86,8 +89,6 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
         if(iPos < 0) {  // Noch nicht in der Datenbank
             if(!(edTitle.getText().toString().isEmpty())) {
-
-
 
                 myApp.ldFilmItems.add(new DTFilmItem(
                         -1,
@@ -102,6 +103,8 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
                         edEAN.getText().toString().isEmpty() ? -1 : Integer.parseInt(edEAN.getText().toString())
                 ));
                 long lRes = myApp.dbVideo.insertFilm(myApp.ldFilmItems.get(myApp.ldFilmItems.size() - 1));
+
+
             }
         }
         else { // Ein Eintrag wurde bearbeitet
@@ -109,4 +112,6 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
         }
 
     }
+
+
 }
