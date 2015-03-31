@@ -68,8 +68,8 @@ public class FgmPlot extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
-        myApp.ldFilmItems.get(myApp.iPosSelect).setsFilmPlot(edPlot.getText().toString());
-        DTFilmItem film = myApp.ldFilmItems.get(myApp.iPosSelect);
+        myApp.ldFilmItems.get(iPos).setsFilmPlot(edPlot.getText().toString());
+        DTFilmItem film = myApp.ldFilmItems.get(iPos);
         myApp.dbVideo.updatePlot(film);
 
     }

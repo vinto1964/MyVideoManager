@@ -34,8 +34,8 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
     AppGlobal myApp;
 
     int iPos = -1;
-    long lFilmID = -1;
-    List<DTFilmItem> filmlist = new ArrayList<DTFilmItem>();
+    //long lFilmID = -1;
+    //List<DTFilmItem> filmlist = new ArrayList<DTFilmItem>();
 
     String sEditable;
 
@@ -98,8 +98,6 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
-
-
     }
 
 

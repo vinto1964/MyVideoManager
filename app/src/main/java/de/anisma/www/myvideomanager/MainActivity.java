@@ -29,11 +29,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     ImageButton ibFilmAdd;
     ListView lvMA;
 
-
-
     int iPos = -1;
-    long lFilmID = -1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +48,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         ibFilmAdd.setOnClickListener(this);
 
         loadFilmList();
-
     }
 
     private void loadFilmList() {
@@ -64,7 +59,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         lvMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                myApp.iPosSelect = position;
+                // myApp.iPosSelect = position;
                 Intent intent = new Intent(MainActivity.this, TActFilmDetails.class);
                 intent.putExtra("Position", position);
                 intent.putExtra("Edit", "yes");

@@ -8,14 +8,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/rbRating"
-        android:numStars="@integer/c_stars_number" />
+        android:numStars="@integer/c_stars_number"
+        android:layout_marginBottom="10dp" />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spGenre"
-        android:prompt="@string/spGenre_prompt"
-        android:entries="@array/genreD_array"/>
+        android:entries="@array/genreD_array"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/sGenre"
+        android:id="@+id/tvGenre" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="57dp"
+        android:id="@+id/lvGenres"
+        android:layout_weight="0.25"
+        android:layout_marginBottom="10dp"
+        android:choiceMode="singleChoice" />
 
     <EditText
         android:layout_width="match_parent"

@@ -130,7 +130,7 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
         edFSK.setText("");
         edDuration.setText("");
         edEAN.setText("");
-        myApp.iPosSelect = -1;
+//        myApp.iPosSelect = -1;
     }
 
     private void saveEntry() {
@@ -166,7 +166,7 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
             filmUpdate.setiFilmFSK(edFSK.getText().toString().isEmpty() ? -1 : Integer.parseInt(edFSK.getText().toString()));
             filmUpdate.setiFilmEAN(edEAN.getText().toString().isEmpty() ? -1 : Integer.parseInt(edEAN.getText().toString()));
             myApp.dbVideo.updateFilm(filmUpdate);
-            myApp.iPosSelect = iPos;
+ //           myApp.iPosSelect = iPos;
 
         }
 

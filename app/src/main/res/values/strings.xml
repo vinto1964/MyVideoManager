@@ -46,8 +46,9 @@
     </string-array>
     <string name="spGenre_prompt">Wählen Sie eine Kategorie:</string>
     <string name="sDeleteFilm">Film löschen</string>
+    <string name="sGenre">Schon ausgewählte Genren:</string>
     <string-array name="genreD_array">
-        <item>Bitte auswählen:</item>
+        <item>Genre bitte auswählen:</item>
         <item>Abenteuer</item>
         <item>Kinder</item>
         <item>Komödie</item>
