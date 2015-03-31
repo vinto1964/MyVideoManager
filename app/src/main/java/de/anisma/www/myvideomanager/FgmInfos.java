@@ -2,6 +2,7 @@ package de.anisma.www.myvideomanager;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -20,23 +21,24 @@ import java.util.List;
 public class FgmInfos extends Fragment implements View.OnClickListener {
 
     int val;
+
+    Intent intent;
     Activity act;
     EditText edTitle, edSubtitel, edOTitel, edPubYear, edCountry, edFSK, edDuration, edEAN, edPlot;
     ImageView ivCover;
-    ImageButton ibSave;
+    ImageButton ibSave, ibDelete;
 
     int iPos = -1;
-    long lFilmID = -1;
-    List<DTFilmItem> ldFilmItems;
 
     public FgmInfos() {
         this.act = this.getActivity();
     }
 
-    public static FgmInfos newInstance(int pos) {
+    public static FgmInfos newInstance(int pos, int iPosSelect) {
         FgmInfos f = new FgmInfos();
         Bundle args = new Bundle();
         args.putInt("position", pos);
+        args.putInt("selected", iPosSelect);
         f.setArguments(args);
         return f;
     }
@@ -44,7 +46,14 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        val = getArguments() != null ? getArguments().getInt("position") : 0;
+        if(getArguments() != null) {
+            val = getArguments().getInt("position");
+            iPos = getArguments().getInt("selected");
+        }
+        else {
+            val = 0;
+            iPos = -1;
+        }
     }
 
     @Override
@@ -63,11 +72,31 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
         ivCover = (ImageView) view.findViewById(R.id.ivCover);
         ivCover.setOnClickListener(this);
 
-        ibSave = (ImageButton) view.findViewById(R.id.ibSave1);
+        ibSave = (ImageButton) view.findViewById(R.id.ibSave);
         ibSave.setOnClickListener(this);
 
+        ibDelete = (ImageButton) view.findViewById(R.id.ibDelete);
+        if(iPos > -1) {
+            ibDelete.setClickable(true);
+            loadFilm();
+        }
+        ibDelete.setOnClickListener(this);
 
         return view;
+    }
+
+    private void loadFilm() {
+        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        DTFilmItem film = myApp.ldFilmItems.get(iPos);
+        edTitle.setText(film.getsFilmTitle());
+        edSubtitel.setText(film.getsFilmSubtitle());
+        edOTitel.setText(film.getsFilmOTitle());
+        edPubYear.setText(film.getIntFilmPubYear() < 0 ? "" : "" + film.getIntFilmPubYear());
+        edCountry.setText(film.getsFilmCountry());
+        edFSK.setText(film.getiFilmFSK() < 0 ? "" : "" + film.getiFilmFSK());
+        edDuration.setText(film.getiFilmDuration() < 0 ? "" : "" + film.getiFilmDuration());
+        edEAN.setText(film.getiFilmEAN() < 0 ? "" : "" + film.getiFilmEAN());
+
     }
 
     @Override
@@ -77,15 +106,34 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
 
                 break;
 
-            case R.id.ibSave1:
+            case R.id.ibSave:
                 saveEntry();
+                break;
 
+            case R.id.ibDelete:
+                deleteEntry();
                 break;
         }
     }
 
-    private void saveEntry() {
+    private void deleteEntry() {
+        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        myApp.dbVideo.deleteFilm(myApp.ldFilmItems.get(iPos).getlFilm_ID());
+        myApp.ldFilmItems.remove(iPos);
+        iPos = -1;
 
+        edTitle.setText("");
+        edSubtitel.setText("");
+        edOTitel.setText("");
+        edPubYear.setText("");
+        edCountry.setText("");
+        edFSK.setText("");
+        edDuration.setText("");
+        edEAN.setText("");
+        myApp.iPosSelect = -1;
+    }
+
+    private void saveEntry() {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
         if(iPos < 0) {  // Noch nicht in der Datenbank
             if(!(edTitle.getText().toString().isEmpty())) {
@@ -103,15 +151,30 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
                         edEAN.getText().toString().isEmpty() ? -1 : Integer.parseInt(edEAN.getText().toString())
                 ));
                 long lRes = myApp.dbVideo.insertFilm(myApp.ldFilmItems.get(myApp.ldFilmItems.size() - 1));
-
-
             }
+            myApp.iPosSelect = myApp.ldFilmItems.size() - 1;
         }
         else { // Ein Eintrag wurde bearbeitet
+            DTFilmItem filmUpdate = myApp.ldFilmItems.get(iPos);
+            filmUpdate.setsFilmTitle(edTitle.getText().toString());
+            filmUpdate.setsFilmSubtitle(edSubtitel.getText().toString());
+            filmUpdate.setsFilmOTitle(edOTitel.getText().toString());
+            filmUpdate.setIntFilmPubYear(edPubYear.getText().toString().isEmpty() ? -1 : Integer.parseInt(edPubYear.getText().toString()));
+            filmUpdate.setsFilmCountry(edCountry.getText().toString());
+            filmUpdate.setsFilmImage("");
+            filmUpdate.setiFilmDuration(edDuration.getText().toString().isEmpty() ? -1 : Integer.parseInt(edDuration.getText().toString()));
+            filmUpdate.setiFilmFSK(edFSK.getText().toString().isEmpty() ? -1 : Integer.parseInt(edFSK.getText().toString()));
+            filmUpdate.setiFilmEAN(edEAN.getText().toString().isEmpty() ? -1 : Integer.parseInt(edEAN.getText().toString()));
+            myApp.dbVideo.updateFilm(filmUpdate);
+            myApp.iPosSelect = iPos;
 
         }
 
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        saveEntry();
+    }
 }

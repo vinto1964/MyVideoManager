@@ -63,18 +63,7 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
 
         Intent intent = getIntent();
         sEditable = intent.getStringExtra("Edit");
-
-
-        // Fragment "Schauspieler/in"
-
-
-        // Fragment "Plot"
-        edPlot = (EditText) findViewById(R.id.edPlot);
-
-        // Fragment "Rating"
-        rbRating    = (RatingBar) findViewById(R.id.rbRating);
-        spGenre     = (Spinner) findViewById(R.id.spGenre);
-        edComment   = (EditText) findViewById(R.id.edComment);
+        iPos = intent.getIntExtra("Position", -1);
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -169,16 +158,16 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
             //**************************************************************************************
             switch (position){
                 case 0:
-                    return FgmInfos.newInstance(0);
+                    return FgmInfos.newInstance(0, iPos);
 
                 case 1:
-                    return FgmActors.newInstance(1);
+                    return FgmActors.newInstance(1, iPos);
 
                 case 2:
-                    return FgmPlot.newInstance(2);
+                    return FgmPlot.newInstance(2, iPos);
 
                 case 3:
-                    return FgmComment.newInstance(3);
+                    return FgmComment.newInstance(3, iPos);
             }
             FgmInfos defaultFragment = new FgmInfos();
             return defaultFragment;
@@ -208,12 +197,7 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
             return null;
         }
 
-
-
-
     }
-
-
 
     //**********************************************************************************************
 

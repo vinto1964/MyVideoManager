@@ -252,14 +252,64 @@ public class CHDatabase extends SQLiteOpenHelper {
             lResult = db.insert(TBLVIDEOMANAGER, null, cv);
 
         }
-        catch (Exception ex) { }
-        finally {
-            if(db != null){
-                db.close();
-            }
-        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
         return lResult;
     }
+
+    public void updateFilm(DTFilmItem film) {
+        SQLiteDatabase db = null;
+
+        try {
+            db = this.getWritableDatabase();
+
+            ContentValues cv = new ContentValues();
+            cv.put(TITEL, film.getsFilmTitle());
+            cv.put(SUBTITLE, film.getsFilmSubtitle());
+            cv.put(ORI_TITEL, film.getsFilmOTitle());
+            cv.put(PUBYEAR, film.getIntFilmPubYear());
+            cv.put(COUNTRY, film.getsFilmCountry());
+            cv.put(IMAGE, film.getsFilmImage());
+            cv.put(PLOT, film.getsFilmPlot());
+            cv.put(COMMENT, film.getsFilmComment());
+            cv.put(RANKING, film.getfFilmRanking());
+            cv.put(DURATION, film.getiFilmDuration());
+            cv.put(FSK, film.getiFilmFSK());
+            cv.put(EAN, film.getiFilmEAN());
+
+            db.update(TBLVIDEOMANAGER, cv, ID_FILM + " = ?", new String[] {String.valueOf(film.getlFilm_ID())});
+
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+    }
+
+    public void updatePlot(DTFilmItem film) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(PLOT, film.getsFilmPlot());
+            db.update(TBLVIDEOMANAGER, cv, ID_FILM + " = ?", new String[] {String.valueOf(film.getlFilm_ID())});
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+    }
+
+    public void updateCommentRating(DTFilmItem film) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(COMMENT, film.getsFilmPlot());
+            cv.put(RANKING, film.getfFilmRanking());
+            db.update(TBLVIDEOMANAGER, cv, ID_FILM + " = ?", new String[] {String.valueOf(film.getlFilm_ID())});
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+    }
+
+
 
     public void insertGenreIs(int filmID, int genreID){
         long lResult = -1;
@@ -290,6 +340,19 @@ public class CHDatabase extends SQLiteOpenHelper {
         catch (Exception ex) {}
         finally { if(db != null){db.close();} }
     }
+
+    public void deleteFilm(long filmID){
+
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            db.delete(TBLVIDEOMANAGER, ID_FILM + " = ?", new String[]{String.valueOf(filmID)});
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+    }
+
+
 
     public static int getDatabeaseVersion() {
         return DATABASE_VERSION;

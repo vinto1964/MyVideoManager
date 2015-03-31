@@ -40,11 +40,14 @@
     <string name="sActorFoto">Portrait</string>
     <string name="spFunction_promt">Wählen Sie eine Funktion:</string>
     <string-array name="function_array">
+        <item>Bitte auswählen:</item>
         <item>Regisseur</item>
         <item>Schauspieler</item>
     </string-array>
     <string name="spGenre_prompt">Wählen Sie eine Kategorie:</string>
+    <string name="sDeleteFilm">Film löschen</string>
     <string-array name="genreD_array">
+        <item>Bitte auswählen:</item>
         <item>Abenteuer</item>
         <item>Kinder</item>
         <item>Komödie</item>

@@ -40,10 +40,11 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:layout_gravity="right">
 
             <EditText
-                android:layout_width="90dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="10"
@@ -52,7 +53,7 @@
                 android:gravity="right" />
 
             <EditText
-                android:layout_width="90dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="10"
@@ -61,7 +62,7 @@
                 android:gravity="right" />
 
             <EditText
-                android:layout_width="90dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="10"
@@ -70,7 +71,7 @@
                 android:hint="@string/sDuration" />
 
             <EditText
-                android:layout_width="90dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="10"
@@ -84,22 +85,38 @@
                 android:layout_height="fill_parent"
                 android:gravity="bottom">
 
-                <ImageButton
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/ibSave1"
-                    android:src="@mipmap/ic_save"
-                    android:scaleType="fitCenter"
-                    android:contentDescription="@string/sSave" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/ibSave"
+                        android:src="@mipmap/ic_save"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="@string/sSave"
+                        android:layout_marginBottom="5dp" />
+
+                    <ImageButton
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/ibDelete"
+                        android:src="@mipmap/ic_delete"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="@string/sDeleteFilm"
+                        android:clickable="false" />
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="fill_parent"
+            android:layout_width="245dp"
             android:layout_height="fill_parent"
-            android:gravity="center_horizontal">
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="160dp"

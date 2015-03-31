@@ -17,6 +17,7 @@ import android.widget.Spinner;
 public class FgmActors extends Fragment {
 
     int val;
+    int iPos = -1;
 
     ImageView ivActorFoto;
     EditText edActRole, edActRoleOrder, edActFirstName, edActLastName, edPlot;
@@ -28,10 +29,11 @@ public class FgmActors extends Fragment {
     public FgmActors() {
     }
 
-    public static FgmActors newInstance(int pos) {
+    public static FgmActors newInstance(int pos, int iPosSelect) {
         FgmActors f = new FgmActors();
         Bundle args = new Bundle();
         args.putInt("position", pos);
+        args.putInt("selected", iPosSelect);
         f.setArguments(args);
         return f;
     }
@@ -39,7 +41,14 @@ public class FgmActors extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        val = getArguments() != null ? getArguments().getInt("position") : 1;
+        if(getArguments() != null) {
+            val = getArguments().getInt("position");
+            iPos = getArguments().getInt("selected");
+        }
+        else {
+            val = 1;
+            iPos = -1;
+        }
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_mact_film_details_actors, container, false);
