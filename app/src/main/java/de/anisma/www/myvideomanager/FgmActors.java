@@ -69,8 +69,9 @@ public class FgmActors extends Fragment implements View.OnClickListener {
         lvActors        = (ListView) view.findViewById(R.id.lvActors);
         spFunction      = (Spinner) view.findViewById(R.id.spFunction);
 
-        loadDatas();
-
+        if(iPos > -1){
+            loadDatas();
+        }
         return view;
     }
 

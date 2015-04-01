@@ -522,8 +522,11 @@ public class CHDatabase extends SQLiteOpenHelper {
     public long checkRole(String role) {
         long lResult = -1;
         SQLiteDatabase db = null;
+
         String sQuery = "SELECT * FROM " + TBLROLES + " WHERE " + ROLE + " LIKE '" + role + "';";
         try {
+            db = this.getReadableDatabase();
+
             Cursor cursor = db.rawQuery(sQuery, null);
             if(cursor.moveToFirst()) {
                 lResult = cursor.getLong(0);
@@ -534,6 +537,8 @@ public class CHDatabase extends SQLiteOpenHelper {
 
         return lResult;
     }
+
+
 
     public long insertRole(String role) {
         long lResult = -1;

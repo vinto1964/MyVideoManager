@@ -114,10 +114,12 @@ public class FgmComment extends Fragment {
 
 
     private void reloadGenre() {
-        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
-        DTFilmItem film = myApp.ldFilmItems.get(iPos);
-        genreList = myApp.dbVideo.loadAllFilmGenre(film.getlFilm_ID());
-        lvAdapt.notifyDataSetChanged();
+        if(iPos > -1) {
+            AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+            DTFilmItem film = myApp.ldFilmItems.get(iPos);
+            genreList = myApp.dbVideo.loadAllFilmGenre(film.getlFilm_ID());
+            lvAdapt.notifyDataSetChanged();
+        }
     }
 
     @Override
