@@ -20,7 +20,7 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
     
     EditText edLastName, edFirstName, edBirthday, edVita;
     Switch swSex;
-    ImageButton ibSave;
+    ImageButton ibSave, ibDelActor;
     int iPos = -1;
 
     @Override
@@ -39,8 +39,10 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
         edBirthday  = (EditText) findViewById(R.id.edBirthday);
         edVita      = (EditText) findViewById(R.id.edVita);       
         ibSave      = (ImageButton) findViewById(R.id.ibSave);
+        ibDelActor  = (ImageButton) findViewById(R.id.ibDelActor);
         swSex       = (Switch) findViewById(R.id.swSex);
         ibSave.setOnClickListener(this);
+        ibDelActor.setOnClickListener(this);
 
         if(iPos > -1) {
             loadActor();
@@ -92,7 +94,12 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
             case R.id.ibSave:
                 saveActor();
                 break;
+
+            case R.id.ibDelActor:
+                myApp.dbVideo.deleteActor(iPos + 1);
+                break;
         }
+        clearFields();
     }
 
     private void saveActor() {
@@ -107,5 +114,14 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
 
             myApp.dbVideo.insertActor(actor);
         }
+    }
+
+    private void clearFields() {
+        //ivActorFoto = (ImageView) findViewById(R.id.ivActorFoto);
+        edLastName.setText("");
+        edFirstName.setText("");
+        edBirthday.setText("");
+        edVita.setText("");
+        swSex.setChecked(false);
     }
 }

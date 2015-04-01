@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -138,21 +139,24 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
         if(iPos < 0) {  // Noch nicht in der Datenbank
             if(!(edTitle.getText().toString().isEmpty())) {
 
-                myApp.ldFilmItems.add(new DTFilmItem(
-                        -1,
-                        edTitle.getText().toString(),
-                        edSubtitel.getText().toString(),
-                        edOTitel.getText().toString(),
-                        edPubYear.getText().toString().isEmpty() ? -1 : Integer.parseInt(edPubYear.getText().toString()),
-                        edCountry.getText().toString(),
-                        "", // Bildpfad zuerst leer
-                        edDuration.getText().toString().isEmpty() ? -1 : Integer.parseInt(edDuration.getText().toString()),
-                        edFSK.getText().toString().isEmpty() ? -1 : Integer.parseInt(edFSK.getText().toString()),
-                        edEAN.getText().toString().isEmpty() ? -1 : Integer.parseInt(edEAN.getText().toString())
-                ));
-                long lRes = myApp.dbVideo.insertFilm(myApp.ldFilmItems.get(myApp.ldFilmItems.size() - 1));
+                if(myApp.dbVideo.checkFilm(edTitle.getText().toString()) < 0) {
+                    myApp.ldFilmItems.add(new DTFilmItem(
+                            -1,
+                            edTitle.getText().toString(),
+                            edSubtitel.getText().toString(),
+                            edOTitel.getText().toString(),
+                            edPubYear.getText().toString().isEmpty() ? -1 : Integer.parseInt(edPubYear.getText().toString()),
+                            edCountry.getText().toString(),
+                            "", // Bildpfad zuerst leer
+                            edDuration.getText().toString().isEmpty() ? -1 : Integer.parseInt(edDuration.getText().toString()),
+                            edFSK.getText().toString().isEmpty() ? -1 : Integer.parseInt(edFSK.getText().toString()),
+                            edEAN.getText().toString().isEmpty() ? -1 : Integer.parseInt(edEAN.getText().toString())
+                    ));
+                    long lRes = myApp.dbVideo.insertFilm(myApp.ldFilmItems.get(myApp.ldFilmItems.size() - 1));
+                }
             }
-            myApp.iPosSelect = myApp.ldFilmItems.size() - 1;
+            //myApp.iPosSelect = myApp.ldFilmItems.size() - 1;
+
         }
         else { // Ein Eintrag wurde bearbeitet
             DTFilmItem filmUpdate = myApp.ldFilmItems.get(iPos);
@@ -172,9 +176,18 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
 
     }
 
+    /**
+     * Called when the Fragment is no longer resumed.  This is generally
+     * tied to {@link android.app.Activity#onPause() Activity.onPause} of the containing
+     * Activity's lifecycle.
+     */
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onPause() {
+        super.onPause();
         saveEntry();
     }
+
+
+
+
 }

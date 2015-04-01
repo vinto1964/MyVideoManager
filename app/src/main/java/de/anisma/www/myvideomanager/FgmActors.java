@@ -5,11 +5,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alfa on 30.03.2015.
@@ -26,7 +30,8 @@ public class FgmActors extends Fragment implements View.OnClickListener {
     ImageButton ibSave, ibDeleteActor;
     Spinner spFunction;
     ListView lvActors;
-
+    List<String>actorsList = new ArrayList<>();
+    ArrayAdapter actorListAdapter;
 
     public FgmActors() {
     }
@@ -67,6 +72,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
         ibDeleteActor.setOnClickListener(this);
 
         lvActors        = (ListView) view.findViewById(R.id.lvActors);
+
         spFunction      = (Spinner) view.findViewById(R.id.spFunction);
 
         if(iPos > -1){
@@ -81,6 +87,11 @@ public class FgmActors extends Fragment implements View.OnClickListener {
 
         edActRole.setHint( getString(R.string.sRole) + " in " + film.getsFilmTitle());
 
+
+        actorsList = myApp.dbVideo.loadFilmActorsList(film.getlFilm_ID());
+
+        actorListAdapter = new ArrayAdapter(this.getActivity().getBaseContext(), android.R.layout.simple_list_item_1, actorsList);
+        lvActors.setAdapter(actorListAdapter);
     }
 
 
@@ -91,6 +102,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
         switch(v.getId()) {
             case R.id.ibSave:
                 long id_role = -1;
+                long check_film = -1;
 
                 if(!(edActFirstName.getText().toString().isEmpty() && edActLastName.getText().toString().isEmpty())) {
 
@@ -102,10 +114,14 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                        Wenn Person + Role vorhanden => person_is
                     */
                     // 1
-                    DTActor actor = myApp.dbVideo.loadActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
-                    if(actor.getlActor_ID() < 0) { // Actor nicht vorhanden
-                        saveActor(actor.getsActorFirstName(), actor.getsActorLastName());
+                    //DTActor actor = myApp.dbVideo.loadActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
+
+
+                    if(myApp.dbVideo.checkActor(edActFirstName.getText().toString(), edActLastName.getText().toString()) < 0) { // Actor nicht vorhanden
+                        //saveActor(actor.getsActorFirstName(), actor.getsActorLastName());
+                        saveActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
                     }
+                    DTActor actor = myApp.dbVideo.loadActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
 
                     // 3
                     if(myApp.dbVideo.checkRole(edActRole.getText().toString()) < 0) { // Role schon in der DB

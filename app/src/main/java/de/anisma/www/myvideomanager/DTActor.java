@@ -12,6 +12,15 @@ public class DTActor {
     String sSex;
     String sImage;
 
+    public DTActor(long lActor_ID, String sActorFirstName, String sActorLastName) {
+        this.lActor_ID = lActor_ID;
+        this.sActorFirstName = sActorFirstName;
+        this.sActorLastName = sActorLastName;
+        this.sBirthday = "";
+        this.sVita = "";
+        this.sSex = "";
+        this.sImage = "";
+    }
 
     public DTActor(long lActor_ID, String sActorFirstName, String sActorLastName, String sBirthday, String sSex, String sVita) {
         this.lActor_ID = lActor_ID;

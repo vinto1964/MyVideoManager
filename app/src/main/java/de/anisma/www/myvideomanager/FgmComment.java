@@ -109,7 +109,9 @@ public class FgmComment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        reloadGenre();
+        if(iPos > -1) {
+            reloadGenre();
+        }
     }
 
 
@@ -144,19 +146,20 @@ public class FgmComment extends Fragment {
     }*/
 
     private void saveDatas() {
-        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
-        DTFilmItem film = myApp.ldFilmItems.get(iPos);
-        film.setsFilmComment(edComment.getText().toString());
-        film.setfFilmRanking(rbRating.getRating());
-        myApp.dbVideo.updateCommentRating(film);
+        if(iPos > -1) {
+            AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+            DTFilmItem film = myApp.ldFilmItems.get(iPos);
+            film.setsFilmComment(edComment.getText().toString());
+            film.setfFilmRanking(rbRating.getRating());
+            myApp.dbVideo.updateCommentRating(film);
 
-        genre = String.valueOf(spGenre.getSelectedItem());
-        if(myApp.dbVideo.isFilmGenre(film.getlFilm_ID(), spGenre.getSelectedItemPosition()) > 0 &&
-                spGenre.getSelectedItemPosition() != 0){     // update
-            myApp.dbVideo.updateGenreIs(film.getlFilm_ID(), spGenre.getSelectedItemPosition());
-        }
-        else {  // insert
-            myApp.dbVideo.insertGenreIs(film.getlFilm_ID(), spGenre.getSelectedItemPosition());
+            genre = String.valueOf(spGenre.getSelectedItem());
+            if (myApp.dbVideo.isFilmGenre(film.getlFilm_ID(), spGenre.getSelectedItemPosition()) > 0 &&
+                    spGenre.getSelectedItemPosition() != 0) {     // update
+                myApp.dbVideo.updateGenreIs(film.getlFilm_ID(), spGenre.getSelectedItemPosition());
+            } else {  // insert
+                myApp.dbVideo.insertGenreIs(film.getlFilm_ID(), spGenre.getSelectedItemPosition());
+            }
         }
     }
 

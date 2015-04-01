@@ -62,7 +62,6 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
         myApp = (AppGlobal) getApplication();
 
         Intent intent = getIntent();
-        sEditable = intent.getStringExtra("Edit");
         iPos = intent.getIntExtra("Position", -1);
 
         // Set up the action bar.
