@@ -45,7 +45,7 @@ public class CHDatabase extends SQLiteOpenHelper {
     private static final String TBLGENRE = "genre";
     private static final String GENRE = "genre";
 
-    private static final String TBLPERSONSIS = "persons";
+    private static final String TBLPERSONSIS = "person_is";
     private static final String ID_PERSON = "id_person";
     private static final String ID_FUNCTION = "id_function";
     private static final String ID_ROLE = "id_role";
@@ -325,12 +325,13 @@ public class CHDatabase extends SQLiteOpenHelper {
         return actorsList;
     }
 
-    public DTActor loadActor(long actorID) {
+    public DTActor loadActor(int actorID) {
         SQLiteDatabase db = null;
-        String sQuery = "SELECT * FROM " + TBLPEOPLE + " WHERE " + ID_PERSON + " = ?;";
+        String sQuery = "SELECT * FROM " + TBLPEOPLE + " WHERE " + ID_PERSON + " = ?";
         List<DTActor> actorList = new ArrayList<DTActor>();
 
         try {
+            db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery(sQuery,  new String[] {String.valueOf(actorID)});
             if(cursor.moveToFirst()) {
                 do {
@@ -343,7 +344,34 @@ public class CHDatabase extends SQLiteOpenHelper {
                     String sImage = cursor.getString(5);
                     String sVita = cursor.getString(6);
 
-                    actorList.add(new DTActor(lActorID, sFirstname, sLastname, sSex, sBirthday, sVita, sImage));
+                    actorList.add(new DTActor(lActorID, sFirstname, sLastname, sBirthday, sSex, sImage, sVita));
+                } while (cursor.moveToNext());
+            }
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+        return actorList.get(0);
+    }
+    public DTActor loadActor(String firstname, String lastname) {
+        SQLiteDatabase db = null;
+        String sQuery = "SELECT * FROM " + TBLPEOPLE + " WHERE " + FIRSTNAME + " like '" +  firstname + "'  AND " + LASTNAME + " like '" + lastname + "';";
+        List<DTActor> actorList = new ArrayList<DTActor>();
+
+        try {
+            db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(sQuery, null);
+            if(cursor.moveToFirst()) {
+                do {
+
+                    long lActorID = cursor.getLong(0);
+                    String sFirstname = cursor.getString(1);
+                    String sLastname = cursor.getString(2);
+                    String sBirthday = cursor.getString(3);
+                    String sSex = cursor.getString(4);
+                    String sImage = cursor.getString(5);
+                    String sVita = cursor.getString(6);
+
+                    actorList.add(new DTActor(lActorID, sFirstname, sLastname, sBirthday, sSex, sImage, sVita));
                 } while (cursor.moveToNext());
             }
         }
@@ -450,8 +478,6 @@ public class CHDatabase extends SQLiteOpenHelper {
         return iResult;
     }
 
-
-
     public void insertGenreIs(long filmID, long genreID){
         long lResult = -1;
         SQLiteDatabase db = null;
@@ -493,7 +519,71 @@ public class CHDatabase extends SQLiteOpenHelper {
         finally { if(db != null){db.close();} }
     }
 
+    public long checkRole(String role) {
+        long lResult = -1;
+        SQLiteDatabase db = null;
+        String sQuery = "SELECT * FROM " + TBLROLES + " WHERE " + ROLE + " LIKE '" + role + "';";
+        try {
+            Cursor cursor = db.rawQuery(sQuery, null);
+            if(cursor.moveToFirst()) {
+                lResult = cursor.getLong(0);
+            }
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
 
+        return lResult;
+    }
+
+    public long insertRole(String role) {
+        long lResult = -1;
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+
+            ContentValues cv = new ContentValues();
+            cv.put(ROLE, role);
+            lResult = db.insert(TBLROLES, null, cv);
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+        return lResult;
+    }
+
+    public long checkPersonIs(long id_film, long id_person, long id_function){
+        long lResult = -1;
+        SQLiteDatabase db = null;
+        String sQuery = "SELECT * FROM " + TBLPERSONSIS + " WHERE " + ID_FILM + " = ? AND " + ID_PERSON + " = ? AND " + ID_ROLE + " = ? ";
+        try {
+            Cursor cursor = db.rawQuery(sQuery, new String[] {String.valueOf(id_film), String.valueOf(id_person), String.valueOf(id_function)});
+            if(cursor.moveToFirst()) {
+                lResult = cursor.getLong(0);
+            }
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+
+        return lResult;
+    }
+
+    public long insertPersonIs(long id_film, long id_person, long id_function, long id_role, int role_order ) {
+        long lResult = -1;
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+
+            ContentValues cv = new ContentValues();
+            cv.put(ID_FILM, id_film);
+            cv.put(ID_PERSON, id_person);
+            cv.put(ID_FUNCTION, id_function);
+            cv.put(ID_ROLE, id_role);
+            cv.put(ROLEORDER, role_order);
+            lResult = db.insert(TBLPERSONSIS, null, cv);
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+        return lResult;
+    }
 
     public static int getDatabeaseVersion() {
         return DATABASE_VERSION;

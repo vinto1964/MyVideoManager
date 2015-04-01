@@ -14,14 +14,16 @@ import android.widget.Spinner;
 /**
  * Created by Alfa on 30.03.2015.
  */
-public class FgmActors extends Fragment {
+public class FgmActors extends Fragment implements View.OnClickListener {
+
+    AppGlobal myApp;
 
     int val;
     int iPos = -1;
 
     ImageView ivActorFoto;
     EditText edActRole, edActRoleOrder, edActFirstName, edActLastName, edPlot;
-    ImageButton ibDeleteActor;
+    ImageButton ibSave, ibDeleteActor;
     Spinner spFunction;
     ListView lvActors;
 
@@ -58,16 +60,89 @@ public class FgmActors extends Fragment {
         edActRoleOrder  = (EditText) view.findViewById(R.id.edActRoleOrder);
         edActFirstName  = (EditText) view.findViewById(R.id.edActFirstName);
         edActLastName   = (EditText) view.findViewById(R.id.edActLastName);
+
+        ibSave         = (ImageButton) view.findViewById(R.id.ibSave);
+        ibSave.setOnClickListener(this);
         ibDeleteActor   = (ImageButton) view.findViewById(R.id.ibDeleteActor);
+        ibDeleteActor.setOnClickListener(this);
+
         lvActors        = (ListView) view.findViewById(R.id.lvActors);
         spFunction      = (Spinner) view.findViewById(R.id.spFunction);
 
-
+        loadDatas();
 
         return view;
     }
 
+    private void loadDatas() {
+        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        DTFilmItem film = myApp.ldFilmItems.get(iPos);
+
+        edActRole.setHint( getString(R.string.sRole) + " in " + film.getsFilmTitle());
+
+    }
 
 
+    @Override
+    public void onClick(View v) {
+        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        DTFilmItem film = myApp.ldFilmItems.get(iPos);
+        switch(v.getId()) {
+            case R.id.ibSave:
+                long id_role = -1;
+
+                if(!(edActFirstName.getText().toString().isEmpty() && edActLastName.getText().toString().isEmpty())) {
+
+                    /* Überprüfen:  1. ob Actor in der DB vorhanden ist
+                                    2. ob Actor schon in zusammenhang mit Film und Role eingetragen ist ==> Actor kann mehrere Rolen spielen
+                                    3. Role schon vorhanden
+
+                       Wenn Actor als Person vorhanden => nur Role
+                       Wenn Person + Role vorhanden => person_is
+                    */
+                    // 1
+                    DTActor actor = myApp.dbVideo.loadActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
+                    if(actor.getlActor_ID() < 0) { // Actor nicht vorhanden
+                        saveActor(actor.getsActorFirstName(), actor.getsActorLastName());
+                    }
+
+                    // 3
+                    if(myApp.dbVideo.checkRole(edActRole.getText().toString()) < 0) { // Role schon in der DB
+                        myApp.dbVideo.insertRole(edActRole.getText().toString());
+                    }
+                    id_role = myApp.dbVideo.checkRole(edActRole.getText().toString());
+
+                    if(myApp.dbVideo.checkPersonIs(film.getlFilm_ID(), actor.getlActor_ID(), spFunction.getSelectedItemPosition()) < 0){
+                        myApp.dbVideo.insertPersonIs(   film.getlFilm_ID(),
+                                                        actor.getlActor_ID(),
+                                                        spFunction.getSelectedItemPosition(),
+                                                        id_role,
+                                                        Integer.parseInt(edActRoleOrder.getText().toString()));
+                    }
+                }
+                break;
+
+            case R.id.ibDeleteActor:
+
+                break;
+
+
+        }
+
+
+
+    }
+
+    private void saveActor(String firstname, String lastname) {
+        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        DTActor actor = new DTActor(-1,
+                    firstname,
+                    lastname,
+                    "",
+                    "",
+                    "");
+        myApp.dbVideo.insertActor(actor);
+
+    }
 
 }

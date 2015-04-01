@@ -14,6 +14,9 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Alfa on 30.03.2015.
  */
@@ -28,6 +31,7 @@ public class FgmComment extends Fragment {
     TextView tvGenre;
     ListView lvGenres;
     ArrayAdapter lvAdapt;
+    List<String> genreList = new ArrayList<>();
 
     String genre;
 
@@ -61,6 +65,20 @@ public class FgmComment extends Fragment {
 
         rbRating    = (RatingBar) view.findViewById(R.id.rbRating);
         spGenre     = (Spinner) view.findViewById(R.id.spGenre);
+        spGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                saveDatas();
+                reloadGenre();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         edComment   = (EditText) view.findViewById(R.id.edComment);
         tvGenre     = (TextView) view.findViewById(R.id.tvGenre);
         lvGenres    = (ListView) view.findViewById(R.id.lvGenres);
@@ -79,10 +97,11 @@ public class FgmComment extends Fragment {
         rbRating.setRating(film.getfFilmRanking());
         edComment.setText(film.getsFilmComment());
 
+        genreList = myApp.dbVideo.loadAllFilmGenre(film.getlFilm_ID());
+
         lvAdapt = new ArrayAdapter(this.getActivity().getBaseContext(),
                                     android.R.layout.simple_list_item_1,
-                                    myApp.dbVideo.loadAllFilmGenre(film.getlFilm_ID()));
-
+                                    genreList);
         lvGenres.setAdapter(lvAdapt);
 
     }
@@ -90,12 +109,39 @@ public class FgmComment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        reloadGenre();
+    }
+
+
+    private void reloadGenre() {
+        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        DTFilmItem film = myApp.ldFilmItems.get(iPos);
+        genreList = myApp.dbVideo.loadAllFilmGenre(film.getlFilm_ID());
         lvAdapt.notifyDataSetChanged();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        saveDatas();
+    }
+
+    private void setGenreSelection(String s){
+        CursorAdapter cursorAdapter = (CursorAdapter) spGenre.getAdapter();
+        for(int i = 0; i < cursorAdapter.getCount(); i++) {
+            if(String.valueOf(cursorAdapter.getItem(i)).compareTo(s) == 0) {
+                spGenre.setSelection(i);
+            }
+        }
+    }
+
+/*    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        saveDatas();
+        reloadGenre();
+    }*/
+
+    private void saveDatas() {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
         DTFilmItem film = myApp.ldFilmItems.get(iPos);
         film.setsFilmComment(edComment.getText().toString());
@@ -109,15 +155,6 @@ public class FgmComment extends Fragment {
         }
         else {  // insert
             myApp.dbVideo.insertGenreIs(film.getlFilm_ID(), spGenre.getSelectedItemPosition());
-        }
-    }
-
-    private void setGenreSelection(String s){
-        CursorAdapter cursorAdapter = (CursorAdapter) spGenre.getAdapter();
-        for(int i = 0; i < cursorAdapter.getCount(); i++) {
-            if(String.valueOf(cursorAdapter.getItem(i)).compareTo(s) == 0) {
-                spGenre.setSelection(i);
-            }
         }
     }
 

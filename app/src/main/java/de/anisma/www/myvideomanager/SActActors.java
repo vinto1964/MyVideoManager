@@ -45,12 +45,10 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
         if(iPos > -1) {
             loadActor();
         }
-
-        
     }
 
     private void loadActor() {
-        DTActor actor = myApp.dbVideo.loadActor(iPos);
+        DTActor actor = myApp.dbVideo.loadActor(iPos + 1);
         // TODO image
 
         edLastName.setText(actor.getsActorLastName());
@@ -59,9 +57,11 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
         edVita.setText(actor.getsVita());
 
         if(actor.getsSex().compareTo("w") == 0) {
+            swSex.setChecked(false);
+        }
+        else {
             swSex.setChecked(true);
         }
-
     }
 
 
@@ -83,7 +83,6 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -93,8 +92,6 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
             case R.id.ibSave:
                 saveActor();
                 break;
-            
-            
         }
     }
 

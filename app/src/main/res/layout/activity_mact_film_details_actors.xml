@@ -86,6 +86,14 @@
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:id="@+id/ibSave"
+                android:src="@mipmap/ic_save"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/sSave" />
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/ibDeleteActor"
                 android:src="@mipmap/ic_delete_actor"
                 android:scaleType="fitCenter"
