@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     List<DTFilmItem> ldFilmItems;
     FilmListAdapter flAdapter;
     ImageView imgMASearch;
-    ImageButton ibFilmAdd;
+    ImageButton ibFilmAdd, ibShowActor;
     ListView lvMA;
 
     int iPos = -1;
@@ -46,6 +46,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         ibFilmAdd = (ImageButton) findViewById(R.id.ibFilmAdd);
         ibFilmAdd.setOnClickListener(this);
+
+        ibShowActor = (ImageButton) findViewById(R.id.ibShowActor);
+        ibShowActor.setOnClickListener(this);
 
         loadFilmList();
     }
@@ -108,10 +111,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             // Hinzufügen
             case R.id.ibFilmAdd:
                 //Intent intent = new Intent(this, MActFilmDetails.class);
-                Intent intent = new Intent(this, TActFilmDetails.class);
-                intent.putExtra("Position", iPos);
-                intent.putExtra("Edit", "no");
-                startActivity(intent);
+                Intent intentFilm = new Intent(this, TActFilmDetails.class);
+                intentFilm.putExtra("Position", iPos);
+                intentFilm.putExtra("Edit", "no");
+                startActivity(intentFilm);
+                break;
+
+            case R.id.ibShowActor:
+                Intent intentActor = new Intent(this, MActActors.class);
+                startActivity(intentActor);
+
                 break;
         }
     }

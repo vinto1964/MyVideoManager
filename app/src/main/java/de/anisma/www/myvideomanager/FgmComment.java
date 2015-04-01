@@ -27,6 +27,7 @@ public class FgmComment extends Fragment {
     EditText edComment;
     TextView tvGenre;
     ListView lvGenres;
+    ArrayAdapter lvAdapt;
 
     String genre;
 
@@ -78,12 +79,18 @@ public class FgmComment extends Fragment {
         rbRating.setRating(film.getfFilmRanking());
         edComment.setText(film.getsFilmComment());
 
-        s = myApp.dbVideo.loadFilmGenre(iPos);
-        if(!s.isEmpty()){
-            setGenreSelection(s);
-        }
-        myApp.dbVideo.loadAllFilmGenre(film.getlFilm_ID());
+        lvAdapt = new ArrayAdapter(this.getActivity().getBaseContext(),
+                                    android.R.layout.simple_list_item_1,
+                                    myApp.dbVideo.loadAllFilmGenre(film.getlFilm_ID()));
 
+        lvGenres.setAdapter(lvAdapt);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        lvAdapt.notifyDataSetChanged();
     }
 
     @Override
@@ -96,7 +103,8 @@ public class FgmComment extends Fragment {
         myApp.dbVideo.updateCommentRating(film);
 
         genre = String.valueOf(spGenre.getSelectedItem());
-        if(myApp.dbVideo.isFilmGenre(film.getlFilm_ID(), spGenre.getSelectedItemPosition()) > 0){     // update
+        if(myApp.dbVideo.isFilmGenre(film.getlFilm_ID(), spGenre.getSelectedItemPosition()) > 0 &&
+                spGenre.getSelectedItemPosition() != 0){     // update
             myApp.dbVideo.updateGenreIs(film.getlFilm_ID(), spGenre.getSelectedItemPosition());
         }
         else {  // insert

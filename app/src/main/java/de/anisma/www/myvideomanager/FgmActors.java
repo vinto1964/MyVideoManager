@@ -21,7 +21,7 @@ public class FgmActors extends Fragment {
 
     ImageView ivActorFoto;
     EditText edActRole, edActRoleOrder, edActFirstName, edActLastName, edPlot;
-    ImageButton ibAddActor, ibDeleteActor;
+    ImageButton ibDeleteActor;
     Spinner spFunction;
     ListView lvActors;
 
@@ -58,7 +58,6 @@ public class FgmActors extends Fragment {
         edActRoleOrder  = (EditText) view.findViewById(R.id.edActRoleOrder);
         edActFirstName  = (EditText) view.findViewById(R.id.edActFirstName);
         edActLastName   = (EditText) view.findViewById(R.id.edActLastName);
-        ibAddActor      = (ImageButton) view.findViewById(R.id.ibFilmAdd);
         ibDeleteActor   = (ImageButton) view.findViewById(R.id.ibDeleteActor);
         lvActors        = (ListView) view.findViewById(R.id.lvActors);
         spFunction      = (Spinner) view.findViewById(R.id.spFunction);
@@ -67,6 +66,8 @@ public class FgmActors extends Fragment {
 
         return view;
     }
+
+
 
 
 }

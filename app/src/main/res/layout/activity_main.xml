@@ -59,6 +59,14 @@
                 android:scaleType="fitCenter"
                 android:contentDescription="@string/sFilmAdd" />
 
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/ibShowActor"
+                android:src="@mipmap/ic_actor"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/sShowActor" />
+
         </LinearLayout>
     </RelativeLayout>
 

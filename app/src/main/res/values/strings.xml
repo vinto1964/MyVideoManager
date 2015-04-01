@@ -21,7 +21,7 @@
     <string name="sDuration">Länge</string>
     <string name="sSave">Speichern</string>
     <string name="sPlot">Plot</string>
-    <string name="sComment">Kommentar</string>
+    <string name="sComment">Kommentar schreiben</string>
     <string name="sNext">Nächste Seite</string>
     <string name="sBack">Vorherige Seite</string>
     <string name="title_activity_second_act_film_details">Filmdetails</string>
@@ -47,6 +47,8 @@
     <string name="spGenre_prompt">Wählen Sie eine Kategorie:</string>
     <string name="sDeleteFilm">Film löschen</string>
     <string name="sGenre">Schon ausgewählte Genren:</string>
+    <string name="sCommentLabel">Kommentar:</string>
+    <string name="sMask">Maske</string>
     <string-array name="genreD_array">
         <item>Genre bitte auswählen:</item>
         <item>Abenteuer</item>
@@ -76,5 +78,12 @@
         <item>Familie</item>
         <item>Krimi</item>
     </string-array>
+    <string name="title_activity_sact_actors">Schauspieler/in</string>
+    <string name="sWoman">Frau</string>
+    <string name="sMan">Mann</string>
+    <string name="sBirthday">Geburtstag</string>
+    <string name="sVita">Vita</string>
+    <string name="title_activity_mact_actors">Liste der Schauspieler/in</string>
+    <string name="sShowActor">Schauspieler/innen</string>
 
 </resources>
