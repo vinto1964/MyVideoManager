@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,36 +100,48 @@ public class FgmActors extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
         DTFilmItem film = myApp.ldFilmItems.get(iPos);
+        int checkOrder = -1;
         switch(v.getId()) {
             case R.id.ibSave:
                 long id_role = -1;
-                long check_film = -1;
 
-                if(!(edActFirstName.getText().toString().isEmpty() && edActLastName.getText().toString().isEmpty())) {
+                // Nur wenn Vorname und Nachname eingegeben worden sind
+                if(!edActFirstName.getText().toString().isEmpty() && !edActLastName.getText().toString().isEmpty()) {
 
                     /* Überprüfen:  1. ob Actor in der DB vorhanden ist
-                                    2. ob Actor schon in zusammenhang mit Film und Role eingetragen ist ==> Actor kann mehrere Rolen spielen
-                                    3. Role schon vorhanden
+                                    2. Wenn Schauspieler => Role schon vorhanden? / Wenn Regisseur => nicht relevant
+                                    3. ob Actor schon in zusammenhang mit Film und Role eingetragen ist ==> Actor kann mehrere Rolen spielen
+
 
                        Wenn Actor als Person vorhanden => nur Role
                        Wenn Person + Role vorhanden => person_is
                     */
+                    if(!edActRoleOrder.getText().toString().isEmpty()) {
+                        checkOrder = Integer.parseInt(edActRoleOrder.getText().toString());
+                    }
+
+                    if((checkOrder > -1) && (edActRole.getText().toString().isEmpty())) {
+                        Toast.makeText(this.getActivity().getBaseContext(), "Bitte geben Sie eine Role ein, oder löschen Sie die Reihenfolge!", Toast.LENGTH_SHORT).show();
+                    }
+
+
                     // 1
-                    //DTActor actor = myApp.dbVideo.loadActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
-
-
                     if(myApp.dbVideo.checkActor(edActFirstName.getText().toString(), edActLastName.getText().toString()) < 0) { // Actor nicht vorhanden
-                        //saveActor(actor.getsActorFirstName(), actor.getsActorLastName());
                         saveActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
                     }
                     DTActor actor = myApp.dbVideo.loadActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
 
-                    // 3
-                    if(myApp.dbVideo.checkRole(edActRole.getText().toString()) < 0) { // Role schon in der DB
-                        myApp.dbVideo.insertRole(edActRole.getText().toString());
+                    // 2
+                    if(spFunction.getSelectedItemPosition() == 0){  // Für ein Schauspieler
+                        if(!edActRole.getText().toString().isEmpty()) {
+                            if(myApp.dbVideo.checkRole(edActRole.getText().toString()) < 0 ) { // Role schon in der DB
+                                myApp.dbVideo.insertRole(edActRole.getText().toString());
+                            }
+                            id_role = myApp.dbVideo.checkRole(edActRole.getText().toString());
+                        }
                     }
-                    id_role = myApp.dbVideo.checkRole(edActRole.getText().toString());
 
+                    // 3
                     if(myApp.dbVideo.checkPersonIs(film.getlFilm_ID(), actor.getlActor_ID(), spFunction.getSelectedItemPosition()) < 0){
                         myApp.dbVideo.insertPersonIs(   film.getlFilm_ID(),
                                                         actor.getlActor_ID(),
@@ -136,6 +149,9 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                                                         id_role,
                                                         Integer.parseInt(edActRoleOrder.getText().toString()));
                     }
+                }
+                else {
+                    Toast.makeText(this.getActivity().getBaseContext(), "Bitte geben Sie Vorname und Nachnamen ein!", Toast.LENGTH_SHORT).show();
                 }
                 break;
 

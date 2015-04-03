@@ -345,7 +345,7 @@ public class CHDatabase extends SQLiteOpenHelper {
         return actorsList;
     }
 
-    public DTActor loadActor(int actorID) {
+    public DTActor loadActor(long actorID) {
         SQLiteDatabase db = null;
         String sQuery = "SELECT * FROM " + TBLPEOPLE + " WHERE " + ID_PERSON + " = ?";
         List<DTActor> actorList = new ArrayList<DTActor>();

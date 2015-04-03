@@ -14,6 +14,7 @@ public class AppGlobal extends Application {
 
     List<DTFilmItem> ldFilmItems = new ArrayList<DTFilmItem>();
     List<String> listGenre = new ArrayList<String>();
+    List<DTActor> listActorItems = new ArrayList<DTActor>();
 
     int iPosSelect = -1;
 

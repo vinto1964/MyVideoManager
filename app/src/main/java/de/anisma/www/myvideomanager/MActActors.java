@@ -31,7 +31,7 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
         actorsList = new ArrayList<DTActor>();
 
         lvActorslist = (ListView) findViewById(R.id.lvActorslist);
-        actorListAdapter = new ActorListAdapter(this, R.layout.listview_actors, myApp.dbVideo.loadAllActors(actorsList));
+        actorListAdapter = new ActorListAdapter(this, R.layout.listview_actors, myApp.dbVideo.loadAllActors(myApp.dbVideo.loadAllActors(myApp.listActorItems)));
         lvActorslist.setAdapter(actorListAdapter);
         lvActorslist.setOnItemClickListener(this);
 
@@ -44,7 +44,7 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
     @Override
     protected void onResume() {
         super.onResume();
-        actorsList = myApp.dbVideo.loadAllActors(actorsList);
+        myApp.dbVideo.loadAllActors(myApp.listActorItems);
         actorListAdapter.notifyDataSetChanged();
     }
 

@@ -11,11 +11,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 
+import java.util.List;
+
 
 public class SActActors extends ActionBarActivity implements View.OnClickListener {
 
     AppGlobal myApp;
-
+    List<DTActor> listActors;
     ImageView ivActorFoto;
     
     EditText edLastName, edFirstName, edBirthday, edVita;
@@ -44,13 +46,16 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
         ibSave.setOnClickListener(this);
         ibDelActor.setOnClickListener(this);
 
+
+
         if(iPos > -1) {
             loadActor();
         }
     }
 
     private void loadActor() {
-        DTActor actor = myApp.dbVideo.loadActor(iPos + 1);
+
+        DTActor actor = myApp.dbVideo.loadActor(myApp.listActorItems.get(iPos).getlActor_ID());
         // TODO image
 
         edLastName.setText(actor.getsActorLastName());
@@ -96,7 +101,8 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
                 break;
 
             case R.id.ibDelActor:
-                myApp.dbVideo.deleteActor(iPos + 1);
+                myApp.dbVideo.deleteActor(myApp.listActorItems.get(iPos).getlActor_ID());
+                myApp.listActorItems.remove(iPos);
                 break;
         }
         clearFields();
