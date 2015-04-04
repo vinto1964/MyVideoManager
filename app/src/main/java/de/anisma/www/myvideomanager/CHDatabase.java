@@ -404,7 +404,7 @@ public class CHDatabase extends SQLiteOpenHelper {
     public long checkActor(String firstname, String lastname) {
         long lResult = -1;
         SQLiteDatabase db = null;
-        String sQuery = "SELECT * FROM " + TBLPEOPLE + " WHERE " + FIRSTNAME + " like '" +  firstname + "'  AND " + LASTNAME + " like '" + lastname + "';";
+        String sQuery = "SELECT " + ID_PERSON + " FROM " + TBLPEOPLE + " WHERE " + FIRSTNAME + " like '" +  firstname + "'  AND " + LASTNAME + " like '" + lastname + "';";
         List<DTActor> actorList = new ArrayList<DTActor>();
 
         try {
@@ -450,6 +450,26 @@ public class CHDatabase extends SQLiteOpenHelper {
                                         actor.getsImage()));
         return actor.getlActor_ID();
     }
+
+    public void updatePerson(DTActor person) {
+        SQLiteDatabase db = null;
+
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(FIRSTNAME, person.getsActorFirstName());
+            cv.put(LASTNAME, person.getsActorLastName());
+            cv.put(BIRTHDAY, person.getsBirthday());
+            cv.put(SEX, person.getsSex());
+            cv.put(IMAGE, person.getsImage());
+            cv.put(VITA, person.getsVita());
+
+            db.update(TBLPEOPLE, cv, ID_PERSON + " = ?", new String[] {String.valueOf(person.getlActor_ID())});
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+    }
+
 
     public void deleteActor(long id_person){
         SQLiteDatabase db = null;
@@ -627,8 +647,12 @@ public class CHDatabase extends SQLiteOpenHelper {
             cv.put(ID_FILM, id_film);
             cv.put(ID_PERSON, id_person);
             cv.put(ID_FUNCTION, id_function);
-            cv.put(ID_ROLE, id_role);
-            cv.put(ROLEORDER, role_order);
+            if(id_role > -1) {
+                cv.put(ID_ROLE, id_role);
+            }
+            if(role_order > -1 ) {
+                cv.put(ROLEORDER, role_order);
+            }
             lResult = db.insert(TBLPERSONSIS, null, cv);
         }
         catch (Exception ex) {}

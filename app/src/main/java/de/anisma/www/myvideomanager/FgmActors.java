@@ -139,7 +139,11 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                             }
                             id_role = myApp.dbVideo.checkRole(edActRole.getText().toString());
                         }
+                        else {
+                            id_role = -1;
+                        }
                     }
+
 
                     // 3
                     if(myApp.dbVideo.checkPersonIs(film.getlFilm_ID(), actor.getlActor_ID(), spFunction.getSelectedItemPosition()) < 0){
@@ -147,7 +151,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                                                         actor.getlActor_ID(),
                                                         spFunction.getSelectedItemPosition(),
                                                         id_role,
-                                                        Integer.parseInt(edActRoleOrder.getText().toString()));
+                                                        checkOrder);
                     }
                 }
                 else {

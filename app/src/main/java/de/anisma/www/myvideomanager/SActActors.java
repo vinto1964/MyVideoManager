@@ -110,15 +110,26 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
 
     private void saveActor() {
         if(!(edFirstName.getText().toString().isEmpty() && edLastName.getText().toString().isEmpty() )){
+            // Prüfen, on Person in DB ist => wenn Ja <==> updaten
+            String firstname = edFirstName.getText().toString();
+            String lastname = edLastName.getText().toString();
 
-            DTActor actor = new DTActor(-1,
-                    edFirstName.getText().toString(),
-                    edLastName.getText().toString(),
-                    edBirthday.getText().toString(),
-                    swSex.isChecked() ? "m" : "w",
-                    edVita.getText().toString());
-
-            myApp.dbVideo.insertActor(actor);
+            if(myApp.dbVideo.checkActor(firstname, lastname) > 0) { // Person vorhanden
+                myApp.dbVideo.updatePerson(new DTActor(myApp.dbVideo.checkActor(firstname, lastname),
+                        edFirstName.getText().toString(),
+                        edLastName.getText().toString(),
+                        edBirthday.getText().toString(),
+                        swSex.isChecked() ? "m" : "w",
+                        edVita.getText().toString()));
+            }
+            else { // Einfügen
+                myApp.dbVideo.insertActor(new DTActor(-1,
+                        edFirstName.getText().toString(),
+                        edLastName.getText().toString(),
+                        edBirthday.getText().toString(),
+                        swSex.isChecked() ? "m" : "w",
+                        edVita.getText().toString()));
+            }
         }
     }
 
