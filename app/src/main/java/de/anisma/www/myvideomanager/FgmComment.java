@@ -35,7 +35,6 @@ public class FgmComment extends Fragment {
 
     String genre;
 
-
     public FgmComment() {
     }
 
@@ -73,11 +72,8 @@ public class FgmComment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
-
 
         edComment   = (EditText) view.findViewById(R.id.edComment);
         tvGenre     = (TextView) view.findViewById(R.id.tvGenre);
@@ -86,7 +82,6 @@ public class FgmComment extends Fragment {
         if(iPos > -1) {
             loadInfos();
         }
-
         return view;
     }
 
@@ -97,12 +92,7 @@ public class FgmComment extends Fragment {
         rbRating.setRating(film.getfFilmRanking());
         edComment.setText(film.getsFilmComment());
 
-        genreList = myApp.dbVideo.loadAllFilmGenre(film.getlFilm_ID());
-
-        lvAdapt = new ArrayAdapter(this.getActivity().getBaseContext(),
-                                    android.R.layout.simple_list_item_1,
-                                    genreList);
-        lvGenres.setAdapter(lvAdapt);
+        reloadGenre();
 
     }
 
@@ -120,7 +110,10 @@ public class FgmComment extends Fragment {
             AppGlobal myApp = (AppGlobal) getActivity().getApplication();
             DTFilmItem film = myApp.ldFilmItems.get(iPos);
             genreList = myApp.dbVideo.loadAllFilmGenre(film.getlFilm_ID());
-            lvAdapt.notifyDataSetChanged();
+            lvAdapt = new ArrayAdapter(this.getActivity().getBaseContext(),
+                    android.R.layout.simple_list_item_1,
+                    genreList);
+            lvGenres.setAdapter(lvAdapt);
         }
     }
 
@@ -139,12 +132,6 @@ public class FgmComment extends Fragment {
         }
     }
 
-/*    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        saveDatas();
-        reloadGenre();
-    }*/
-
     private void saveDatas() {
         if(iPos > -1) {
             AppGlobal myApp = (AppGlobal) getActivity().getApplication();
@@ -162,5 +149,4 @@ public class FgmComment extends Fragment {
             }
         }
     }
-
 }

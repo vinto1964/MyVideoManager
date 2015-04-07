@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -18,7 +20,8 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
 
     AppGlobal myApp;
     ListView lvActorslist;
-    ImageButton ibSave;
+    EditText edSearchActor;
+    ImageButton ibSave, ibSearchActor, ibDeleteSearchActor;
     ActorListAdapter actorListAdapter;
     List actorsList;
 
@@ -30,21 +33,33 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
         myApp = (AppGlobal) getApplication();
         actorsList = new ArrayList<DTActor>();
 
+        edSearchActor = (EditText) findViewById(R.id.edSearchActor);
         lvActorslist = (ListView) findViewById(R.id.lvActorslist);
-        actorListAdapter = new ActorListAdapter(this, R.layout.listview_actors, myApp.dbVideo.loadAllActors(myApp.dbVideo.loadAllActors(myApp.listActorItems)));
-        lvActorslist.setAdapter(actorListAdapter);
-        lvActorslist.setOnItemClickListener(this);
 
         ibSave = (ImageButton) findViewById(R.id.ibSave);
         ibSave.setOnClickListener(this);
 
+        ibSearchActor = (ImageButton) findViewById(R.id.ibSearchActor);
+        ibSearchActor.setOnClickListener(this);
 
+        ibDeleteSearchActor = (ImageButton) findViewById(R.id.ibDeleteSearchArctor);
+        ibDeleteSearchActor.setOnClickListener(this);
+
+        loadActorList("");
     }
+
+    private void loadActorList(String whereClause) {
+        myApp.dbVideo.loadAllActors(myApp.listActorItems, whereClause);
+        actorListAdapter = new ActorListAdapter(this, R.layout.listview_actors, myApp.listActorItems);
+        lvActorslist.setAdapter(actorListAdapter);
+        lvActorslist.setOnItemClickListener(this);
+    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
-        myApp.dbVideo.loadAllActors(myApp.listActorItems);
+        myApp.dbVideo.loadAllActors(myApp.listActorItems, "");
         actorListAdapter.notifyDataSetChanged();
     }
 
@@ -80,6 +95,16 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
                 startActivity(intentActor);
                 break;
 
+            case R.id.ibSearchActor:
+                myApp.dbVideo.loadAllActors(myApp.listActorItems, edSearchActor.getText().toString());
+                actorListAdapter.notifyDataSetChanged();
+                ibDeleteSearchActor.setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.ibDeleteSearchArctor:
+                loadActorList("");
+                ibDeleteSearchActor.setVisibility(View.INVISIBLE);
+                break;
         }
     }
 

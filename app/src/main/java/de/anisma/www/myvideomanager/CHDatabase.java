@@ -151,7 +151,7 @@ public class CHDatabase extends SQLiteOpenHelper {
         }
     }
 
-    public void loadAllFilms(List<DTFilmItem> filmlist){
+    public void loadAllFilms(List<DTFilmItem> filmlist, String whereClause){
         if(filmlist == null) {
             filmlist = new ArrayList<DTFilmItem>();
         }
@@ -161,7 +161,12 @@ public class CHDatabase extends SQLiteOpenHelper {
 
         SQLiteDatabase db = null;
 
-        String sQuery = "SELECT * FROM " + TBLVIDEOMANAGER + ";";
+
+
+        String sQuery = "SELECT * FROM " + TBLVIDEOMANAGER;
+        if(!whereClause.isEmpty()) {
+            sQuery += " WHERE " + TITEL + " LIKE '%" + whereClause + "%'";
+        }
 
         try{
             db = this.getReadableDatabase();
@@ -307,7 +312,7 @@ public class CHDatabase extends SQLiteOpenHelper {
     }
 
 
-    public List loadAllActors(List<DTActor> actorsList) {
+    public List loadAllActors(List<DTActor> actorsList, String whereClause) {
         if(actorsList == null) {
             actorsList = new ArrayList<DTActor>();
         }
@@ -316,7 +321,10 @@ public class CHDatabase extends SQLiteOpenHelper {
         }
         SQLiteDatabase db = null;
 
-        String sQuery = "SELECT * FROM " + TBLPEOPLE + ";";
+        String sQuery = "SELECT * FROM " + TBLPEOPLE ;
+        if(!whereClause.isEmpty()) {
+            sQuery += " WHERE " + LASTNAME + " LIKE '%" + whereClause + "%' OR " + FIRSTNAME + " LIKE '%" + whereClause + "%'";
+        }
 
         try {
             db = this.getReadableDatabase();
@@ -665,7 +673,8 @@ public class CHDatabase extends SQLiteOpenHelper {
 
         SQLiteDatabase db = null;
         //String sQuery = "SELECT " + GENRE + " FROM " + TBLGENRE + " g JOIN " + TBLGENREIS + " gi ON (g." + ID_GENRE + " = gi." + ID_GENRE + ") WHERE gi." + ID_FILM + " = ?";
-        String sQuery = "SELECT " + FIRSTNAME + ", " + LASTNAME + " FROM " + TBLPEOPLE + " p JOIN " + TBLPERSONSIS + " pi ON (p." + ID_PERSON + " = pi." + ID_PERSON + ") WHERE " + ID_FILM + " = ? ";
+        String sQuery = "SELECT " + FIRSTNAME + ", " + LASTNAME + " FROM " + TBLPEOPLE + " p JOIN " + TBLPERSONSIS + " pi ON (p." + ID_PERSON + " = pi." + ID_PERSON + ") WHERE " + ID_FILM + " = ? " +
+                        " ORDER BY " + ROLEORDER + " ASC, " + FIRSTNAME + " ASC ";
 
 
         try {

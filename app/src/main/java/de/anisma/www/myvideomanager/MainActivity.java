@@ -1,6 +1,7 @@
 package de.anisma.www.myvideomanager;
 
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,8 +27,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     List<DTFilmItem> ldFilmItems;
     FilmListAdapter flAdapter;
+    EditText edMASearch;
     ImageView imgMASearch;
-    ImageButton ibFilmAdd, ibShowActor;
+    ImageButton ibFilmAdd, ibShowActor, ibCancelSearch;
     ListView lvMA;
 
     int iPos = -1;
@@ -40,7 +43,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         myApp.dbVideo = new CHDatabase(this);
 
+        edMASearch = (EditText) findViewById(R.id.edMASearch);
         imgMASearch = (ImageView) findViewById(R.id.imgMASearch);
+        imgMASearch.setOnClickListener(this);
 
         lvMA = (ListView)findViewById(R.id.lvMA);
 
@@ -50,26 +55,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         ibShowActor = (ImageButton) findViewById(R.id.ibShowActor);
         ibShowActor.setOnClickListener(this);
 
-        loadFilmList();
+        ibCancelSearch = (ImageButton) findViewById(R.id.ibCancelSearch);
+        ibCancelSearch.setOnClickListener(this);
+
+        loadFilmList("");
     }
 
-    private void loadFilmList() {
-        myApp.dbVideo.loadAllFilms(myApp.ldFilmItems);
-
-        flAdapter = new FilmListAdapter(this, R.layout.ma_listview_filme, myApp.ldFilmItems);
-        lvMA.setAdapter(flAdapter);
-
-        lvMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // myApp.iPosSelect = position;
-                Intent intent = new Intent(MainActivity.this, TActFilmDetails.class);
-                intent.putExtra("Position", position);
-                startActivity(intent);
-            }
-        });
-
-    }
 
     @Override
     protected void onResume(){
@@ -118,11 +109,38 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.ibShowActor:
                 Intent intentActor = new Intent(this, MActActors.class);
                 startActivity(intentActor);
-
                 break;
+
+            case R.id.imgMASearch:
+                loadFilmList(edMASearch.getText().toString());
+                flAdapter.notifyDataSetChanged();
+                ibCancelSearch.setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.ibCancelSearch:
+                loadFilmList("");
+                flAdapter.notifyDataSetChanged();
+                ibCancelSearch.setVisibility(View.INVISIBLE);
+                break;
+
         }
     }
 
+    private void loadFilmList(String whereClause) {
+        myApp.dbVideo.loadAllFilms(myApp.ldFilmItems, whereClause);
 
+        flAdapter = new FilmListAdapter(this, R.layout.ma_listview_filme, myApp.ldFilmItems);
+        lvMA.setAdapter(flAdapter);
+
+        lvMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, TActFilmDetails.class);
+                intent.putExtra("Position", position);
+                startActivity(intent);
+            }
+        });
+
+    }
 
 }

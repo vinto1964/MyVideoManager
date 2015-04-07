@@ -7,13 +7,34 @@
     tools:context="de.anisma.www.myvideomanager.MActActors"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/edSearchActor"
+            android:layout_weight="1.05"
+            android:hint="@string/sSearchActor" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibSearchActor"
+            android:src="@android:drawable/ic_search_category_default"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/sSearchActor" />
+    </LinearLayout>
+
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="365dp"
+        android:layout_height="323dp"
         android:id="@+id/lvActorslist"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:choiceMode="singleChoice" />
 
     <LinearLayout
@@ -28,5 +49,21 @@
             android:src="@mipmap/ic_add_actor"
             android:scaleType="fitCenter"
             android:contentDescription="@string/sShowActor" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="top|right">
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/ibDeleteSearchArctor"
+                android:src="@mipmap/ic_cancel_search"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/sDeleteSearchActor"
+                android:visibility="invisible" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -84,5 +84,8 @@
     <string name="sVita">Vita</string>
     <string name="title_activity_mact_actors">Liste der Schauspieler/in</string>
     <string name="sShowActor">Schauspieler/innen</string>
+    <string name="sCancelSearch">Suche löschen</string>
+    <string name="sSearchActor">Person suchen</string>
+    <string name="sDeleteSearchActor">Suche löschen</string>
 
 </resources>

@@ -3,8 +3,10 @@ package de.anisma.www.myvideomanager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -73,6 +75,14 @@ public class FgmActors extends Fragment implements View.OnClickListener {
         ibDeleteActor.setOnClickListener(this);
 
         lvActors        = (ListView) view.findViewById(R.id.lvActors);
+        lvActors.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // Dialog Eintrag löschen?
+
+                return false;
+            }
+        });
 
         spFunction      = (Spinner) view.findViewById(R.id.spFunction);
 
@@ -88,11 +98,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
 
         edActRole.setHint( getString(R.string.sRole) + " in " + film.getsFilmTitle());
 
-
-        actorsList = myApp.dbVideo.loadFilmActorsList(film.getlFilm_ID());
-
-        actorListAdapter = new ArrayAdapter(this.getActivity().getBaseContext(), android.R.layout.simple_list_item_1, actorsList);
-        lvActors.setAdapter(actorListAdapter);
+        loadPersonList();
     }
 
 
@@ -124,7 +130,6 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                         Toast.makeText(this.getActivity().getBaseContext(), "Bitte geben Sie eine Role ein, oder löschen Sie die Reihenfolge!", Toast.LENGTH_SHORT).show();
                     }
 
-
                     // 1
                     if(myApp.dbVideo.checkActor(edActFirstName.getText().toString(), edActLastName.getText().toString()) < 0) { // Actor nicht vorhanden
                         saveActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
@@ -152,6 +157,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                                                         spFunction.getSelectedItemPosition(),
                                                         id_role,
                                                         checkOrder);
+                        loadPersonList();
                     }
                 }
                 else {
@@ -163,11 +169,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
 
                 break;
 
-
         }
-
-
-
     }
 
     private void saveActor(String firstname, String lastname) {
@@ -180,6 +182,13 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                     "");
         myApp.dbVideo.insertActor(actor);
 
+    }
+
+    private void loadPersonList() {
+        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        actorsList = myApp.dbVideo.loadFilmActorsList(myApp.ldFilmItems.get(iPos).getlFilm_ID());
+        actorListAdapter = new ArrayAdapter(this.getActivity().getBaseContext(), android.R.layout.simple_list_item_1, actorsList);
+        lvActors.setAdapter(actorListAdapter);
     }
 
 }

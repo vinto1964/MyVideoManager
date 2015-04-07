@@ -53,7 +53,6 @@ public class FgmPlot extends Fragment {
             loadPlot();
         }
 
-
         return view;
     }
 

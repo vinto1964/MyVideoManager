@@ -67,6 +67,22 @@
                 android:scaleType="fitCenter"
                 android:contentDescription="@string/sShowActor" />
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|right">
+
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/ibCancelSearch"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_cancel_search"
+                    android:visibility="invisible"
+                    android:contentDescription="@string/sCancelSearch" />
+            </LinearLayout>
+
         </LinearLayout>
     </RelativeLayout>
 

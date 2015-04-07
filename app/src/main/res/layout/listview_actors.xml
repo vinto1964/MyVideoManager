@@ -4,15 +4,15 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="80dp"
         android:id="@+id/ivActorFoto"
         android:src="@mipmap/ic_actor"
         android:contentDescription="@string/sActorFoto" />
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="80dp"
         android:id="@+id/ivMask"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -25,12 +25,12 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/tvActorLastName"
         android:text="Lastname"
-        android:layout_marginBottom="34dp"
-        android:layout_alignBottom="@+id/ivActorFoto"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/ivMask"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/ivActorFoto"
-        android:layout_toEndOf="@+id/ivActorFoto" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,8 +38,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="FirstName"
         android:id="@+id/tvActorFirstName"
-        android:layout_alignBottom="@+id/ivActorFoto"
-        android:layout_toRightOf="@+id/ivActorFoto"
-        android:layout_alignRight="@+id/tvActorLastName"
-        android:layout_alignEnd="@+id/tvActorLastName" />
+        android:layout_below="@+id/tvActorLastName"
+        android:layout_toRightOf="@+id/ivMask"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="10dp" />
 </RelativeLayout>
