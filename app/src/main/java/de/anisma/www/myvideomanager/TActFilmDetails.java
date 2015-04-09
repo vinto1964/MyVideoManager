@@ -1,5 +1,7 @@
 package de.anisma.www.myvideomanager;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -199,6 +201,19 @@ public class TActFilmDetails extends ActionBarActivity implements ActionBar.TabL
     //**********************************************************************************************
 
 
+    /**
+     * Dispatch onPause() to fragments.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
 
 
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+    }
 }

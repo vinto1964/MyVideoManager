@@ -1,23 +1,16 @@
 package de.anisma.www.myvideomanager;
 
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-
-import java.util.ArrayList;
 import java.util.List;
 
 

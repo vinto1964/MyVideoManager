@@ -20,5 +20,7 @@ public class AppGlobal extends Application {
 
     FilmListAdapter lsAdapt;
 
+    int fragment = -1;
+
 
 }

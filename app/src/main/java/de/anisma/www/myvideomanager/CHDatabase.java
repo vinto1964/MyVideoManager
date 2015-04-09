@@ -160,9 +160,6 @@ public class CHDatabase extends SQLiteOpenHelper {
         }
 
         SQLiteDatabase db = null;
-
-
-
         String sQuery = "SELECT * FROM " + TBLVIDEOMANAGER;
         if(!whereClause.isEmpty()) {
             sQuery += " WHERE " + TITEL + " LIKE '%" + whereClause + "%'";
@@ -229,6 +226,34 @@ public class CHDatabase extends SQLiteOpenHelper {
                                     film.getiFilmFSK(),
                                     film.getiFilmEAN()));
         return film.getlFilm_ID();
+
+    }
+
+    public long insertFilmImage(DTFilmItem film){
+        long lResult = -1;
+        SQLiteDatabase db = null;
+
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(IMAGE, film.getsFilmImage());
+            lResult = db.insert(TBLVIDEOMANAGER, null, cv);
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+        return lResult;
+    }
+
+    public void updateFilmImage(DTFilmItem film) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(IMAGE, film.getsFilmImage());
+            db.update(TBLVIDEOMANAGER, cv, ID_FILM + " = ?", new String[] {String.valueOf(film.getlFilm_ID())});
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
 
     }
 
@@ -345,8 +370,6 @@ public class CHDatabase extends SQLiteOpenHelper {
 
                 } while(cursor.moveToNext());
             }
-
-
         }
         catch (Exception ex) {}
         finally { if(db != null){db.close();} }
@@ -502,6 +525,35 @@ public class CHDatabase extends SQLiteOpenHelper {
         catch (Exception ex) {}
         finally { if(db != null){db.close();} }
     }
+
+    public long insertActorImage(DTActor actor){
+        long lResult = -1;
+        SQLiteDatabase db = null;
+
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(IMAGE, actor.getsImage());
+            lResult = db.insert(TBLPEOPLE, null, cv);
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+        return lResult;
+    }
+
+    public void updateActorImage(DTActor actor) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(IMAGE, actor.getsImage());
+            db.update(TBLPEOPLE, cv, ID_PERSON + " = ?", new String[] {String.valueOf(actor.getlActor_ID())});
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+
+    }
+
 
     public void updateCommentRating(DTFilmItem film) {
         SQLiteDatabase db = null;
