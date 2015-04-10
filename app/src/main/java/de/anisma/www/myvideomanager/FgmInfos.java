@@ -209,8 +209,6 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
         super.onPause();
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
         saveEntry();
-        myApp.fragment = 0;
-        myApp.iPosSelect = iPos;
     }
 
     private void loadFilmCover() {

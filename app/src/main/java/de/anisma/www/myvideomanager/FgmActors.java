@@ -1,5 +1,7 @@
 package de.anisma.www.myvideomanager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
 
     int val;
     int iPos = -1;
+    int iDeleteActor = -1;
 
     ImageView ivActorFoto;
     EditText edActRole, edActRoleOrder, edActFirstName, edActLastName, edPlot;
@@ -79,7 +82,8 @@ public class FgmActors extends Fragment implements View.OnClickListener {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // Dialog Eintrag löschen?
-
+                iDeleteActor = position;
+                doShowAlertDialog();
                 return false;
             }
         });
@@ -90,6 +94,46 @@ public class FgmActors extends Fragment implements View.OnClickListener {
             loadDatas();
         }
         return view;
+    }
+
+    private void doShowAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+        builder.setTitle("Schauspieler/in löschen");
+        builder.setMessage("Möchten Sie wirklich löschen?");
+        builder.setCancelable(true);
+        builder.setIcon(R.mipmap.ic_important);
+
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteActorFromFilm();
+            }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void deleteActorFromFilm() {
+        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        if(iDeleteActor > -1) {
+
+            String idPerson = actorsList.get(iDeleteActor).substring(actorsList.get(iDeleteActor).indexOf("<")+1);
+            long lPersonID = Long.parseLong(idPerson);
+
+            myApp.dbVideo.deleteActorFromFilm(lPersonID, myApp.ldFilmItems.get(iPos).getlFilm_ID());
+
+            actorsList.remove(iDeleteActor);
+            loadPersonList();
+        }
+        iDeleteActor = -1;
     }
 
     private void loadDatas() {
@@ -186,8 +230,13 @@ public class FgmActors extends Fragment implements View.OnClickListener {
 
     private void loadPersonList() {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        List<String>actorsListSimple = new ArrayList<>();
         actorsList = myApp.dbVideo.loadFilmActorsList(myApp.ldFilmItems.get(iPos).getlFilm_ID());
-        actorListAdapter = new ArrayAdapter(this.getActivity().getBaseContext(), android.R.layout.simple_list_item_1, actorsList);
+        for(int i = 0; i < actorsList.size(); i++)
+        {
+            actorsListSimple.add(actorsList.get(i).substring(0, actorsList.get(i).indexOf("<")));
+        }
+        actorListAdapter = new ArrayAdapter(this.getActivity().getBaseContext(), android.R.layout.simple_list_item_1, actorsListSimple);
         lvActors.setAdapter(actorListAdapter);
     }
 

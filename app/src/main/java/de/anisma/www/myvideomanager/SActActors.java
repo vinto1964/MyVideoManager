@@ -68,7 +68,6 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
     private void loadActor() {
 
         DTActor actor = myApp.dbVideo.loadActor(myApp.listActorItems.get(iPos).getlActor_ID());
-        // TODO image
 
         edLastName.setText(actor.getsActorLastName());
         edFirstName.setText(actor.getsActorFirstName());
@@ -81,6 +80,16 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
         else {
             swSex.setChecked(true);
         }
+
+        createFoto(actor.getsImage().toString());
+
+        if (android.os.Build.VERSION.SDK_INT < 19) {
+            fileUri = Uri.parse(actor.getsImage().toString().toString());
+        }
+        else {
+            targetUri = Uri.parse(actor.getsImage().toString().toString());
+        }
+
     }
 
 
@@ -126,6 +135,19 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
     }
 
     private void saveActor() {
+        String imagePfad = "";
+
+        if (android.os.Build.VERSION.SDK_INT < 19){
+            if(fileUri != null) {
+                imagePfad = fileUri.toString();
+            }
+        }
+        else {
+            if(targetUri != null) {
+                imagePfad = targetUri.toString();
+            }
+        }
+
         if(!(edFirstName.getText().toString().isEmpty() && edLastName.getText().toString().isEmpty() )){
             // Prüfen, on Person in DB ist => wenn Ja <==> updaten
             String firstname = edFirstName.getText().toString();
@@ -137,6 +159,7 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
                         edLastName.getText().toString(),
                         edBirthday.getText().toString(),
                         swSex.isChecked() ? "m" : "w",
+                        imagePfad,
                         edVita.getText().toString()));
             }
             else { // Einfügen
@@ -145,6 +168,7 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
                         edLastName.getText().toString(),
                         edBirthday.getText().toString(),
                         swSex.isChecked() ? "m" : "w",
+                        imagePfad,
                         edVita.getText().toString()));
             }
         }
@@ -181,7 +205,7 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
             Bitmap bmFotoOrig;
             try {
                 bmFotoOrig = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUri);
-                Bitmap bmFoto = Bitmap.createScaledBitmap(bmFotoOrig, 160, 226, false);
+                Bitmap bmFoto = Bitmap.createScaledBitmap(bmFotoOrig, 100, 100, false);
                 ivActorFoto.setImageBitmap(bmFoto);
                 saveActor();
                 saveImage();
@@ -209,7 +233,7 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
                 ContentResolver cr = getContentResolver();
                 Bitmap bmFotoOrig = android.provider.MediaStore.Images.Media.getBitmap(cr, mUri);
 
-                Bitmap bmFoto = Bitmap.createScaledBitmap(bmFotoOrig, 160, 226, false);
+                Bitmap bmFoto = Bitmap.createScaledBitmap(bmFotoOrig, 100, 100, false);
                 ivActorFoto.setImageBitmap(bmFoto);
                 saveActor();
                 saveImage();
@@ -228,7 +252,7 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
     private void createFoto(String uri){
         Bitmap btm = null;
 
-        if(uri.compareTo("@drawable/cover") == 0 || uri.isEmpty()){
+        if(uri.compareTo("@mipmap/ic_actor") == 0 || uri.isEmpty()){
             try {
                 btm = BitmapFactory.decodeResource(getResources(), R.drawable.cover);
             }
@@ -254,7 +278,7 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
                 catch (IOException e) { e.printStackTrace(); }
             }
         }
-        Bitmap scaledFoto = Bitmap.createScaledBitmap(btm, 160, 226, false);
+        Bitmap scaledFoto = Bitmap.createScaledBitmap(btm, 100, 100, false);
         ivActorFoto.setImageBitmap(scaledFoto);
     }
 

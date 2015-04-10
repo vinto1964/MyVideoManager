@@ -366,7 +366,7 @@ public class CHDatabase extends SQLiteOpenHelper {
                     String sImage       = cursor.getString(5);
                     String sVita        = cursor.getString(6);
 
-                    actorsList.add(new DTActor(lActorID, sFirstname, sLastname, sSex, sBirthday, sVita, sImage));
+                    actorsList.add(new DTActor(lActorID, sFirstname, sLastname, sSex, sBirthday, sImage, sVita));
 
                 } while(cursor.moveToNext());
             }
@@ -450,7 +450,7 @@ public class CHDatabase extends SQLiteOpenHelper {
         return lResult;
     }
 
-    public long insertActor(String sActorFirstName, String sActorLastName, String sSex, String sBirthday, String sVita, String sImage) {
+    public long insertActor(String sActorFirstName, String sActorLastName, String sSex, String sBirthday, String sImage, String sVita) {
         long lResult = -1;
         SQLiteDatabase db = null;
         try {
@@ -461,8 +461,8 @@ public class CHDatabase extends SQLiteOpenHelper {
             cv.put(LASTNAME, sActorLastName);
             cv.put(SEX, sSex);
             cv.put(BIRTHDAY, sBirthday);
-            cv.put(VITA, sVita);
             cv.put(IMAGE, sImage);
+            cv.put(VITA, sVita);
 
             lResult = db.insert(TBLPEOPLE, null, cv);
         }
@@ -477,8 +477,8 @@ public class CHDatabase extends SQLiteOpenHelper {
                                         actor.getsActorLastName(),
                                         actor.getsSex(),
                                         actor.getsBirthday(),
-                                        actor.getsVita(),
-                                        actor.getsImage()));
+                                        actor.getsImage(),
+                                        actor.getsVita()));
         return actor.getlActor_ID();
     }
 
@@ -509,6 +509,17 @@ public class CHDatabase extends SQLiteOpenHelper {
             db = this.getWritableDatabase();
             db.delete(TBLPERSONSIS, ID_PERSON + " = ? ", new String[] {String.valueOf(id_person)});
             db.delete(TBLPEOPLE, ID_PERSON + " = ? ", new String[] {String.valueOf(id_person)});
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+    }
+
+    public void deleteActorFromFilm(long id_person, long id_film){
+        SQLiteDatabase db = null;
+
+        try {
+            db = this.getWritableDatabase();
+            db.delete(TBLPERSONSIS, ID_FILM + " = ? AND " + ID_PERSON + " = ?", new String[] {String.valueOf(id_film), String.valueOf(id_person)});
         }
         catch (Exception ex) {}
         finally { if(db != null){db.close();} }
@@ -725,7 +736,7 @@ public class CHDatabase extends SQLiteOpenHelper {
 
         SQLiteDatabase db = null;
         //String sQuery = "SELECT " + GENRE + " FROM " + TBLGENRE + " g JOIN " + TBLGENREIS + " gi ON (g." + ID_GENRE + " = gi." + ID_GENRE + ") WHERE gi." + ID_FILM + " = ?";
-        String sQuery = "SELECT " + FIRSTNAME + ", " + LASTNAME + " FROM " + TBLPEOPLE + " p JOIN " + TBLPERSONSIS + " pi ON (p." + ID_PERSON + " = pi." + ID_PERSON + ") WHERE " + ID_FILM + " = ? " +
+        String sQuery = "SELECT p." + ID_PERSON + ", " + FIRSTNAME + ", " + LASTNAME + " FROM " + TBLPEOPLE + " p JOIN " + TBLPERSONSIS + " pi ON (p." + ID_PERSON + " = pi." + ID_PERSON + ") WHERE " + ID_FILM + " = ? " +
                         " ORDER BY " + ROLEORDER + " ASC, " + FIRSTNAME + " ASC ";
 
 
@@ -734,10 +745,11 @@ public class CHDatabase extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery(sQuery, new String[] {String.valueOf(id_film)});
             if(cursor.moveToFirst()) {
                 do {
-                    String firstname = cursor.getString(0);
-                    String lastname = cursor.getString(1);
+                    long id_Person = cursor.getLong(0);
+                    String firstname = cursor.getString(1);
+                    String lastname = cursor.getString(2);
 
-                    actorsList.add(firstname + ", " + lastname);
+                    actorsList.add(firstname + ", " + lastname + "<" + id_Person);
                 } while (cursor.moveToNext());
             }
 
