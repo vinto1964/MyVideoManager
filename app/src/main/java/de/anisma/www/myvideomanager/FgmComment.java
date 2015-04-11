@@ -1,5 +1,7 @@
 package de.anisma.www.myvideomanager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ public class FgmComment extends Fragment {
 
     int val;
     int iPos = -1;
+    int iDeleteGenre = -1;
 
     RatingBar rbRating;
     Spinner spGenre;
@@ -60,15 +63,23 @@ public class FgmComment extends Fragment {
         }
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        List<String> listGenre = new ArrayList<String>();
+        listGenre = myApp.dbVideo.loadAllGenre();
         View view = inflater.inflate(R.layout.activity_mact_film_details_comment, container, false);
 
         rbRating    = (RatingBar) view.findViewById(R.id.rbRating);
         spGenre     = (Spinner) view.findViewById(R.id.spGenre);
+        ArrayAdapter<String> spAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, listGenre);
+        spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spGenre.setAdapter(spAdapter);
+
         spGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 saveDatas();
                 reloadGenre();
+                spGenre.setSelection(0);
             }
 
             @Override
@@ -78,11 +89,58 @@ public class FgmComment extends Fragment {
         edComment   = (EditText) view.findViewById(R.id.edComment);
         tvGenre     = (TextView) view.findViewById(R.id.tvGenre);
         lvGenres    = (ListView) view.findViewById(R.id.lvGenres);
+        lvGenres.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+        lvGenres.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                iDeleteGenre = position;
+                doShowAlertDialog();
+                return false;
+            }
+        });
 
         if(iPos > -1) {
             loadInfos();
         }
         return view;
+    }
+
+    private void doShowAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+        builder.setTitle("Genre löschen");
+        builder.setMessage("Möchten Sie wirklich löschen?");
+        builder.setCancelable(true);
+        builder.setIcon(R.mipmap.ic_important);
+
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteGenreFromFilm();
+            }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void deleteGenreFromFilm() {
+        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        if(iDeleteGenre > -1) {
+            myApp.dbVideo.deleteGenreFromFilm(myApp.ldFilmItems.get(iPos).getlFilm_ID(), genreList.get(iDeleteGenre));
+            genreList.remove(iDeleteGenre);
+            reloadGenre();
+        }
+        iDeleteGenre = -1;
     }
 
     private void loadInfos() {
@@ -104,7 +162,6 @@ public class FgmComment extends Fragment {
         }
     }
 
-
     private void reloadGenre() {
         if(iPos > -1) {
             AppGlobal myApp = (AppGlobal) getActivity().getApplication();
@@ -123,15 +180,6 @@ public class FgmComment extends Fragment {
         saveDatas();
     }
 
-    private void setGenreSelection(String s){
-        CursorAdapter cursorAdapter = (CursorAdapter) spGenre.getAdapter();
-        for(int i = 0; i < cursorAdapter.getCount(); i++) {
-            if(String.valueOf(cursorAdapter.getItem(i)).compareTo(s) == 0) {
-                spGenre.setSelection(i);
-            }
-        }
-    }
-
     private void saveDatas() {
         if(iPos > -1) {
             AppGlobal myApp = (AppGlobal) getActivity().getApplication();
@@ -141,12 +189,12 @@ public class FgmComment extends Fragment {
             myApp.dbVideo.updateCommentRating(film);
 
             genre = String.valueOf(spGenre.getSelectedItem());
-            if (myApp.dbVideo.isFilmGenre(film.getlFilm_ID(), spGenre.getSelectedItemPosition()) > 0 &&
-                    spGenre.getSelectedItemPosition() != 0) {     // update
-                myApp.dbVideo.updateGenreIs(film.getlFilm_ID(), spGenre.getSelectedItemPosition());
-            } else {  // insert
-                myApp.dbVideo.insertGenreIs(film.getlFilm_ID(), spGenre.getSelectedItemPosition());
+
+            if (!(myApp.dbVideo.isFilmGenre(film.getlFilm_ID(), genre) > -1)) {
+                myApp.dbVideo.insertGenreIs(film.getlFilm_ID(), myApp.dbVideo.getGenreID(genre));
             }
         }
     }
+
+
 }

@@ -14,9 +14,9 @@
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spGenre"
         android:entries="@array/genreD_array"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:id="@+id/spGenre" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
         android:layout_height="57dp"
         android:id="@+id/lvGenres"
         android:layout_weight="0.25"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:choiceMode="singleChoice" />
 
     <TextView

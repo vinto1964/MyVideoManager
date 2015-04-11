@@ -48,6 +48,7 @@
     <string name="sGenre">Schon ausgewählte Genren:</string>
     <string name="sCommentLabel">Kommentar:</string>
     <string name="sMask">Maske</string>
+    <string name="sChoice">Bitte auswählen:</string>
     <string-array name="genreD_array">
         <item>Genre bitte auswählen:</item>
         <item>Abenteuer</item>
@@ -87,5 +88,7 @@
     <string name="sCancelSearch">Suche löschen</string>
     <string name="sSearchActor">Person suchen</string>
     <string name="sDeleteSearchActor">Suche löschen</string>
+    <string name="sEditUser">Role des Schauspielers/in bearbeiten</string>
+    <string name="sChoiceActor">Bitte wählen Sie aus:</string>
 
 </resources>

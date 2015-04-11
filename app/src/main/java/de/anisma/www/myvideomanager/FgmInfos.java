@@ -149,6 +149,7 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
         edFSK.setText("");
         edDuration.setText("");
         edEAN.setText("");
+        createFoto("@drawable/cover");
     }
 
     private void saveEntry() {

@@ -49,7 +49,7 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
     }
 
     private void loadActorList(String whereClause) {
-        myApp.dbVideo.loadAllActors(myApp.listActorItems, whereClause);
+        myApp.dbVideo.loadAllActors(myApp.listActorItems, whereClause, -1);
         actorListAdapter = new ActorListAdapter(this, R.layout.listview_actors, myApp.listActorItems);
         lvActorslist.setAdapter(actorListAdapter);
         lvActorslist.setOnItemClickListener(this);
@@ -59,7 +59,7 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
     @Override
     protected void onResume() {
         super.onResume();
-        myApp.dbVideo.loadAllActors(myApp.listActorItems, "");
+        myApp.dbVideo.loadAllActors(myApp.listActorItems, "", -1);
         actorListAdapter.notifyDataSetChanged();
     }
 
@@ -96,7 +96,7 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
                 break;
 
             case R.id.ibSearchActor:
-                myApp.dbVideo.loadAllActors(myApp.listActorItems, edSearchActor.getText().toString());
+                myApp.dbVideo.loadAllActors(myApp.listActorItems, edSearchActor.getText().toString(), -1);
                 actorListAdapter.notifyDataSetChanged();
                 ibDeleteSearchActor.setVisibility(View.VISIBLE);
                 break;

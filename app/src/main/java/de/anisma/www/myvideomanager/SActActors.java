@@ -28,12 +28,15 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
 
     List<DTActor> listActors;
     ImageView ivActorFoto;
+    DTActor actor;
     
     EditText edLastName, edFirstName, edBirthday, edVita;
     Switch swSex;
     ImageButton ibSave, ibDelActor;
     int iPos = -1;
+    int iActorID = -1;
     Uri fileUri, targetUri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
         myApp = (AppGlobal) getApplication();
         Intent intent = getIntent();
         iPos = intent.getIntExtra("Position", -1);
+        iActorID = intent.getIntExtra("ActorID", -1);
 
 
         ivActorFoto = (ImageView) findViewById(R.id.ivActorFoto);
@@ -58,16 +62,21 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
         ibSave.setOnClickListener(this);
         ibDelActor.setOnClickListener(this);
 
-
-
         if(iPos > -1) {
+            actor = myApp.dbVideo.loadActor(myApp.listActorItems.get(iPos).getlActor_ID());
+            loadActor();
+        }
+        if(iActorID > -1) {
+            actor = myApp.dbVideo.loadActor(iActorID);
             loadActor();
         }
     }
 
+
+
     private void loadActor() {
 
-        DTActor actor = myApp.dbVideo.loadActor(myApp.listActorItems.get(iPos).getlActor_ID());
+//        DTActor actor = myApp.dbVideo.loadActor(myApp.listActorItems.get(iPos).getlActor_ID());
 
         edLastName.setText(actor.getsActorLastName());
         edFirstName.setText(actor.getsActorFirstName());
@@ -175,7 +184,7 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
     }
 
     private void clearFields() {
-        //ivActorFoto = (ImageView) findViewById(R.id.ivActorFoto);
+        createFoto("@mipmap/ic_actor");
         edLastName.setText("");
         edFirstName.setText("");
         edBirthday.setText("");
@@ -254,7 +263,7 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
 
         if(uri.compareTo("@mipmap/ic_actor") == 0 || uri.isEmpty()){
             try {
-                btm = BitmapFactory.decodeResource(getResources(), R.drawable.cover);
+                btm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_actor);
             }
             catch (Exception e) {
                 e.printStackTrace();
