@@ -2,10 +2,15 @@ package de.anisma.www.myvideomanager;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +24,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +91,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), SActActors.class);
-                intent.putExtra("ActorID", Integer.parseInt(actorsList.get(position).substring(actorsList.get(position).indexOf("<")+1)));
+                intent.putExtra("actorID", Integer.parseInt(actorsList.get(position).substring(actorsList.get(position).indexOf("<")+1)));
                 startActivity(intent);
             }
         });
@@ -229,27 +236,41 @@ public class FgmActors extends Fragment implements View.OnClickListener {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.fgmactors_edit_actor_dialog);
-//        dialog.setTitle(Resources.getSystem().getString(R.string.sChoiceActor));
+        //dialog.setTitle(Resources.getSystem().getString(R.string.sChoiceActor));
+        dialog.setTitle("Bitte wählen Sie aus:");
 
         final CCheckThis cto = new CCheckThis();
         final ListView lvForEditActor = (ListView) dialog.findViewById(R.id.lvForEditActor);
 
-        ActorListAdapter actorListAdapter;
-        List<DTActor> actorsList = new ArrayList<DTActor>();
-        myApp.dbVideo.loadAllActors(actorsList, "", iPos);
+        //ActorListAdapter actorListAdapter;
+        final List<DTActor>  actorsListForDialog = new ArrayList<DTActor>();
 
-
-        actorListAdapter = new ActorListAdapter(getActivity(), R.layout.listview_actors, myApp.listActorItems);
+        myApp.dbVideo.loadActorsForDialog(actorsListForDialog, myApp.ldFilmItems.get(iPos).getlFilm_ID());
+        ActorListAdapter actorListAdapter = new ActorListAdapter(getActivity(), R.layout.listview_actors, actorsListForDialog);
         lvForEditActor.setAdapter(actorListAdapter);
         lvForEditActor.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                loadRoleForActor(actorsListForDialog.get(position).getlActor_ID());
+                dialog.dismiss();
             }
         });
 
         dialog.show();
 
+    }
+
+    private void loadRoleForActor(long position) {
+        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        DTActorRole actorRole = myApp.dbVideo.loadActorForRole(myApp.ldFilmItems.get(iPos).getlFilm_ID(), position);
+
+        edActRole.setText(actorRole.getsARRoleInFilm());
+        edActRoleOrder.setText(actorRole.getiAROrder() > -1 ? "" + actorRole.getiAROrder() : "");
+        edActFirstName.setText(actorRole.getsARFirstName());
+        edActLastName.setText(actorRole.getsARLastName());
+        if(!actorRole.getsImagePath().isEmpty()) {
+            createFoto(actorRole.getsImagePath());
+        }
     }
 
     private void clearFields() {
@@ -285,6 +306,39 @@ public class FgmActors extends Fragment implements View.OnClickListener {
 
     class CCheckThis {
         boolean bValue = false;
+    }
+
+    private void createFoto(String uri){
+        Bitmap btm = null;
+
+        if(uri.compareTo("@mipmap/ic_actor") == 0 || uri.isEmpty()){
+            try {
+                btm = BitmapFactory.decodeResource(getResources(), R.drawable.cover);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            if (android.os.Build.VERSION.SDK_INT < 19){
+                try {
+                    btm = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), Uri.parse(uri));
+                }
+                catch (FileNotFoundException e) { e.printStackTrace(); }
+                catch (IOException e) { e.printStackTrace(); }
+            }
+            else {
+                try {
+                    this.getActivity().getContentResolver().notifyChange(Uri.parse(uri), null);
+                    ContentResolver cr = this.getActivity().getContentResolver();
+                    btm = android.provider.MediaStore.Images.Media.getBitmap(cr, Uri.parse(uri));
+                }
+                catch (FileNotFoundException e) { e.printStackTrace();  }
+                catch (IOException e) { e.printStackTrace(); }
+            }
+        }
+        Bitmap scaledFoto = Bitmap.createScaledBitmap(btm, 70, 70, false);
+        ivActorFoto.setImageBitmap(scaledFoto);
     }
 
 }

@@ -16,14 +16,14 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/edOTitle"
-        android:hint="@string/sOTitle" />
+        android:id="@+id/edSubtitle"
+        android:hint="@string/sSubtitle" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/edSubtitle"
-        android:hint="@string/sSubtitle" />
+        android:id="@+id/edOTitle"
+        android:hint="@string/sOTitle" />
 
     <EditText
         android:layout_width="match_parent"

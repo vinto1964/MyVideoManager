@@ -1,9 +1,11 @@
 package de.anisma.www.myvideomanager;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,15 +20,17 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLEncoder;
 
 
 /**
  * Created by Alfa on 30.03.2015.
  */
-public class FgmInfos extends Fragment implements View.OnClickListener {
+public class FgmInfos extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
     private static final int RQ_GALLERY_PICK = 1;
 
@@ -81,14 +85,18 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
 
         ivCover = (ImageView) view.findViewById(R.id.ivCover);
         ivCover.setOnClickListener(this);
+        ivCover.setOnLongClickListener((View.OnLongClickListener) this);
 
         ibSave = (ImageButton) view.findViewById(R.id.ibSave);
         ibSave.setOnClickListener(this);
 
         ibDelete = (ImageButton) view.findViewById(R.id.ibDelete);
         if(iPos > -1) {
-            ibDelete.setClickable(true);
+            ibDelete.setVisibility(View.VISIBLE);
             loadFilm();
+        }
+        else {
+            ibDelete.setVisibility(View.INVISIBLE);
         }
         ibDelete.setOnClickListener(this);
 
@@ -119,6 +127,19 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public boolean onLongClick(View v) {
+        String query = URLEncoder.encode(edTitle.getText().toString());
+        String url = "https://www.google.de/search?site=&tbm=isch&source=hp&biw=1244&bih=954&q=plakat+" + query;
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
+
+        return false;
+    }
+
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivCover:
@@ -130,9 +151,33 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.ibDelete:
-                deleteEntry();
+                doShowAlertDialog();
                 break;
         }
+    }
+
+    private void doShowAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Film löschen");
+        builder.setMessage("Wollen Sie wirklich den Film löschen?");
+        builder.setCancelable(true);
+        builder.setIcon(R.mipmap.ic_important);
+
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteEntry();
+            }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void deleteEntry() {
@@ -228,21 +273,24 @@ public class FgmInfos extends Fragment implements View.OnClickListener {
 
     // bis kitkat (< 4.4)
     protected void onActivityResultOlder(int requestCode, int resultCode, Intent data) {
-        fileUri = data.getData();
-        if (requestCode == RQ_GALLERY_PICK) {
-            Bitmap bmFotoOrig;
-            try {
-                bmFotoOrig = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), fileUri);
-                Bitmap bmFoto = Bitmap.createScaledBitmap(bmFotoOrig, 160, 226, false);
-                ivCover.setImageBitmap(bmFoto);
-                saveEntry();
-                saveImage();
+        if(data != null) {
+            fileUri = data.getData();
+            if (requestCode == RQ_GALLERY_PICK) {
+                Bitmap bmFotoOrig;
+                try {
+                    bmFotoOrig = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), fileUri);
+                    Bitmap bmFoto = Bitmap.createScaledBitmap(bmFotoOrig, 160, 226, false);
+                    ivCover.setImageBitmap(bmFoto);
+                    saveEntry();
+                    saveImage();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                this.getActivity().getContentResolver().delete(fileUri, null, null);
             }
-            catch (FileNotFoundException e) { e.printStackTrace(); }
-            catch (IOException e) { e.printStackTrace(); }
-        }
-        else {
-            this.getActivity().getContentResolver().delete(fileUri, null, null);
         }
     }
 

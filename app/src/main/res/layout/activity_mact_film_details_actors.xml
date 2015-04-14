@@ -13,7 +13,8 @@
             android:id="@+id/ivActorFoto"
             android:src="@mipmap/ic_actor"
             android:layout_marginTop="10dp"
-            android:contentDescription="@string/sActorFoto" />
+            android:contentDescription="@string/sActorFoto"
+            android:layout_marginLeft="5dp" />
 
         <EditText
             android:layout_width="match_parent"

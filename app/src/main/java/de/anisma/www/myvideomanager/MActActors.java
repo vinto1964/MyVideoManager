@@ -49,7 +49,7 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
     }
 
     private void loadActorList(String whereClause) {
-        myApp.dbVideo.loadAllActors(myApp.listActorItems, whereClause, -1);
+        myApp.dbVideo.loadAllActors(myApp.listActorItems, whereClause);
         actorListAdapter = new ActorListAdapter(this, R.layout.listview_actors, myApp.listActorItems);
         lvActorslist.setAdapter(actorListAdapter);
         lvActorslist.setOnItemClickListener(this);
@@ -59,7 +59,7 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
     @Override
     protected void onResume() {
         super.onResume();
-        myApp.dbVideo.loadAllActors(myApp.listActorItems, "", -1);
+        myApp.dbVideo.loadAllActors(myApp.listActorItems, "");
         actorListAdapter.notifyDataSetChanged();
     }
 
@@ -91,12 +91,12 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
         switch (v.getId()) {
             case R.id.ibSave:
                 Intent intentActor = new Intent(this, SActActors.class);
-                intentActor.putExtra("Position", -1);
+                intentActor.putExtra("position", -1);
                 startActivity(intentActor);
                 break;
 
             case R.id.ibSearchActor:
-                myApp.dbVideo.loadAllActors(myApp.listActorItems, edSearchActor.getText().toString(), -1);
+                myApp.dbVideo.loadAllActors(myApp.listActorItems, edSearchActor.getText().toString());
                 actorListAdapter.notifyDataSetChanged();
                 ibDeleteSearchActor.setVisibility(View.VISIBLE);
                 break;
@@ -111,7 +111,7 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this, SActActors.class);
-        intent.putExtra("Position", position);
+        intent.putExtra("position", position);
         startActivity(intent);
 
     }

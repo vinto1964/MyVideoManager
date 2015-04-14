@@ -95,7 +95,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.ibFilmAdd:
                 //Intent intent = new Intent(this, MActFilmDetails.class);
                 Intent intentFilm = new Intent(this, TActFilmDetails.class);
-                intentFilm.putExtra("Position", iPos);
+                intentFilm.putExtra("position", iPos);
                 startActivity(intentFilm);
                 break;
 
@@ -129,7 +129,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, TActFilmDetails.class);
-                intent.putExtra("Position", position);
+                intent.putExtra("position", position);
                 startActivity(intent);
             }
         });

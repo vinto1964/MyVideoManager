@@ -18,6 +18,7 @@ import android.widget.Switch;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 
@@ -32,7 +33,7 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
     
     EditText edLastName, edFirstName, edBirthday, edVita;
     Switch swSex;
-    ImageButton ibSave, ibDelActor;
+    ImageButton ibSave, ibDelActor, ibGoogleWS;
     int iPos = -1;
     int iActorID = -1;
     Uri fileUri, targetUri;
@@ -45,8 +46,8 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
 
         myApp = (AppGlobal) getApplication();
         Intent intent = getIntent();
-        iPos = intent.getIntExtra("Position", -1);
-        iActorID = intent.getIntExtra("ActorID", -1);
+        iPos = intent.getIntExtra("position", -1);
+        iActorID = intent.getIntExtra("actorID", -1);
 
 
         ivActorFoto = (ImageView) findViewById(R.id.ivActorFoto);
@@ -58,9 +59,11 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
         edVita      = (EditText) findViewById(R.id.edVita);       
         ibSave      = (ImageButton) findViewById(R.id.ibSave);
         ibDelActor  = (ImageButton) findViewById(R.id.ibDelActor);
+        ibGoogleWS  = (ImageButton) findViewById(R.id.ibGoogleWebsearch);
         swSex       = (Switch) findViewById(R.id.swSex);
         ibSave.setOnClickListener(this);
         ibDelActor.setOnClickListener(this);
+        ibGoogleWS.setOnClickListener(this);
 
         if(iPos > -1) {
             actor = myApp.dbVideo.loadActor(myApp.listActorItems.get(iPos).getlActor_ID());
@@ -71,8 +74,6 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
             loadActor();
         }
     }
-
-
 
     private void loadActor() {
 
@@ -98,7 +99,6 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
         else {
             targetUri = Uri.parse(actor.getsImage().toString().toString());
         }
-
     }
 
 
@@ -140,7 +140,20 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
             case R.id.ivActorFoto:
                 loadActorImage();
                 break;
+
+            case R.id.ibGoogleWebsearch:
+                findFotoWithBrowser();
+                break;
         }
+    }
+
+    private void findFotoWithBrowser() {
+        String query = URLEncoder.encode(edLastName.getText().toString() + "+" + edFirstName.getText().toString());
+        String url = "https://www.google.de/search?site=&tbm=isch&source=hp&biw=1244&bih=954&q=" + query;
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 
     private void saveActor() {
@@ -209,21 +222,24 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
 
     // bis kitkat (< 4.4)
     protected void onActivityResultOlder(int requestCode, int resultCode, Intent data) {
-        fileUri = data.getData();
-        if (requestCode == RQ_GALLERY_PICK) {
-            Bitmap bmFotoOrig;
-            try {
-                bmFotoOrig = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUri);
-                Bitmap bmFoto = Bitmap.createScaledBitmap(bmFotoOrig, 100, 100, false);
-                ivActorFoto.setImageBitmap(bmFoto);
-                saveActor();
-                saveImage();
+        if(data != null) {
+            fileUri = data.getData();
+            if (requestCode == RQ_GALLERY_PICK) {
+                Bitmap bmFotoOrig;
+                try {
+                    bmFotoOrig = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUri);
+                    Bitmap bmFoto = Bitmap.createScaledBitmap(bmFotoOrig, 100, 100, false);
+                    ivActorFoto.setImageBitmap(bmFoto);
+                    saveActor();
+                    saveImage();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                getContentResolver().delete(fileUri, null, null);
             }
-            catch (FileNotFoundException e) { e.printStackTrace(); }
-            catch (IOException e) { e.printStackTrace(); }
-        }
-        else {
-            getContentResolver().delete(fileUri, null, null);
         }
     }
 
@@ -319,3 +335,4 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
         super.onResume();
     }
 }
+

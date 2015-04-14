@@ -336,8 +336,41 @@ public class CHDatabase extends SQLiteOpenHelper {
         return lResult;
     }
 
+    public List loadActorsForDialog(List<DTActor> actorsList, long filmID) {
+        if(actorsList == null) {
+            actorsList = new ArrayList<DTActor>();
+        }
+        else {
+            actorsList.clear();
+        }
+        SQLiteDatabase db = null;
+        String sQuery = "SELECT * FROM " + TBLPEOPLE + " p JOIN " + TBLPERSONSIS + " pi ON (p." + ID_PERSON + " = pi." + ID_PERSON + ") WHERE pi." + ID_FILM + " = " + filmID +
+                        " ORDER BY pi." + ROLEORDER + " ASC";
 
-    public List loadAllActors(List<DTActor> actorsList, String whereClause, long filmID) {
+        try {
+            db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(sQuery, null);
+            if(cursor.moveToFirst()) {
+                do {
+                    long lActorID = cursor.getLong(0);
+                    String sFirstname   = cursor.getString(1);
+                    String sLastname    = cursor.getString(2);
+                    String sBirthday    = cursor.getString(3);
+                    String sSex         = cursor.getString(4);
+                    String sImage       = cursor.getString(5);
+                    String sVita        = cursor.getString(6);
+
+                    actorsList.add(new DTActor(lActorID, sFirstname, sLastname, sSex, sBirthday, sImage, sVita));
+
+                } while(cursor.moveToNext());
+            }
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+        return actorsList;
+    }
+
+    public List loadAllActors(List<DTActor> actorsList, String whereClause) {
         if(actorsList == null) {
             actorsList = new ArrayList<DTActor>();
         }
@@ -349,9 +382,6 @@ public class CHDatabase extends SQLiteOpenHelper {
         String sQuery = "SELECT * FROM " + TBLPEOPLE ;
         if(!whereClause.isEmpty()) {
             sQuery += " WHERE " + LASTNAME + " LIKE '%" + whereClause + "%' OR " + FIRSTNAME + " LIKE '%" + whereClause + "%'";
-        }
-        if(filmID > -1) {
-            sQuery += " WHERE " + ID_FILM + " = " + filmID;
         }
 
         try {
@@ -389,7 +419,6 @@ public class CHDatabase extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery(sQuery,  new String[] {String.valueOf(actorID)});
             if(cursor.moveToFirst()) {
                 do {
-
                     long lActorID = cursor.getLong(0);
                     String sFirstname = cursor.getString(1);
                     String sLastname = cursor.getString(2);
@@ -397,7 +426,6 @@ public class CHDatabase extends SQLiteOpenHelper {
                     String sSex = cursor.getString(4);
                     String sImage = cursor.getString(5);
                     String sVita = cursor.getString(6);
-
                     actorList.add(new DTActor(lActorID, sFirstname, sLastname, sBirthday, sSex, sImage, sVita));
                 } while (cursor.moveToNext());
             }
@@ -407,36 +435,44 @@ public class CHDatabase extends SQLiteOpenHelper {
         return actorList.get(0);
     }
 
-    public DTActor loadActorForDialog(long filmID) {
+    public DTActorRole loadActorForRole(long filmID, long personID) {
         SQLiteDatabase db = null;
 
-        String sQuery = "SELECT pi." + ROLEORDER + ", r." + ROLE + ", p." + FIRSTNAME + ", p." + LASTNAME + " FROM " + TBLPERSONSIS +
-                        " pi JOIN " + TBLROLES + " r ON (pi." + ID_ROLE + " = r." + ID_ROLE + ") JOIN " + TBLPEOPLE + " p ON (pi" +
-                        ID_PERSON + " = p." + ID_PERSON + ") WHERE pi." + ID_FILM + " = ? ORDER BY pi." + ROLEORDER + " ASC";
-        List<DTActor> actorList = new ArrayList<DTActor>();
+        int iRoleOrder = -1;
+        String sRole = "";
+        String sFirstname = "";
+        String sLastname = "";
+        String sIMage = "";
+
+        String sQuery_1 = "SELECT p." + FIRSTNAME + ", p." + LASTNAME + ", p." + IMAGE + " FROM " + TBLPEOPLE +
+                        " p JOIN " + TBLPERSONSIS + " pi ON (pi." + ID_PERSON + " = p." + ID_PERSON +
+                        ") WHERE pi." + ID_FILM + " = ? AND pi." + ID_PERSON + " = ?";
+
+        String sQuery_2 =   "SELECT pi." + ROLEORDER + ", r." + ROLE + " FROM " + TBLPERSONSIS +
+                            " pi JOIN " + TBLROLES + " r ON (pi." + ID_ROLE + " = r." + ID_ROLE + ") " +
+                            " WHERE pi." + ID_FILM + " = ? AND pi." + ID_PERSON + " = ?";
+        List<DTActorRole> listActorRole = new ArrayList<DTActorRole>();
 
         try {
             db = this.getReadableDatabase();
-            Cursor cursor = db.rawQuery(sQuery,  new String[] {String.valueOf(filmID)});
-            if(cursor.moveToFirst()) {
-                do {
-
-                    int iRoleOrder = cursor.getInt(0);
-                    String sRoel = cursor.getString(1);
-                    String sFirstname = cursor.getString(2);
-                    String sLastname = cursor.getString(3);
-
-
-
-                    //actorList.add(new DTActor(sFirstname, sLastname));
-                } while (cursor.moveToNext());
+            Cursor cursor1 = db.rawQuery(sQuery_1,  new String[] {String.valueOf(filmID), String.valueOf(personID)});
+            if(cursor1.moveToFirst()) {
+                sFirstname   = cursor1.getString(0);
+                sLastname    = cursor1.getString(1);
+                sIMage       = cursor1.getString(2);
             }
+
+            Cursor cursor2 = db.rawQuery(sQuery_2,  new String[] {String.valueOf(filmID), String.valueOf(personID)});
+            if(cursor2.moveToFirst()) {
+                iRoleOrder  = cursor2.getInt(0);
+                sRole       = cursor2.getString(1);
+            }
+
         }
         catch (Exception ex) {}
         finally { if(db != null){db.close();} }
-        return actorList.get(0);
+        return new DTActorRole(personID, iRoleOrder, sRole, sFirstname, sLastname, sIMage);
     }
-
 
     public DTActor loadActor(String firstname, String lastname) {
         SQLiteDatabase db = null;
