@@ -104,6 +104,7 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
             case R.id.ibDeleteSearchArctor:
                 loadActorList("");
                 ibDeleteSearchActor.setVisibility(View.INVISIBLE);
+                edSearchActor.setText("");
                 break;
         }
     }

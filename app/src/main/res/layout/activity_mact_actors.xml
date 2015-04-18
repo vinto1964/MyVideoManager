@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -11,7 +11,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:id="@+id/linearLayout4">
 
         <EditText
             android:layout_width="wrap_content"
@@ -33,14 +34,26 @@
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="323dp"
+        android:layout_height="wrap_content"
         android:id="@+id/lvActorslist"
-        android:choiceMode="singleChoice" />
+        android:choiceMode="singleChoice"
+        android:drawSelectorOnTop="false"
+        android:headerDividersEnabled="false"
+        android:footerDividersEnabled="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/linearLayout3"
+        android:layout_below="@+id/linearLayout4" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content"
+        android:gravity="top|right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayout3">
 
         <ImageButton
             android:layout_width="50dp"
@@ -48,13 +61,15 @@
             android:id="@+id/ibSave"
             android:src="@mipmap/ic_add_actor"
             android:scaleType="fitCenter"
-            android:contentDescription="@string/sShowActor" />
+            android:contentDescription="@string/sShowActor"
+            android:layout_gravity="left" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:gravity="top|right">
+            android:layout_gravity="right"
+            android:gravity="right">
 
             <ImageButton
                 android:layout_width="50dp"
@@ -65,5 +80,7 @@
                 android:contentDescription="@string/sDeleteSearchActor"
                 android:visibility="invisible" />
         </LinearLayout>
+
     </LinearLayout>
-</LinearLayout>
+
+</RelativeLayout>

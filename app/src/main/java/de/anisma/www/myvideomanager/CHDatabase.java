@@ -651,7 +651,7 @@ public class CHDatabase extends SQLiteOpenHelper {
 
     public List loadAllGenre() {
         List<String> listGenre = new ArrayList<String>();
-        listGenre.add("Bitte auswählen:");
+        listGenre.add("Bitte Genre auswählen:");
         SQLiteDatabase db = null;
         String sQuery = "SELECT " + GENRE + " FROM " + TBLGENRE + " ORDER BY " + GENRE + " ASC";
         try {
@@ -691,25 +691,23 @@ public class CHDatabase extends SQLiteOpenHelper {
         return listGenre;
     }
 
-    public long isFilmGenre(long filmID, String genre){
+    public boolean isFilmGenre(long filmID, String genre){
         long lResult = -1;
         SQLiteDatabase db = null;
-
+        boolean bTrue = false;
         try {
             db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery("SELECT " + ID_GENRE + " FROM " + TBLGENREIS + " WHERE " + ID_FILM + " = ? AND " + GENRE + " = '" + genre + "'",
                     new String[] {String.valueOf(filmID)});
-
-            if(cursor.moveToFirst()) {
-                lResult = cursor.getLong(0);
+            if (cursor.getCount() > 0 ) {
+                bTrue = true;
             }
         }
         catch (Exception ex) {}
         finally { if(db != null){db.close();} }
 
-        return lResult;
+        return bTrue;
     }
-
 
 
     public void insertGenreIs(long filmID, long genreID){
@@ -801,12 +799,32 @@ public class CHDatabase extends SQLiteOpenHelper {
         return lResult;
     }
 
-    public long checkPersonIs(long id_film, long id_person, long id_function){
+    public boolean checkPersonIs(long id_film, long id_person, long id_function){
+
+        SQLiteDatabase db = null;
+        boolean bool = false;
+        String sQuery = "SELECT * FROM " + TBLPERSONSIS + " WHERE " + ID_FILM + " = ? AND " + ID_PERSON + " = ? AND " + ID_FUNCTION + " = ? ";
+        try {
+            db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(sQuery, new String[] {String.valueOf(id_film), String.valueOf(id_person), String.valueOf(id_function)});
+            if(cursor.getCount() > 0) {
+                bool = true;
+            }
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+        return bool;
+    }
+
+    public long checkFunction(String function) {
         long lResult = -1;
         SQLiteDatabase db = null;
-        String sQuery = "SELECT * FROM " + TBLPERSONSIS + " WHERE " + ID_FILM + " = ? AND " + ID_PERSON + " = ? AND " + ID_ROLE + " = ? ";
+
+        String sQuery = "SELECT * FROM " + TBLFUNCTIONS + " WHERE " + FUNCTION + " LIKE '" + function + "';";
         try {
-            Cursor cursor = db.rawQuery(sQuery, new String[] {String.valueOf(id_film), String.valueOf(id_person), String.valueOf(id_function)});
+            db = this.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(sQuery, null);
             if(cursor.moveToFirst()) {
                 lResult = cursor.getLong(0);
             }
@@ -838,6 +856,21 @@ public class CHDatabase extends SQLiteOpenHelper {
         catch (Exception ex) {}
         finally { if(db != null){db.close();} }
         return lResult;
+    }
+
+    public void updatePersonIs(long id_film, long id_person, long id_function, long id_role, int role_order) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(ID_ROLE, id_role);
+            cv.put(ROLEORDER, role_order);
+            db.update(TBLPERSONSIS, cv, ID_FILM + " = ? AND " + ID_PERSON + " = ? AND " + ID_FUNCTION + " = ?",
+                      new String[] {String.valueOf(id_film), String.valueOf(id_person), String.valueOf(id_function)});
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+
     }
 
     public List loadFilmActorsList(long id_film) {

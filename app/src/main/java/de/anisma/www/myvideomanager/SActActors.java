@@ -76,9 +76,6 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
     }
 
     private void loadActor() {
-
-//        DTActor actor = myApp.dbVideo.loadActor(myApp.listActorItems.get(iPos).getlActor_ID());
-
         edLastName.setText(actor.getsActorLastName());
         edFirstName.setText(actor.getsActorFirstName());
         edBirthday.setText(actor.getsBirthday());
@@ -212,43 +209,43 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (android.os.Build.VERSION.SDK_INT < 19) { //dies für api < kitkat
-            onActivityResultOlder(requestCode, resultCode, data );
-        } else {
-            onActivityResultKitKat(requestCode, resultCode, data );
+        if(data != null) {
+            if (android.os.Build.VERSION.SDK_INT < 19) { //dies für api < kitkat
+                onActivityResultOlder(requestCode, resultCode, data);
+            } else {
+                onActivityResultKitKat(requestCode, resultCode, data);
+            }
         }
-
     }
 
     // bis kitkat (< 4.4)
     protected void onActivityResultOlder(int requestCode, int resultCode, Intent data) {
-        if(data != null) {
-            fileUri = data.getData();
-            if (requestCode == RQ_GALLERY_PICK) {
-                Bitmap bmFotoOrig;
-                try {
-                    bmFotoOrig = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUri);
-                    Bitmap bmFoto = Bitmap.createScaledBitmap(bmFotoOrig, 100, 100, false);
-                    ivActorFoto.setImageBitmap(bmFoto);
-                    saveActor();
-                    saveImage();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                getContentResolver().delete(fileUri, null, null);
+        fileUri = data.getData();
+        if (requestCode == RQ_GALLERY_PICK) {
+            Bitmap bmFotoOrig;
+            try {
+                bmFotoOrig = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUri);
+                Bitmap bmFoto = Bitmap.createScaledBitmap(bmFotoOrig, 100, 100, false);
+                ivActorFoto.setImageBitmap(bmFoto);
+                saveActor();
+                saveImage();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        } else {
+            getContentResolver().delete(fileUri, null, null);
         }
     }
 
     // ab kitkat (>= android 4.4)
     protected void onActivityResultKitKat(int requestCode, int resultCode, Intent data) {
-        if(requestCode == RQ_GALLERY_PICK) {
+        if (requestCode == RQ_GALLERY_PICK) {
             Uri mUri = null;
             if (data != null) {
                 mUri = data.getData();
+                targetUri = mUri;
             }
             if (mUri == null) {
                 mUri = targetUri;
@@ -262,15 +259,16 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
                 ivActorFoto.setImageBitmap(bmFoto);
                 saveActor();
                 saveImage();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            catch (FileNotFoundException e) { e.printStackTrace(); }
-            catch (IOException e) { e.printStackTrace(); }
-        }
-        else {
+        } else {
             try {
                 getContentResolver().delete(fileUri, null, null);
+            } catch (Exception e) {
             }
-            catch (Exception e) { }
         }
     }
 

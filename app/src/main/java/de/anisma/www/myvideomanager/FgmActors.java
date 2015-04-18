@@ -163,15 +163,26 @@ public class FgmActors extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.ibSave:
+                saveDatas();
+                break;
+
+            case R.id.ibEditActor:
+                showDialog();
+                break;
+
+        }
+    }
+
+    private void saveDatas() {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
         DTFilmItem film = myApp.ldFilmItems.get(iPos);
         int checkOrder = -1;
-        switch(v.getId()) {
-            case R.id.ibSave:
-                long id_role = -1;
+        long id_role = -1;
 
-                // Nur wenn Vorname und Nachname eingegeben worden sind
-                if(!edActFirstName.getText().toString().isEmpty() && !edActLastName.getText().toString().isEmpty()) {
+        // Nur wenn Vorname und Nachname eingegeben worden sind
+        if(!edActFirstName.getText().toString().isEmpty() && !edActLastName.getText().toString().isEmpty()) {
 
                     /* Überprüfen:  1. ob Actor in der DB vorhanden ist
                                     2. Wenn Schauspieler => Role schon vorhanden? / Wenn Regisseur => nicht relevant
@@ -181,55 +192,58 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                        Wenn Actor als Person vorhanden => nur Role
                        Wenn Person + Role vorhanden => person_is
                     */
-                    if(!edActRoleOrder.getText().toString().isEmpty()) {
-                        checkOrder = Integer.parseInt(edActRoleOrder.getText().toString());
-                    }
+            if(!edActRoleOrder.getText().toString().isEmpty()) {
+                checkOrder = Integer.parseInt(edActRoleOrder.getText().toString());
+            }
 
-                    if((checkOrder > -1) && (edActRole.getText().toString().isEmpty())) {
-                        Toast.makeText(this.getActivity().getBaseContext(), "Bitte geben Sie eine Role ein, oder löschen Sie die Reihenfolge!", Toast.LENGTH_SHORT).show();
-                    }
+            if((checkOrder > -1) && (edActRole.getText().toString().isEmpty())) {
+                Toast.makeText(this.getActivity().getBaseContext(), "Bitte geben Sie eine Role ein, oder löschen Sie die Reihenfolge!", Toast.LENGTH_SHORT).show();
+            }
 
-                    // 1
-                    if(myApp.dbVideo.checkActor(edActFirstName.getText().toString(), edActLastName.getText().toString()) < 0) { // Actor nicht vorhanden
-                        saveActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
-                    }
-                    DTActor actor = myApp.dbVideo.loadActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
+            // 1
+            if(myApp.dbVideo.checkActor(edActFirstName.getText().toString(), edActLastName.getText().toString()) < 0) { // Actor nicht vorhanden
+                saveActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
+            }
+            DTActor actor = myApp.dbVideo.loadActor(edActFirstName.getText().toString(), edActLastName.getText().toString());
 
-                    // 2
-                    if(spFunction.getSelectedItemPosition() == 0){  // Für ein Schauspieler
-                        if(!edActRole.getText().toString().isEmpty()) {
-                            if(myApp.dbVideo.checkRole(edActRole.getText().toString()) < 0 ) { // Role schon in der DB
-                                myApp.dbVideo.insertRole(edActRole.getText().toString());
-                            }
-                            id_role = myApp.dbVideo.checkRole(edActRole.getText().toString());
-                        }
-                        else {
-                            id_role = -1;
-                        }
+            // 2
+            if(spFunction.getSelectedItemPosition() == 0){  // Für ein Schauspieler
+                if(!edActRole.getText().toString().isEmpty()) {
+                    if(myApp.dbVideo.checkRole(edActRole.getText().toString()) < 0 ) { // Role schon in der DB
+                        myApp.dbVideo.insertRole(edActRole.getText().toString());
                     }
-
-
-                    // 3
-                    if(myApp.dbVideo.checkPersonIs(film.getlFilm_ID(), actor.getlActor_ID(), spFunction.getSelectedItemPosition()) < 0){
-                        myApp.dbVideo.insertPersonIs(   film.getlFilm_ID(),
-                                                        actor.getlActor_ID(),
-                                                        spFunction.getSelectedItemPosition(),
-                                                        id_role,
-                                                        checkOrder);
-                        loadPersonList();
-                    }
-                    clearFields();
+                    id_role = myApp.dbVideo.checkRole(edActRole.getText().toString());
                 }
                 else {
-                    Toast.makeText(this.getActivity().getBaseContext(), "Bitte geben Sie Vorname und Nachnamen ein!", Toast.LENGTH_SHORT).show();
+                    id_role = -1;
                 }
-                break;
+            }
 
-            case R.id.ibEditActor:
-                showDialog();
-                break;
 
+            // 3
+            long function_id = myApp.dbVideo.checkFunction(String.valueOf(spFunction.getSelectedItem()));
+            if(!myApp.dbVideo.checkPersonIs(film.getlFilm_ID(), actor.getlActor_ID(), function_id)){ // Schauspieler für Film vorhanden
+                myApp.dbVideo.insertPersonIs(   film.getlFilm_ID(),
+                        actor.getlActor_ID(),
+                        function_id,
+                        id_role,
+                        checkOrder);
+                loadPersonList();
+            }
+            else {
+                myApp.dbVideo.updatePersonIs(   film.getlFilm_ID(),
+                        actor.getlActor_ID(),
+                        function_id,
+                        id_role,
+                        checkOrder);
+            }
+            clearFields();
         }
+        else {
+            Toast.makeText(this.getActivity().getBaseContext(), "Bitte geben Sie Vorname und Nachnamen ein!", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
     private void showDialog() {
@@ -278,6 +292,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
         edActRoleOrder.setText("");
         edActFirstName.setText("");
         edActLastName.setText("");
+        createFoto("@mipmap/ic_actor");
     }
 
     private void saveActor(String firstname, String lastname) {
@@ -313,7 +328,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
 
         if(uri.compareTo("@mipmap/ic_actor") == 0 || uri.isEmpty()){
             try {
-                btm = BitmapFactory.decodeResource(getResources(), R.drawable.cover);
+                btm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_actor);
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -339,6 +354,12 @@ public class FgmActors extends Fragment implements View.OnClickListener {
         }
         Bitmap scaledFoto = Bitmap.createScaledBitmap(btm, 70, 70, false);
         ivActorFoto.setImageBitmap(scaledFoto);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        saveDatas();
     }
 
 }

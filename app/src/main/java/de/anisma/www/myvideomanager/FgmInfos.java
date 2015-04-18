@@ -263,43 +263,43 @@ public class FgmInfos extends Fragment implements View.OnClickListener, View.OnL
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (android.os.Build.VERSION.SDK_INT < 19) { //dies für api < kitkat
-            onActivityResultOlder(requestCode, resultCode, data );
-        } else {
-            onActivityResultKitKat(requestCode, resultCode, data );
+        if(data != null) {
+            if (android.os.Build.VERSION.SDK_INT < 19) { //dies für api < kitkat
+                onActivityResultOlder(requestCode, resultCode, data);
+            } else {
+                onActivityResultKitKat(requestCode, resultCode, data);
+            }
         }
-
     }
 
     // bis kitkat (< 4.4)
     protected void onActivityResultOlder(int requestCode, int resultCode, Intent data) {
-        if(data != null) {
-            fileUri = data.getData();
-            if (requestCode == RQ_GALLERY_PICK) {
-                Bitmap bmFotoOrig;
-                try {
-                    bmFotoOrig = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), fileUri);
-                    Bitmap bmFoto = Bitmap.createScaledBitmap(bmFotoOrig, 160, 226, false);
-                    ivCover.setImageBitmap(bmFoto);
-                    saveEntry();
-                    saveImage();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                this.getActivity().getContentResolver().delete(fileUri, null, null);
+        fileUri = data.getData();
+        if (requestCode == RQ_GALLERY_PICK) {
+            Bitmap bmFotoOrig;
+            try {
+                bmFotoOrig = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), fileUri);
+                Bitmap bmFoto = Bitmap.createScaledBitmap(bmFotoOrig, 160, 226, false);
+                ivCover.setImageBitmap(bmFoto);
+                saveEntry();
+                saveImage();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        } else {
+            this.getActivity().getContentResolver().delete(fileUri, null, null);
         }
     }
 
     // ab kitkat (>= android 4.4)
     protected void onActivityResultKitKat(int requestCode, int resultCode, Intent data) {
-        if(requestCode == RQ_GALLERY_PICK) {
+        if (requestCode == RQ_GALLERY_PICK) {
             Uri mUri = null;
             if (data != null) {
                 mUri = data.getData();
+                targetUri = mUri;
             }
             if (mUri == null) {
                 mUri = targetUri;
@@ -313,15 +313,16 @@ public class FgmInfos extends Fragment implements View.OnClickListener, View.OnL
                 ivCover.setImageBitmap(bmFoto);
                 saveEntry();
                 saveImage();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            catch (FileNotFoundException e) { e.printStackTrace(); }
-            catch (IOException e) { e.printStackTrace(); }
-        }
-        else {
+        } else {
             try {
                 this.getActivity().getContentResolver().delete(fileUri, null, null);
+            } catch (Exception e) {
             }
-            catch (Exception e) { }
         }
     }
 
@@ -374,5 +375,14 @@ public class FgmInfos extends Fragment implements View.OnClickListener, View.OnL
         }
     }
 
-
+    /**
+     * Called when the fragment is visible to the user and actively running.
+     * This is generally
+     * tied to {@link android.app.Activity#onResume() Activity.onResume} of the containing
+     * Activity's lifecycle.
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

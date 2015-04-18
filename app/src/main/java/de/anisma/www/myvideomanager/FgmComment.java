@@ -31,7 +31,6 @@ public class FgmComment extends Fragment {
     RatingBar rbRating;
     Spinner spGenre;
     EditText edComment;
-    TextView tvGenre;
     ListView lvGenres;
     ArrayAdapter lvAdapt;
     List<String> genreList = new ArrayList<>();
@@ -75,9 +74,9 @@ public class FgmComment extends Fragment {
         spGenre.setAdapter(spAdapter);
 
         spGenre.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                saveDatas();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //saveDatas();
+                saveGenre();
                 reloadGenre();
                 spGenre.setSelection(0);
             }
@@ -87,7 +86,6 @@ public class FgmComment extends Fragment {
         });
 
         edComment   = (EditText) view.findViewById(R.id.edComment);
-        tvGenre     = (TextView) view.findViewById(R.id.tvGenre);
         lvGenres    = (ListView) view.findViewById(R.id.lvGenres);
         lvGenres.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -187,12 +185,16 @@ public class FgmComment extends Fragment {
             film.setsFilmComment(edComment.getText().toString());
             film.setfFilmRanking(rbRating.getRating());
             myApp.dbVideo.updateCommentRating(film);
+        }
+    }
 
-            genre = String.valueOf(spGenre.getSelectedItem());
+    private void saveGenre() {
+        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        DTFilmItem film = myApp.ldFilmItems.get(iPos);
+        genre = String.valueOf(spGenre.getSelectedItem());
 
-            if (!(myApp.dbVideo.isFilmGenre(film.getlFilm_ID(), genre) > -1)) {
-                myApp.dbVideo.insertGenreIs(film.getlFilm_ID(), myApp.dbVideo.getGenreID(genre));
-            }
+        if (!myApp.dbVideo.isFilmGenre(film.getlFilm_ID(), genre)) {
+            myApp.dbVideo.insertGenreIs(film.getlFilm_ID(), myApp.dbVideo.getGenreID(genre));
         }
     }
 

@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:weightSum="1"
         android:id="@+id/llMAHorSearch"
-        android:gravity="right">
+        android:gravity="top|right">
 
         <EditText
             android:layout_width="0dp"
@@ -37,13 +37,20 @@
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="330dp"
+        android:layout_height="wrap_content"
         android:id="@+id/lvMA"
-        android:choiceMode="singleChoice" />
+        android:choiceMode="singleChoice"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_below="@+id/llMAHorSearch" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="bottom"
+        android:id="@+id/relativeLayout">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -86,4 +93,4 @@
         </LinearLayout>
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>
