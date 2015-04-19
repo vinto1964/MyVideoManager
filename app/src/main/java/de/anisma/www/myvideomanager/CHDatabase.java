@@ -164,7 +164,6 @@ public class CHDatabase extends SQLiteOpenHelper {
         if(!whereClause.isEmpty()) {
             sQuery += " WHERE " + TITEL + " LIKE '%" + whereClause + "%'";
         }
-
         try{
             db = this.getReadableDatabase();
 
@@ -198,6 +197,65 @@ public class CHDatabase extends SQLiteOpenHelper {
                                                 iFilmDuration,
                                                 iFilmFSK,
                                                 iFilmEAN));
+                }
+                while (cursor.moveToNext());
+            }
+        }
+        catch (Exception ex) {
+            ;
+        }
+        finally {
+            if(db != null) {
+                db.close();
+            }
+        }
+    }
+
+    public void loadAllFilmsFromActor(List<DTFilmItem> filmlist, int actorID){
+        if(filmlist == null) {
+            filmlist = new ArrayList<DTFilmItem>();
+        }
+        else {
+            filmlist.clear();
+        }
+
+        SQLiteDatabase db = null;
+        String sQuery = "SELECT * FROM " + TBLVIDEOMANAGER + " v JOIN " + TBLPERSONSIS + " pi ON (v." + ID_FILM + " = pi." + ID_FILM + ") " +
+                        " WHERE pi." + ID_PERSON + " = " + actorID;
+
+        try{
+            db = this.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(sQuery, null);
+            if(cursor.moveToFirst()) {
+                do {
+                    long lFilmID = cursor.getLong(0);
+                    String sFilmTitle = cursor.getString(1);
+                    String sFilmSubtitle = cursor.getString(2);
+                    String sFilmOTitle = cursor.getString(3);
+                    int intFilmPubYear = cursor.getInt(4);
+                    String sFilmCountry = cursor.getString(5);
+                    String sFilmImage = cursor.getString(6);
+                    String sFilmPlot = cursor.getString(7);
+                    String sFilmComment = cursor.getString(8);
+                    float iFilmRanking = cursor.getInt(9);
+                    int iFilmDuration = cursor.getInt(10);
+                    int iFilmFSK = cursor.getInt(11);
+                    int iFilmEAN = cursor.getInt(12);
+
+                    filmlist.add(new DTFilmItem(lFilmID,
+                            sFilmTitle,
+                            sFilmSubtitle,
+                            sFilmOTitle,
+                            intFilmPubYear,
+                            sFilmCountry,
+                            sFilmImage,
+                            sFilmPlot,
+                            sFilmComment,
+                            iFilmRanking,
+                            iFilmDuration,
+                            iFilmFSK,
+                            iFilmEAN));
                 }
                 while (cursor.moveToNext());
             }
@@ -878,9 +936,11 @@ public class CHDatabase extends SQLiteOpenHelper {
 
         SQLiteDatabase db = null;
         //String sQuery = "SELECT " + GENRE + " FROM " + TBLGENRE + " g JOIN " + TBLGENREIS + " gi ON (g." + ID_GENRE + " = gi." + ID_GENRE + ") WHERE gi." + ID_FILM + " = ?";
-        String sQuery = "SELECT p." + ID_PERSON + ", " + FIRSTNAME + ", " + LASTNAME + " FROM " + TBLPEOPLE + " p JOIN " + TBLPERSONSIS + " pi ON (p." + ID_PERSON + " = pi." + ID_PERSON + ") WHERE " + ID_FILM + " = ? " +
+        String sQuery = "SELECT p." + ID_PERSON + ", " + FIRSTNAME + ", " + LASTNAME + ", r." + ROLE + " FROM " + TBLPEOPLE
+                        + " p JOIN " + TBLPERSONSIS + " pi ON (p." + ID_PERSON + " = pi." + ID_PERSON + ") "
+                        + " JOIN " + TBLROLES + " r ON (pi." + ID_ROLE + " = r." + ID_ROLE + ") " +
+                        "WHERE " + ID_FILM + " = ? " +
                         " ORDER BY " + ROLEORDER + " ASC, " + FIRSTNAME + " ASC ";
-
 
         try {
             db = this.getReadableDatabase();
@@ -890,8 +950,15 @@ public class CHDatabase extends SQLiteOpenHelper {
                     long id_Person = cursor.getLong(0);
                     String firstname = cursor.getString(1);
                     String lastname = cursor.getString(2);
+                    String role = cursor.getString(3);
 
-                    actorsList.add(firstname + ", " + lastname + "<" + id_Person);
+                    String sOutput = firstname + ", " + lastname;
+                    if(!role.isEmpty()) {
+                        sOutput += " (" + role + ")";
+                    }
+                    sOutput += "<" + id_Person;
+
+                    actorsList.add(sOutput);
                 } while (cursor.moveToNext());
             }
 

@@ -112,7 +112,10 @@ public class MActActors extends ActionBarActivity implements View.OnClickListene
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this, SActActors.class);
-        intent.putExtra("position", position);
+
+        String sConvert = "" + myApp.listActorItems.get(position).getlActor_ID();
+        intent.putExtra("actorID", Integer.parseInt(sConvert));
+//        intent.putExtra("position", position);
         startActivity(intent);
 
     }

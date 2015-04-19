@@ -88,6 +88,14 @@
                     android:src="@mipmap/ic_cancel_search"
                     android:visibility="invisible"
                     android:contentDescription="@string/sCancelSearch" />
+
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/ibNoFilmografy"
+                    android:src="@mipmap/ic_no_filmografy"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/sNoFilmografy" />
             </LinearLayout>
 
         </LinearLayout>

@@ -91,5 +91,7 @@
     <string name="sEditUser">Role des Schauspielers/in bearbeiten</string>
     <string name="sChoiceActor">Bitte wählen Sie aus:</string>
     <string name="sGoogleWebsearch">Foto im Web suchen</string>
+    <string name="sFilmografy">Filmografy</string>
+    <string name="sNoFilmografy">Selection löschen</string>
 
 </resources>

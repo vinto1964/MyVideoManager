@@ -152,6 +152,21 @@
             android:src="@mipmap/ic_delete_actor"
             android:scaleType="fitCenter"
             android:contentDescription="@string/sDeleteActor" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="right">
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/ibFilmografy"
+                android:src="@mipmap/ic_filmografy"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/sFilmografy" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

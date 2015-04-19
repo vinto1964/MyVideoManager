@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
     
     EditText edLastName, edFirstName, edBirthday, edVita;
     Switch swSex;
-    ImageButton ibSave, ibDelActor, ibGoogleWS;
+    ImageButton ibSave, ibDelActor, ibGoogleWS, ibFilmografy;
     int iPos = -1;
     int iActorID = -1;
     Uri fileUri, targetUri;
@@ -46,9 +47,8 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
 
         myApp = (AppGlobal) getApplication();
         Intent intent = getIntent();
-        iPos = intent.getIntExtra("position", -1);
         iActorID = intent.getIntExtra("actorID", -1);
-
+        iPos = intent.getIntExtra("position", -1);
 
         ivActorFoto = (ImageView) findViewById(R.id.ivActorFoto);
         ivActorFoto.setOnClickListener(this);
@@ -60,16 +60,20 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
         ibSave      = (ImageButton) findViewById(R.id.ibSave);
         ibDelActor  = (ImageButton) findViewById(R.id.ibDelActor);
         ibGoogleWS  = (ImageButton) findViewById(R.id.ibGoogleWebsearch);
+        ibFilmografy = (ImageButton) findViewById(R.id.ibFilmografy);
+        ibFilmografy.setVisibility(View.INVISIBLE);
         swSex       = (Switch) findViewById(R.id.swSex);
         ibSave.setOnClickListener(this);
         ibDelActor.setOnClickListener(this);
         ibGoogleWS.setOnClickListener(this);
+        ibFilmografy.setOnClickListener(this);
 
         if(iPos > -1) {
             actor = myApp.dbVideo.loadActor(myApp.listActorItems.get(iPos).getlActor_ID());
             loadActor();
         }
         if(iActorID > -1) {
+            ibFilmografy.setVisibility(View.VISIBLE);
             actor = myApp.dbVideo.loadActor(iActorID);
             loadActor();
         }
@@ -141,6 +145,12 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
             case R.id.ibGoogleWebsearch:
                 findFotoWithBrowser();
                 break;
+
+            case R.id.ibFilmografy:
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("actorID", iActorID);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -172,23 +182,29 @@ public class SActActors extends ActionBarActivity implements View.OnClickListene
             String firstname = edFirstName.getText().toString();
             String lastname = edLastName.getText().toString();
 
-            if(myApp.dbVideo.checkActor(firstname, lastname) > 0) { // Person vorhanden
-                myApp.dbVideo.updatePerson(new DTActor(myApp.dbVideo.checkActor(firstname, lastname),
-                        edFirstName.getText().toString(),
-                        edLastName.getText().toString(),
-                        edBirthday.getText().toString(),
-                        swSex.isChecked() ? "m" : "w",
-                        imagePfad,
-                        edVita.getText().toString()));
+            if(iActorID > -1) { // Person vorhanden
+                //myApp.dbVideo.updatePerson(new DTActor(myApp.dbVideo.checkActor(firstname, lastname),
+                myApp.dbVideo.updatePerson(new DTActor( iActorID,
+                                                        edFirstName.getText().toString(),
+                                                        edLastName.getText().toString(),
+                                                        edBirthday.getText().toString(),
+                                                        swSex.isChecked() ? "m" : "w",
+                                                        imagePfad,
+                                                        edVita.getText().toString()));
             }
             else { // Einfügen
-                myApp.dbVideo.insertActor(new DTActor(-1,
-                        edFirstName.getText().toString(),
-                        edLastName.getText().toString(),
-                        edBirthday.getText().toString(),
-                        swSex.isChecked() ? "m" : "w",
-                        imagePfad,
-                        edVita.getText().toString()));
+                if(myApp.dbVideo.checkActor(edFirstName.getText().toString(), edLastName.getText().toString()) < 0) {
+                    myApp.dbVideo.insertActor(new DTActor(-1,
+                            edFirstName.getText().toString(),
+                            edLastName.getText().toString(),
+                            edBirthday.getText().toString(),
+                            swSex.isChecked() ? "m" : "w",
+                            imagePfad,
+                            edVita.getText().toString()));
+                }
+                else {
+                    Toast.makeText(this, "Schauspieler/in schon vorhanden", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

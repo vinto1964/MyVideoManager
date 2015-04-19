@@ -36,9 +36,13 @@ public class FgmActors extends Fragment implements View.OnClickListener {
 
     AppGlobal myApp;
 
+    private final int ACTION_FROM_BUTTON = 1;
+    private final int ACTION_FROM_DESTROY = 0;
+
     int val;
     int iPos = -1;
     int iDeleteActor = -1;
+
 
     ImageView ivActorFoto;
     EditText edActRole, edActRoleOrder, edActFirstName, edActLastName, edPlot;
@@ -165,7 +169,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.ibSave:
-                saveDatas();
+                saveDatas(ACTION_FROM_BUTTON);
                 break;
 
             case R.id.ibEditActor:
@@ -175,7 +179,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void saveDatas() {
+    private void saveDatas(int source) {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
         DTFilmItem film = myApp.ldFilmItems.get(iPos);
         int checkOrder = -1;
@@ -219,7 +223,6 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                 }
             }
 
-
             // 3
             long function_id = myApp.dbVideo.checkFunction(String.valueOf(spFunction.getSelectedItem()));
             if(!myApp.dbVideo.checkPersonIs(film.getlFilm_ID(), actor.getlActor_ID(), function_id)){ // Schauspieler für Film vorhanden
@@ -240,7 +243,9 @@ public class FgmActors extends Fragment implements View.OnClickListener {
             clearFields();
         }
         else {
-            Toast.makeText(this.getActivity().getBaseContext(), "Bitte geben Sie Vorname und Nachnamen ein!", Toast.LENGTH_SHORT).show();
+            if(source > 0) {
+                Toast.makeText(this.getActivity().getBaseContext(), "Bitte geben Sie Vorname und Nachnamen ein!", Toast.LENGTH_SHORT).show();
+            }
         }
 
 
@@ -359,7 +364,15 @@ public class FgmActors extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        saveDatas();
+        saveDatas(ACTION_FROM_DESTROY);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(iPos > -1) {
+           loadDatas();
+        }
     }
 
 }

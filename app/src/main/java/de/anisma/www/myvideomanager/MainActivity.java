@@ -22,10 +22,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     FilmListAdapter flAdapter;
     EditText edMASearch;
     ImageView imgMASearch;
-    ImageButton ibFilmAdd, ibShowActor, ibCancelSearch;
+    ImageButton ibFilmAdd, ibShowActor, ibCancelSearch, ibNoFilmografy;
     ListView lvMA;
 
     int iPos = -1;
+    int iActorID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         myApp = (AppGlobal) getApplication();
+        Intent intent = getIntent();
+        iActorID = intent.getIntExtra("actorID", -1);
 
         myApp.dbVideo = new CHDatabase(this);
 
@@ -51,7 +54,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         ibCancelSearch = (ImageButton) findViewById(R.id.ibCancelSearch);
         ibCancelSearch.setOnClickListener(this);
 
-        loadFilmList("");
+        ibNoFilmografy = (ImageButton) findViewById(R.id.ibNoFilmografy);
+        ibNoFilmografy.setOnClickListener(this);
+
+        if(iActorID > -1) {
+            ibNoFilmografy.setVisibility(View.VISIBLE);
+            loadFilmListFromActor(iActorID);
+        }
+        else {
+            ibNoFilmografy.setVisibility(View.INVISIBLE);
+            loadFilmList("");
+        }
     }
 
 
@@ -116,6 +129,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 ibCancelSearch.setVisibility(View.INVISIBLE);
                 break;
 
+            case R.id.ibNoFilmografy:
+                ibNoFilmografy.setVisibility(View.INVISIBLE);
+                loadFilmList("");
+                break;
+
         }
     }
 
@@ -135,5 +153,23 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         });
 
     }
+
+    private void loadFilmListFromActor(int actorID) {
+        myApp.dbVideo.loadAllFilmsFromActor(myApp.ldFilmItems, actorID);
+
+        flAdapter = new FilmListAdapter(this, R.layout.ma_listview_filme, myApp.ldFilmItems);
+        lvMA.setAdapter(flAdapter);
+
+        lvMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, TActFilmDetails.class);
+                intent.putExtra("position", position);
+                startActivity(intent);
+            }
+        });
+
+    }
+
 
 }
