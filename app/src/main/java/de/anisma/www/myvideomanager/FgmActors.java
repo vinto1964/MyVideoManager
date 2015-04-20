@@ -99,15 +99,6 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                 startActivity(intent);
             }
         });
-        lvActors.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                // Dialog Eintrag löschen?
-                iDeleteActor = position;
-                doShowAlertDialog();
-                return false;
-            }
-        });
 
         spFunction      = (Spinner) view.findViewById(R.id.spFunction);
 
@@ -158,9 +149,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
     private void loadDatas() {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
         DTFilmItem film = myApp.ldFilmItems.get(iPos);
-
         edActRole.setHint( getString(R.string.sRole) + " in " + film.getsFilmTitle());
-
         loadPersonList();
     }
 
@@ -181,7 +170,16 @@ public class FgmActors extends Fragment implements View.OnClickListener {
 
     private void saveDatas(int source) {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
-        DTFilmItem film = myApp.ldFilmItems.get(iPos);
+        DTFilmItem film;
+        if(iPos > -1) {
+            film = myApp.ldFilmItems.get(iPos);
+        }
+        else {
+
+            int pos = myApp.ldFilmItems.size()-1;
+
+            film = myApp.ldFilmItems.get(myApp.ldFilmItems.size()-1);
+        }
         int checkOrder = -1;
         long id_role = -1;
 
@@ -191,7 +189,6 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                     /* Überprüfen:  1. ob Actor in der DB vorhanden ist
                                     2. Wenn Schauspieler => Role schon vorhanden? / Wenn Regisseur => nicht relevant
                                     3. ob Actor schon in zusammenhang mit Film und Role eingetragen ist ==> Actor kann mehrere Rolen spielen
-
 
                        Wenn Actor als Person vorhanden => nur Role
                        Wenn Person + Role vorhanden => person_is
@@ -231,7 +228,6 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                         function_id,
                         id_role,
                         checkOrder);
-                loadPersonList();
             }
             else {
                 myApp.dbVideo.updatePersonIs(   film.getlFilm_ID(),
@@ -240,6 +236,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                         id_role,
                         checkOrder);
             }
+            loadPersonList();
             clearFields();
         }
         else {
@@ -247,8 +244,6 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                 Toast.makeText(this.getActivity().getBaseContext(), "Bitte geben Sie Vorname und Nachnamen ein!", Toast.LENGTH_SHORT).show();
             }
         }
-
-
     }
 
     private void showDialog() {
@@ -256,7 +251,7 @@ public class FgmActors extends Fragment implements View.OnClickListener {
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.fgmactors_edit_actor_dialog);
         //dialog.setTitle(Resources.getSystem().getString(R.string.sChoiceActor));
-        dialog.setTitle("Bitte wählen Sie aus:");
+        dialog.setTitle("Bitte auswählen zum Bearbeiten od. Long Touch zum Löschen aus der Liste:");
 
         final CCheckThis cto = new CCheckThis();
         final ListView lvForEditActor = (ListView) dialog.findViewById(R.id.lvForEditActor);
@@ -272,6 +267,14 @@ public class FgmActors extends Fragment implements View.OnClickListener {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 loadRoleForActor(actorsListForDialog.get(position).getlActor_ID());
                 dialog.dismiss();
+            }
+        });
+        lvForEditActor.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                iDeleteActor = position;
+                doShowAlertDialog();
+                return false;
             }
         });
 
@@ -309,16 +312,25 @@ public class FgmActors extends Fragment implements View.OnClickListener {
                     "",
                     "");
         myApp.dbVideo.insertActor(actor);
-
     }
 
     private void loadPersonList() {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+        List<DTActorRole>listActorRoles = new ArrayList<DTActorRole>();
         List<String>actorsListSimple = new ArrayList<>();
         actorsList = myApp.dbVideo.loadFilmActorsList(myApp.ldFilmItems.get(iPos).getlFilm_ID());
         for(int i = 0; i < actorsList.size(); i++)
         {
-            actorsListSimple.add(actorsList.get(i).substring(0, actorsList.get(i).indexOf("<")));
+            String personID = actorsList.get(i).substring(actorsList.get(i).indexOf("<") + 1);
+
+            listActorRoles.add(myApp.dbVideo.loadActorForRole(myApp.ldFilmItems.get(iPos).getlFilm_ID(), Integer.parseInt(personID)));
+        }
+        for(DTActorRole dtar : listActorRoles) {
+            String sOutput = dtar.getsARFirstName() + ", " + dtar.getsARLastName();
+            if(!dtar.getsARRoleInFilm().isEmpty()) {
+                sOutput += " (" + dtar.getsARRoleInFilm() + ")";
+            }
+            actorsListSimple.add(sOutput);
         }
         actorListAdapter = new ArrayAdapter(this.getActivity().getBaseContext(), android.R.layout.simple_list_item_1, actorsListSimple);
         lvActors.setAdapter(actorListAdapter);
@@ -373,6 +385,12 @@ public class FgmActors extends Fragment implements View.OnClickListener {
         if(iPos > -1) {
            loadDatas();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 
 }

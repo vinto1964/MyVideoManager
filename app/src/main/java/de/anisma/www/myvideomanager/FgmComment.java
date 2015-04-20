@@ -189,12 +189,14 @@ public class FgmComment extends Fragment {
     }
 
     private void saveGenre() {
-        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
-        DTFilmItem film = myApp.ldFilmItems.get(iPos);
-        genre = String.valueOf(spGenre.getSelectedItem());
+        if(iPos > -1) {
+            AppGlobal myApp = (AppGlobal) getActivity().getApplication();
+            DTFilmItem film = myApp.ldFilmItems.get(iPos);
+            genre = String.valueOf(spGenre.getSelectedItem());
 
-        if (!myApp.dbVideo.isFilmGenre(film.getlFilm_ID(), genre)) {
-            myApp.dbVideo.insertGenreIs(film.getlFilm_ID(), myApp.dbVideo.getGenreID(genre));
+            if (!myApp.dbVideo.isFilmGenre(film.getlFilm_ID(), genre)) {
+                myApp.dbVideo.insertGenreIs(film.getlFilm_ID(), myApp.dbVideo.getGenreID(genre));
+            }
         }
     }
 

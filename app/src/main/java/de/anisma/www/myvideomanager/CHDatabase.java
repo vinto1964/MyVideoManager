@@ -394,6 +394,23 @@ public class CHDatabase extends SQLiteOpenHelper {
         return lResult;
     }
 
+    public int getNextFilmID() {
+        int iResult = -1;
+        SQLiteDatabase db = null;
+        String sQuery = "SELECT " + ID_FILM + " FROM " + TBLVIDEOMANAGER + " ORDER BY " + ID_FILM + " DESC";
+        try {
+            db = getReadableDatabase();
+            Cursor cursor = db.rawQuery(sQuery, null);
+            if(cursor.moveToFirst()) {
+                iResult = cursor.getInt(0) + 1;
+            }
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+        return iResult;
+    }
+
+/************************************************************************************************************************************************************/
     public List loadActorsForDialog(List<DTActor> actorsList, long filmID) {
         if(actorsList == null) {
             actorsList = new ArrayList<DTActor>();
@@ -699,7 +716,7 @@ public class CHDatabase extends SQLiteOpenHelper {
         try {
             db = this.getWritableDatabase();
             ContentValues cv = new ContentValues();
-            cv.put(COMMENT, film.getsFilmPlot());
+            cv.put(COMMENT, film.getsFilmComment());
             cv.put(RANKING, film.getfFilmRanking());
             db.update(TBLVIDEOMANAGER, cv, ID_FILM + " = ?", new String[] {String.valueOf(film.getlFilm_ID())});
         }
@@ -935,12 +952,40 @@ public class CHDatabase extends SQLiteOpenHelper {
         List<String> actorsList = new ArrayList<String>();
 
         SQLiteDatabase db = null;
-        //String sQuery = "SELECT " + GENRE + " FROM " + TBLGENRE + " g JOIN " + TBLGENREIS + " gi ON (g." + ID_GENRE + " = gi." + ID_GENRE + ") WHERE gi." + ID_FILM + " = ?";
+        String sQuery = "SELECT p." + ID_PERSON + ", p." + FIRSTNAME + ", p." + LASTNAME + " FROM " + TBLPEOPLE +
+                        " p JOIN " + TBLPERSONSIS + " pi ON (p." + ID_PERSON + " = pi." + ID_PERSON + ") " +
+                        " WHERE " + ID_FILM + " = ? " +
+                        " ORDER BY " + ROLEORDER + ", " + FIRSTNAME + " ASC ";
+
+        try {
+            db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(sQuery, new String[] {String.valueOf(id_film)});
+            if(cursor.moveToFirst()) {
+                do {
+                    long id_Person = cursor.getLong(0);
+                    String firstname = cursor.getString(1);
+                    String lastname = cursor.getString(2);
+                    actorsList.add(firstname + ", " + lastname +  "<" + id_Person);
+                } while (cursor.moveToNext());
+            }
+
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+
+        return actorsList;
+    }
+
+/*    public List loadFilmActorsList(long id_film) {
+        List<String> actorsList = new ArrayList<String>();
+
+        SQLiteDatabase db = null;
+
         String sQuery = "SELECT p." + ID_PERSON + ", " + FIRSTNAME + ", " + LASTNAME + ", r." + ROLE + " FROM " + TBLPEOPLE
-                        + " p JOIN " + TBLPERSONSIS + " pi ON (p." + ID_PERSON + " = pi." + ID_PERSON + ") "
-                        + " JOIN " + TBLROLES + " r ON (pi." + ID_ROLE + " = r." + ID_ROLE + ") " +
-                        "WHERE " + ID_FILM + " = ? " +
-                        " ORDER BY " + ROLEORDER + " ASC, " + FIRSTNAME + " ASC ";
+                + " p JOIN " + TBLPERSONSIS + " pi ON (p." + ID_PERSON + " = pi." + ID_PERSON + ") "
+                + " JOIN " + TBLROLES + " r ON (pi." + ID_ROLE + " = r." + ID_ROLE + ") " +
+                "WHERE " + ID_FILM + " = ? " +
+                " ORDER BY " + ROLEORDER + " ASC, " + FIRSTNAME + " ASC ";
 
         try {
             db = this.getReadableDatabase();
@@ -967,7 +1012,7 @@ public class CHDatabase extends SQLiteOpenHelper {
         finally { if(db != null){db.close();} }
 
         return actorsList;
-    }
+    }*/
 
 
     public static int getDatabeaseVersion() {

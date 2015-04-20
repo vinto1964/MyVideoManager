@@ -1,5 +1,7 @@
 package de.anisma.www.myvideomanager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     int iPos = -1;
     int iActorID = -1;
+    int delPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +111,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.ibFilmAdd:
                 //Intent intent = new Intent(this, MActFilmDetails.class);
                 Intent intentFilm = new Intent(this, TActFilmDetails.class);
-                intentFilm.putExtra("position", iPos);
+                intentFilm.putExtra("position", -1);
                 startActivity(intentFilm);
                 break;
 
@@ -152,6 +155,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
 
+        lvMA.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                delPosition = position;
+                doShowAlertDialog();
+                return false;
+            }
+        });
+
     }
 
     private void loadFilmListFromActor(int actorID) {
@@ -171,5 +183,35 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
+    private void deleteEntry() {
+        myApp.dbVideo.deleteFilm(myApp.ldFilmItems.get(delPosition).getlFilm_ID());
+        myApp.ldFilmItems.remove(delPosition);
+        iPos = -1;
+        loadFilmList("");
+    }
+
+    private void doShowAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Film löschen");
+        builder.setMessage("Wollen Sie wirklich den Film löschen?");
+        builder.setCancelable(true);
+        builder.setIcon(R.mipmap.ic_important);
+
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteEntry();
+            }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
 }

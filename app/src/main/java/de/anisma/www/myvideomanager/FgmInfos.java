@@ -39,7 +39,7 @@ public class FgmInfos extends Fragment implements View.OnClickListener, View.OnL
     Activity act;
     EditText edTitle, edSubtitel, edOTitel, edPubYear, edCountry, edFSK, edDuration, edEAN, edPlot;
     ImageView ivCover;
-    ImageButton ibSave, ibDelete;
+    ImageButton ibSave;
     Uri fileUri, targetUri;
 
     int iPos = -1;
@@ -90,15 +90,10 @@ public class FgmInfos extends Fragment implements View.OnClickListener, View.OnL
         ibSave = (ImageButton) view.findViewById(R.id.ibSave);
         ibSave.setOnClickListener(this);
 
-        ibDelete = (ImageButton) view.findViewById(R.id.ibDelete);
+
         if(iPos > -1) {
-            ibDelete.setVisibility(View.VISIBLE);
             loadFilm();
         }
-        else {
-            ibDelete.setVisibility(View.INVISIBLE);
-        }
-        ibDelete.setOnClickListener(this);
 
         return view;
     }
@@ -149,14 +144,10 @@ public class FgmInfos extends Fragment implements View.OnClickListener, View.OnL
             case R.id.ibSave:
                 saveEntry();
                 break;
-
-            case R.id.ibDelete:
-                doShowAlertDialog();
-                break;
         }
     }
 
-    private void doShowAlertDialog() {
+/*    private void doShowAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle("Film löschen");
@@ -178,9 +169,9 @@ public class FgmInfos extends Fragment implements View.OnClickListener, View.OnL
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
+    }*/
 
-    private void deleteEntry() {
+/*    private void deleteEntry() {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
         myApp.dbVideo.deleteFilm(myApp.ldFilmItems.get(iPos).getlFilm_ID());
         myApp.ldFilmItems.remove(iPos);
@@ -195,7 +186,8 @@ public class FgmInfos extends Fragment implements View.OnClickListener, View.OnL
         edDuration.setText("");
         edEAN.setText("");
         createFoto("@drawable/cover");
-    }
+
+    }*/
 
     private void saveEntry() {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();

@@ -120,14 +120,6 @@
             android:contentDescription="@string/sSave"
             android:layout_marginBottom="0dp" />
 
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/ibDelete"
-            android:src="@mipmap/ic_delete"
-            android:scaleType="fitCenter"
-            android:contentDescription="@string/sDeleteFilm"
-            android:clickable="false" />
     </LinearLayout>
 
 </RelativeLayout>
