@@ -93,5 +93,11 @@
     <string name="sGoogleWebsearch">Foto im Web suchen</string>
     <string name="sFilmografy">Filmografy</string>
     <string name="sNoFilmografy">Selection löschen</string>
+    <string name="title_activity_mact_settings">Settings</string>
+    <string name="sChoiceGenre">Hier können Sie einen Genre auswählen und bearbeiten bzw. einen neuen im Bearbeitungsfeld eingeben:</string>
+    <string name="sChoiceFunction">Hier können Sie eine Funktion auswählen und bearbeiten bzw. eine neue im Bearbeitungsfeld eingeben:</string>
+    <string name="sGenreSetting">Genren überarbeiten</string>
+    <string name="sFunctionSetting">Funktion überarbeiten</string>
+    <string name="sChoiceEdit">Bearbeitungsfeld</string>
 
 </resources>

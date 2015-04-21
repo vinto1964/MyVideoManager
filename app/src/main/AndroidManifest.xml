@@ -35,6 +35,10 @@
             android:name=".MActActors"
             android:label="@string/title_activity_mact_actors" >
         </activity>
+        <activity
+            android:name=".MActSettings"
+            android:label="@string/title_activity_mact_settings" >
+        </activity>
     </application>
 
 </manifest>

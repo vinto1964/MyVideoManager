@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.util.List;
 
 
@@ -95,7 +97,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (id == R.id.action_settings) {
             return true;
         }
-
+        if(id == R.id.action_addGenre) {
+            Intent intent = new Intent(this, MActSettings.class);
+            intent.putExtra("genre", "ok");
+            startActivity(intent);
+        }
+        if(id == R.id.action_addFunction) {
+            Intent intent = new Intent(this, MActSettings.class);
+            intent.putExtra("genre", "not");
+            startActivity(intent);
+        }
+        if(id == R.id.action_help) {
+            Toast.makeText(this, "help gewählt: " + id, Toast.LENGTH_LONG).show();
+        }
         return super.onOptionsItemSelected(item);
     }
 

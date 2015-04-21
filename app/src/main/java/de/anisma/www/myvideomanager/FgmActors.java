@@ -318,17 +318,26 @@ public class FgmActors extends Fragment implements View.OnClickListener {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
         List<DTActorRole>listActorRoles = new ArrayList<DTActorRole>();
         List<String>actorsListSimple = new ArrayList<>();
-        actorsList = myApp.dbVideo.loadFilmActorsList(myApp.ldFilmItems.get(iPos).getlFilm_ID());
-        for(int i = 0; i < actorsList.size(); i++)
-        {
-            String personID = actorsList.get(i).substring(actorsList.get(i).indexOf("<") + 1);
+        String sOutput = "";
+        if(iPos > -1) {
+            actorsList = myApp.dbVideo.loadFilmActorsList(myApp.ldFilmItems.get(iPos).getlFilm_ID());
+            for (int i = 0; i < actorsList.size(); i++) {
+                String personID = actorsList.get(i).substring(actorsList.get(i).indexOf("<") + 1);
 
-            listActorRoles.add(myApp.dbVideo.loadActorForRole(myApp.ldFilmItems.get(iPos).getlFilm_ID(), Integer.parseInt(personID)));
+                listActorRoles.add(myApp.dbVideo.loadActorForRole(myApp.ldFilmItems.get(iPos).getlFilm_ID(), Integer.parseInt(personID)));
+            }
+            for (DTActorRole dtar : listActorRoles) {
+                String sOutputN = dtar.getsARFirstName() + ", " + dtar.getsARLastName();
+                if (!dtar.getsARRoleInFilm().isEmpty()) {
+                    sOutputN += " (" + dtar.getsARRoleInFilm() + ")";
+                }
+                actorsListSimple.add(sOutputN);
+            }
         }
-        for(DTActorRole dtar : listActorRoles) {
-            String sOutput = dtar.getsARFirstName() + ", " + dtar.getsARLastName();
-            if(!dtar.getsARRoleInFilm().isEmpty()) {
-                sOutput += " (" + dtar.getsARRoleInFilm() + ")";
+        else {
+            sOutput = edActFirstName.getText().toString() + ", " + edActLastName.getText().toString();
+            if(!edActRole.getText().toString().isEmpty()) {
+                sOutput += " (" + edActRole.getText().toString() + ")";
             }
             actorsListSimple.add(sOutput);
         }

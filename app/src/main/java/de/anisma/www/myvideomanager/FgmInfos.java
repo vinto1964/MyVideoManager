@@ -143,51 +143,10 @@ public class FgmInfos extends Fragment implements View.OnClickListener, View.OnL
 
             case R.id.ibSave:
                 saveEntry();
+                this.getActivity().finish();
                 break;
         }
     }
-
-/*    private void doShowAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        builder.setTitle("Film löschen");
-        builder.setMessage("Wollen Sie wirklich den Film löschen?");
-        builder.setCancelable(true);
-        builder.setIcon(R.mipmap.ic_important);
-
-        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                deleteEntry();
-            }
-        });
-        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }*/
-
-/*    private void deleteEntry() {
-        AppGlobal myApp = (AppGlobal) getActivity().getApplication();
-        myApp.dbVideo.deleteFilm(myApp.ldFilmItems.get(iPos).getlFilm_ID());
-        myApp.ldFilmItems.remove(iPos);
-        iPos = -1;
-
-        edTitle.setText("");
-        edSubtitel.setText("");
-        edOTitel.setText("");
-        edPubYear.setText("");
-        edCountry.setText("");
-        edFSK.setText("");
-        edDuration.setText("");
-        edEAN.setText("");
-        createFoto("@drawable/cover");
-
-    }*/
 
     private void saveEntry() {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
