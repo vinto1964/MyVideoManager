@@ -54,16 +54,34 @@
         android:layout_alignParentStart="true"
         android:hint="@string/sChoiceEdit" />
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/ibSave"
-        android:src="@mipmap/ic_save"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/sSave"
-        android:layout_marginTop="39dp"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/edChoice"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp">
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/ibSave"
+            android:src="@mipmap/ic_save"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/sSave"
+            android:layout_marginTop="0dp"
+            android:layout_below="@+id/edChoice"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/ibDeleteChoice"
+            android:contentDescription="@string/sDeleteChoice"
+            android:src="@mipmap/ic_delete"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
 
 </RelativeLayout>

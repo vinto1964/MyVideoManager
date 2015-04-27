@@ -195,7 +195,8 @@ public class FgmComment extends Fragment {
             genre = String.valueOf(spGenre.getSelectedItem());
 
             if (!myApp.dbVideo.isFilmGenre(film.getlFilm_ID(), genre)) {
-                myApp.dbVideo.insertGenreIs(film.getlFilm_ID(), myApp.dbVideo.getGenreID(genre));
+                //myApp.dbVideo.insertGenreIs(film.getlFilm_ID(), myApp.dbVideo.getGenreID(genre));
+                myApp.dbVideo.insertGenreIs(film.getlFilm_ID(), myApp.dbVideo.getGFID("genre", genre));
             }
         }
     }

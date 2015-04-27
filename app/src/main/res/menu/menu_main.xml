@@ -8,12 +8,12 @@
         app:showAsAction="always" >
         <menu>
             <item android:id="@+id/action_addGenre"
-                android:title="Genre zufügen"
+                android:title="Genre bearbeiten"
                 android:orderInCategory="15"
                 app:showAsAction="never" />
 
             <item android:id="@+id/action_addFunction"
-                android:title="Funktion zufügen"
+                android:title="Funktion bearbeiten"
                 android:orderInCategory="20"
                 app:showAsAction="never" />
 
@@ -22,10 +22,6 @@
                 android:orderInCategory="25"
                 app:showAsAction="never" />
         </menu>
-
-
-
-
     </item>
 
 

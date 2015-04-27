@@ -799,7 +799,7 @@ public class CHDatabase extends SQLiteOpenHelper {
         finally { if(db != null){db.close();} }
     }
 
-    public long getGenreID(String genre) {
+/*    public long getGenreID(String genre) {
         long lResult = -1;
         SQLiteDatabase db = null;
         String sQuery = "SELECT " + ID_GENRE + " FROM " + TBLGENRE + " WHERE " + GENRE + " = '" +  genre + "';";
@@ -816,15 +816,107 @@ public class CHDatabase extends SQLiteOpenHelper {
         return lResult;
     }
 
+    public long getFunctionID(String function) {
+        long lResult = -1;
+        SQLiteDatabase db = null;
+        String sQuery = "SELECT " + ID_FUNCTION + " FROM " + TBLFUNCTIONS + " WHERE " + FUNCTION + " = '" +  function + "';";
+
+        try {
+            db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(sQuery, null);
+            if(cursor.moveToFirst()) {
+                lResult = cursor.getLong(0);
+            }
+        }
+        catch (Exception ex) { }
+        finally { if(db != null){db.close();} }
+        return lResult;
+    }*/
+
+    public long getGFID(String table, String selectedItem) {
+        long lResult = -1;
+        SQLiteDatabase db = null;
+        String sQuery = "";
+        if(table.compareTo(this.TBLGENRE) == 0) {
+            sQuery = "SELECT " + ID_GENRE + " FROM " + TBLGENRE + " WHERE " + GENRE + " = '" +  selectedItem + "';";
+        }
+        else {
+            sQuery = "SELECT " + ID_FUNCTION + " FROM " + TBLFUNCTIONS + " WHERE " + FUNCTION + " = '" +  selectedItem + "';";
+        }
+
+        try {
+            db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(sQuery, null);
+            if(cursor.moveToFirst()) {
+                lResult = cursor.getLong(0);
+            }
+        }
+        catch (Exception ex) { }
+        finally { if(db != null){db.close();} }
+        return lResult;
+    }
 
     public void deleteGenreFromFilm(long filmID, String genre) {
         SQLiteDatabase db = null;
 
-        long genreID = getGenreID(genre);
+        //long genreID = getGenreID(genre);
+        long genreID = getGFID(this.TBLGENRE, genre);
 
         try {
             db = this.getWritableDatabase();
             db.delete(TBLGENREIS, ID_FILM + " = ? AND " + ID_GENRE + " = ?", new String[] {String.valueOf(filmID), String.valueOf(genreID)});
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+    }
+
+    public void updateGF(String table, long choiceID, String selectedItem) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            if(table.compareTo(this.TBLGENRE) == 0) {
+                cv.put(GENRE, selectedItem);
+                db.update(TBLGENRE, cv, ID_GENRE + " = ?", new String[] {String.valueOf(choiceID)});
+            }
+            else {
+                cv.put(FUNCTION, selectedItem);
+                db.update(TBLFUNCTIONS, cv, ID_FUNCTION + " = ?", new String[] {String.valueOf(choiceID)});
+            }
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+    }
+
+    public long insertGF(String table, String selectedItem) {
+        long lResult = -1;
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            if(table.compareTo(this.TBLGENRE) == 0) {
+                cv.put(GENRE, selectedItem);
+                lResult = db.insert(TBLGENRE, null, cv);
+            }
+            else {
+                cv.put(FUNCTION, selectedItem);
+                lResult = db.insert(TBLFUNCTIONS, null, cv);
+            }
+
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+        return lResult;
+
+    }
+
+    //TODO
+    public void deleteGenre(long genreID) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            db.delete(TBLGENREIS, ID_GENRE + " = ?", new String[] {String.valueOf(genreID)});
+            db.delete(TBLGENRE, ID_GENRE + " = ?", new String[] {String.valueOf(genreID)});
         }
         catch (Exception ex) {}
         finally { if(db != null){db.close();} }
@@ -908,6 +1000,37 @@ public class CHDatabase extends SQLiteOpenHelper {
         finally { if(db != null){db.close();} }
 
         return lResult;
+    }
+
+    public List loadAllFunction() {
+        List<String> listGenre = new ArrayList<String>();
+        listGenre.add("Bitte Funktion auswählen:");
+        SQLiteDatabase db = null;
+        String sQuery = "SELECT " + FUNCTION + " FROM " + TBLFUNCTIONS + " ORDER BY " + FUNCTION + " ASC";
+        try {
+            db = getReadableDatabase();
+            Cursor cursor = db.rawQuery(sQuery, null);
+            if(cursor.moveToFirst()) {
+                do {
+                    String genre = cursor.getString(0);
+                    listGenre.add(genre);
+                } while (cursor.moveToNext());
+            }
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
+        return listGenre;
+    }
+
+    public void deleteFunction(long functionID) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            db.delete(TBLPERSONSIS, ID_FUNCTION + " = ?", new String[] {String.valueOf(functionID)});
+            db.delete(TBLFUNCTIONS, ID_FUNCTION + " = ?", new String[] {String.valueOf(functionID)});
+        }
+        catch (Exception ex) {}
+        finally { if(db != null){db.close();} }
     }
 
     public long insertPersonIs(long id_film, long id_person, long id_function, long id_role, int role_order ) {
@@ -1062,6 +1185,8 @@ public class CHDatabase extends SQLiteOpenHelper {
         catch (Exception ex) {}
       //  finally { if(db != null){ db.close();}}
     }
+
+
 
     // ********************************************************************************************************
 }

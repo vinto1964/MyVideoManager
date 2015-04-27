@@ -99,5 +99,6 @@
     <string name="sGenreSetting">Genren überarbeiten</string>
     <string name="sFunctionSetting">Funktion überarbeiten</string>
     <string name="sChoiceEdit">Bearbeitungsfeld</string>
+    <string name="sDeleteChoice">Löschen</string>
 
 </resources>
