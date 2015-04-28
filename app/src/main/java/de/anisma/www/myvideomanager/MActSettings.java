@@ -177,10 +177,11 @@ public class MActSettings extends ActionBarActivity implements View.OnClickListe
             }
             if(choiceID > -1) {
                 if(artSetting.compareTo("ok") == 0) {
-                    myApp.dbVideo.deleteGenre(choiceID);
+                    //myApp.dbVideo.deleteGenre(choiceID);
+                    myApp.dbVideo.deleteGF("genre", choiceID);
                 }
                 else {
-                    myApp.dbVideo.deleteFunction(choiceID);
+                    myApp.dbVideo.deleteGF("functions", choiceID);
                 }
             }
             edChoice.setText("");

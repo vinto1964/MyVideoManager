@@ -108,7 +108,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             startActivity(intent);
         }
         if(id == R.id.action_help) {
-            Toast.makeText(this, "help gewählt: " + id, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, TActHelp.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

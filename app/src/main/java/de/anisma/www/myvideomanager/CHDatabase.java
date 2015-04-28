@@ -910,13 +910,19 @@ public class CHDatabase extends SQLiteOpenHelper {
 
     }
 
-    //TODO
-    public void deleteGenre(long genreID) {
+    public void deleteGF(String table, long choiceID) {
         SQLiteDatabase db = null;
         try {
-            db = this.getWritableDatabase();
-            db.delete(TBLGENREIS, ID_GENRE + " = ?", new String[] {String.valueOf(genreID)});
-            db.delete(TBLGENRE, ID_GENRE + " = ?", new String[] {String.valueOf(genreID)});
+            if(table.compareTo(this.TBLGENRE) == 0) {
+                db = this.getWritableDatabase();
+                db.delete(TBLGENREIS, ID_GENRE + " = ?", new String[]{String.valueOf(choiceID)});
+                db.delete(TBLGENRE, ID_GENRE + " = ?", new String[]{String.valueOf(choiceID)});
+            }
+            else {
+                db = this.getWritableDatabase();
+                db.delete(TBLPERSONSIS, ID_FUNCTION + " = ?", new String[] {String.valueOf(choiceID)});
+                db.delete(TBLFUNCTIONS, ID_FUNCTION + " = ?", new String[] {String.valueOf(choiceID)});
+            }
         }
         catch (Exception ex) {}
         finally { if(db != null){db.close();} }
@@ -1022,17 +1028,6 @@ public class CHDatabase extends SQLiteOpenHelper {
         return listGenre;
     }
 
-    public void deleteFunction(long functionID) {
-        SQLiteDatabase db = null;
-        try {
-            db = this.getWritableDatabase();
-            db.delete(TBLPERSONSIS, ID_FUNCTION + " = ?", new String[] {String.valueOf(functionID)});
-            db.delete(TBLFUNCTIONS, ID_FUNCTION + " = ?", new String[] {String.valueOf(functionID)});
-        }
-        catch (Exception ex) {}
-        finally { if(db != null){db.close();} }
-    }
-
     public long insertPersonIs(long id_film, long id_person, long id_function, long id_role, int role_order ) {
         long lResult = -1;
         SQLiteDatabase db = null;
@@ -1098,45 +1093,6 @@ public class CHDatabase extends SQLiteOpenHelper {
 
         return actorsList;
     }
-
-/*    public List loadFilmActorsList(long id_film) {
-        List<String> actorsList = new ArrayList<String>();
-
-        SQLiteDatabase db = null;
-
-        String sQuery = "SELECT p." + ID_PERSON + ", " + FIRSTNAME + ", " + LASTNAME + ", r." + ROLE + " FROM " + TBLPEOPLE
-                + " p JOIN " + TBLPERSONSIS + " pi ON (p." + ID_PERSON + " = pi." + ID_PERSON + ") "
-                + " JOIN " + TBLROLES + " r ON (pi." + ID_ROLE + " = r." + ID_ROLE + ") " +
-                "WHERE " + ID_FILM + " = ? " +
-                " ORDER BY " + ROLEORDER + " ASC, " + FIRSTNAME + " ASC ";
-
-        try {
-            db = this.getReadableDatabase();
-            Cursor cursor = db.rawQuery(sQuery, new String[] {String.valueOf(id_film)});
-            if(cursor.moveToFirst()) {
-                do {
-                    long id_Person = cursor.getLong(0);
-                    String firstname = cursor.getString(1);
-                    String lastname = cursor.getString(2);
-                    String role = cursor.getString(3);
-
-                    String sOutput = firstname + ", " + lastname;
-                    if(!role.isEmpty()) {
-                        sOutput += " (" + role + ")";
-                    }
-                    sOutput += "<" + id_Person;
-
-                    actorsList.add(sOutput);
-                } while (cursor.moveToNext());
-            }
-
-        }
-        catch (Exception ex) {}
-        finally { if(db != null){db.close();} }
-
-        return actorsList;
-    }*/
-
 
     public static int getDatabeaseVersion() {
         return DATABASE_VERSION;

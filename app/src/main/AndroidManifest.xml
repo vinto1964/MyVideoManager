@@ -39,6 +39,10 @@
             android:name=".MActSettings"
             android:label="@string/title_activity_mact_settings" >
         </activity>
+        <activity
+            android:name=".TActHelp"
+            android:label="@string/title_activity_tact_help" >
+        </activity>
     </application>
 
 </manifest>

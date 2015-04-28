@@ -100,5 +100,10 @@
     <string name="sFunctionSetting">Funktion überarbeiten</string>
     <string name="sChoiceEdit">Bearbeitungsfeld</string>
     <string name="sDeleteChoice">Löschen</string>
+    <string name="title_activity_tact_help">Hilfe/How-To</string>
+    <string name="sFgmHelpIcon">Icons und ihre Bedeutung</string>
+    <string name="title_help_section1">Icons</string>
+    <string name="title_help_section2">Listen</string>
+    <string name="title_help_section3">Sonstiges</string>
 
 </resources>
