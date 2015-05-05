@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">MyVideoManager</string>
-
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="sEdMASearch">Film suchen</string>
     <string name="sImgContentDescriptionMASearch">Film suchen</string>
@@ -39,52 +37,19 @@
     <string name="sDeleteActor">Schauspieler/in löschen</string>
     <string name="sActorFoto">Portrait</string>
     <string name="spFunction_promt">Wählen Sie eine Funktion:</string>
-    <string-array name="function_array">
-        <item>Schauspieler</item>
-        <item>Regisseur</item>
-    </string-array>
     <string name="spGenre_prompt">Wählen Sie eine Kategorie:</string>
     <string name="sDeleteFilm">Film löschen</string>
     <string name="sGenre">Schon ausgewählte Genren:</string>
     <string name="sCommentLabel">Kommentar:</string>
     <string name="sMask">Maske</string>
     <string name="sChoice">Bitte auswählen:</string>
-    <string-array name="genreD_array">
-        <item>Genre bitte auswählen:</item>
-        <item>Abenteuer</item>
-        <item>Kinder</item>
-        <item>Komödie</item>
-        <item>Drama</item>
-        <item>Science Fiction</item>
-        <item>Thriller</item>
-        <item>Western</item>
-        <item>Mystery</item>
-        <item>Horror</item>
-        <item>EndOfWorld</item>
-        <item>Action</item>
-        <item>Romanze</item>
-        <item>Fantasy</item>
-        <item>Krieg</item>
-        <item>Dokumentation</item>
-        <item>Monumental</item>
-        <item>Animation</item>
-        <item>Katastrophe</item>
-        <item>Erotik</item>
-        <item>Biografie</item>
-        <item>Weltraum</item>
-        <item>Liebe</item>
-        <item>Geschichte</item>
-        <item>Sport</item>
-        <item>Familie</item>
-        <item>Krimi</item>
-    </string-array>
     <string name="title_activity_sact_actors">Schauspieler/in</string>
     <string name="sWoman">Frau</string>
     <string name="sMan">Mann</string>
     <string name="sBirthday">Geburtstag</string>
     <string name="sVita">Vita</string>
     <string name="title_activity_mact_actors">Liste der Schauspieler/in</string>
-    <string name="sShowActor">Schauspieler/innen</string>
+    <string name="sShowActor">Schauspieler/innen auflisten</string>
     <string name="sCancelSearch">Suche löschen</string>
     <string name="sSearchActor">Person suchen</string>
     <string name="sDeleteSearchActor">Suche löschen</string>
@@ -104,6 +69,17 @@
     <string name="sFgmHelpIcon">Icons und ihre Bedeutung</string>
     <string name="title_help_section1">Icons</string>
     <string name="title_help_section2">Listen</string>
-    <string name="title_help_section3">Sonstiges</string>
+    <string name="title_help_section3">About...</string>
+    <string name="sHelpSearch">Film / Schauspieler/in suchen</string>
+    <string name="sFilmografyOnOff">Filmografy an/aus</string>
+    <string name="sHelpFilmListen">\"Touch\" auf ein Film: Filmdetails bearbeiten</string>
+    <string name="sHelpFilmListen2">\"Long Touch\" auf ein Film: Film löschen</string>
+    <string name="sHelpCover">Ein \"long Touch\" auf das Cover, um das Bild im Internet suchen und in der Gallery speichern.\n\nEin \"Touch\" um ein Bild aus der Gallery auswählen</string>
+    <string name="sHelpAboutIcon">Icons:</string>
+    <string name="sHelpAboutIconLink"><a href="icon8.com">https://icons8.com/</a></string>
+    <string name="sHelpAboutThanks">Mein Dank an Muriel für Ihre Unterstützung:</string>
+    <string name="sHelpAboutMuundDuLink"><a href="www.muunddu.de/prestashop/">http://muunddu.de/prestashop</a></string>
+    <string name="sHelpAboutSupport">Direkte Anfragen versenden an:</string>
+    <string name="sHelpAboutSupportEmail">info@anisma.de</string>
 
 </resources>

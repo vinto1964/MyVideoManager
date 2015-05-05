@@ -73,7 +73,6 @@
             android:layout_alignParentStart="true"
             android:spinnerMode="dropdown"
             android:prompt="@string/spFunction_promt"
-            android:entries="@array/function_array"
             android:layout_marginBottom="10dp" />
 
         <LinearLayout

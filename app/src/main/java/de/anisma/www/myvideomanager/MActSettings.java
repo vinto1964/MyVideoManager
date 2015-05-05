@@ -75,7 +75,7 @@ public class MActSettings extends ActionBarActivity implements View.OnClickListe
             listChoice = myApp.dbVideo.loadAllGenre();
         }
         else {
-            listChoice = myApp.dbVideo.loadAllFunction();
+            listChoice = myApp.dbVideo.loadAllFunction(false);
         }
         spAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listChoice);
         spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

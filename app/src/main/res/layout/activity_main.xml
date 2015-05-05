@@ -72,7 +72,8 @@
                 android:id="@+id/ibShowActor"
                 android:src="@mipmap/ic_actor"
                 android:scaleType="fitCenter"
-                android:contentDescription="@string/sShowActor" />
+                android:contentDescription="@string/sShowActor"
+                android:clickable="true" />
 
             <LinearLayout
                 android:orientation="horizontal"

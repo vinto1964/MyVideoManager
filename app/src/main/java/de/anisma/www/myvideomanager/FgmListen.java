@@ -1,23 +1,23 @@
 package de.anisma.www.myvideomanager;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by Marc on 28.04.2015.
+ * Created by Marc on 01.05.2015.
  */
-public class FgmIcons  extends Fragment {
+public class FgmListen extends Fragment{
 
     int val;
 
-    public FgmIcons() {
+    public FgmListen() {
     }
 
-    public static FgmIcons newInstance(int pos) {
-        FgmIcons f = new FgmIcons();
+    public static FgmListen newInstance(int pos) {
+        FgmListen f = new FgmListen();
         Bundle args = new Bundle();
         args.putInt("position", pos);
         f.setArguments(args);
@@ -31,17 +31,13 @@ public class FgmIcons  extends Fragment {
             val = getArguments().getInt("position");
         }
         else {
-            val = 0;
+            val = 1;
         }
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fgm_help_icons, container, false);
-
-
+        View view = inflater.inflate(R.layout.fgm_help_listen, container, false);
         return view;
     }
-
-
 }

@@ -61,7 +61,7 @@
             android:id="@+id/ibSave"
             android:src="@mipmap/ic_add_actor"
             android:scaleType="fitCenter"
-            android:contentDescription="@string/sShowActor"
+            android:contentDescription="@string/sAddActor"
             android:layout_gravity="left" />
 
         <LinearLayout

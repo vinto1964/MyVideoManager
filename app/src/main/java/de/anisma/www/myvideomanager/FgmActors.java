@@ -50,7 +50,9 @@ public class FgmActors extends Fragment implements View.OnClickListener {
     Spinner spFunction;
     ListView lvActors;
     List<String>actorsList = new ArrayList<>();
+    List<String> listFuntion = new ArrayList<String>();
     ArrayAdapter actorListAdapter;
+    ArrayAdapter<String> spAdapter;
 
     public FgmActors() {
     }
@@ -149,6 +151,12 @@ public class FgmActors extends Fragment implements View.OnClickListener {
     private void loadDatas() {
         AppGlobal myApp = (AppGlobal) getActivity().getApplication();
         DTFilmItem film = myApp.ldFilmItems.get(iPos);
+
+        listFuntion = myApp.dbVideo.loadAllFunction(true);
+        spAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, listFuntion);
+        spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spFunction.setAdapter(spAdapter);
+
         edActRole.setHint( getString(R.string.sRole) + " in " + film.getsFilmTitle());
         loadPersonList();
     }

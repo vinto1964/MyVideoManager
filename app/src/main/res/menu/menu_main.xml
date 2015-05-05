@@ -18,17 +18,9 @@
                 app:showAsAction="never" />
 
             <item android:id="@+id/action_help"
-                android:title="Hilfe/How-To"
+                android:title="Hilfe/How-To - About"
                 android:orderInCategory="25"
                 app:showAsAction="never" />
         </menu>
     </item>
-
-
-
-
-
-
-
-
 </menu>

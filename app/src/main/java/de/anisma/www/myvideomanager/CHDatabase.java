@@ -640,7 +640,7 @@ public class CHDatabase extends SQLiteOpenHelper {
             cv.put(IMAGE, person.getsImage());
             cv.put(VITA, person.getsVita());
 
-            db.update(TBLPEOPLE, cv, ID_PERSON + " = ?", new String[] {String.valueOf(person.getlActor_ID())});
+            db.update(TBLPEOPLE, cv, ID_PERSON + " = ?", new String[]{String.valueOf(person.getlActor_ID())});
         }
         catch (Exception ex) {}
         finally { if(db != null){db.close();} }
@@ -653,7 +653,7 @@ public class CHDatabase extends SQLiteOpenHelper {
         try {
             db = this.getWritableDatabase();
             db.delete(TBLPERSONSIS, ID_PERSON + " = ? ", new String[] {String.valueOf(id_person)});
-            db.delete(TBLPEOPLE, ID_PERSON + " = ? ", new String[] {String.valueOf(id_person)});
+            db.delete(TBLPEOPLE, ID_PERSON + " = ? ", new String[]{String.valueOf(id_person)});
         }
         catch (Exception ex) {}
         finally { if(db != null){db.close();} }
@@ -664,7 +664,7 @@ public class CHDatabase extends SQLiteOpenHelper {
 
         try {
             db = this.getWritableDatabase();
-            db.delete(TBLPERSONSIS, ID_FILM + " = ? AND " + ID_PERSON + " = ?", new String[] {String.valueOf(id_film), String.valueOf(id_person)});
+            db.delete(TBLPERSONSIS, ID_FILM + " = ? AND " + ID_PERSON + " = ?", new String[]{String.valueOf(id_film), String.valueOf(id_person)});
         }
         catch (Exception ex) {}
         finally { if(db != null){db.close();} }
@@ -1008,11 +1008,19 @@ public class CHDatabase extends SQLiteOpenHelper {
         return lResult;
     }
 
-    public List loadAllFunction() {
+    public List loadAllFunction(boolean actorFgm) {
         List<String> listGenre = new ArrayList<String>();
-        listGenre.add("Bitte Funktion auswählen:");
+        String sQuery = "SELECT " + FUNCTION + " FROM " + TBLFUNCTIONS + " ORDER BY ";
+        if(!actorFgm) {
+            listGenre.add("Bitte Funktion auswählen:");
+        }
         SQLiteDatabase db = null;
-        String sQuery = "SELECT " + FUNCTION + " FROM " + TBLFUNCTIONS + " ORDER BY " + FUNCTION + " ASC";
+        if(actorFgm) {
+            sQuery +=  ID_FUNCTION + " ASC";
+        }
+        else {
+            sQuery += FUNCTION + " ASC";
+        }
         try {
             db = getReadableDatabase();
             Cursor cursor = db.rawQuery(sQuery, null);

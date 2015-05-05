@@ -133,10 +133,10 @@ public class TActHelp extends ActionBarActivity implements TabListener {
                     return FgmIcons.newInstance(0);
 
                 case 1:
-                    return FgmIcons.newInstance(1);
+                    return FgmListen.newInstance(1);
 
                 case 2:
-                    return FgmIcons.newInstance(2);
+                    return FgmAbout.newInstance(2);
 
             }
             FgmIcons defaultFragment = new FgmIcons();
